@@ -1,472 +1,184 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ScalePlus Clone Header</title>
+    <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: 'Inter', sans-serif;
-            background: radial-gradient(circle at 30% -10%, #2b1055, #000);
-            color: #fff;
-            overflow-x: hidden;
-        }
-
-        /* Header Navigation */
-        header {
-            width: 100%;
-            padding: 1.5rem 6%;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            position: fixed;
-            top: 0;
-            left: 0;
-            z-index: 1000;
-            background: rgba(10, 10, 30, 0.6);
-            backdrop-filter: blur(20px);
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-            transform: translateY(0);
-            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-
-        header.scrolled {
-            background: rgba(10, 10, 30, 0.95);
-            backdrop-filter: blur(30px);
-            padding: 1rem 6%;
-            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.3);
-        }
-
-        .logo {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            font-weight: 700;
-            font-size: 1.3rem;
-            color: #fff;
-            opacity: 0;
-            animation: slideInLeft 0.8s ease 0.2s forwards;
-        }
-
-        .logo span {
-            width: 16px;
-            height: 16px;
-            border-radius: 3px;
-            background: linear-gradient(135deg, #4ade80, #9333ea);
-            display: inline-block;
-            animation: logoPulse 2s ease-in-out infinite;
-        }
-
-        @keyframes logoPulse {
-
-            0%,
-            100% {
-                transform: scale(1);
-            }
-
-            50% {
-                transform: scale(1.1);
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        'inter': ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        'custom-purple': '#2b1055',
+                        'custom-dark': '#000',
+                    },
+                    animation: {
+                        'logo-pulse': 'logoPulse 2s ease-in-out infinite',
+                        'slide-in-left': 'slideInLeft 0.8s ease 0.2s forwards',
+                        'slide-in-down': 'slideInDown 0.6s ease forwards',
+                        'fade-in-up': 'fadeInUp 0.8s ease forwards',
+                        'float': 'float 6s ease-in-out infinite',
+                        'float-reverse': 'float 6s ease-in-out infinite reverse',
+                    },
+                    keyframes: {
+                        logoPulse: {
+                            '0%, 100%': { transform: 'scale(1)' },
+                            '50%': { transform: 'scale(1.1)' },
+                        },
+                        slideInLeft: {
+                            'from': { opacity: '0', transform: 'translateX(-30px)' },
+                            'to': { opacity: '1', transform: 'translateX(0)' },
+                        },
+                        slideInDown: {
+                            'from': { opacity: '0', transform: 'translateY(-10px)' },
+                            'to': { opacity: '1', transform: 'translateY(0)' },
+                        },
+                        fadeInUp: {
+                            'from': { opacity: '0', transform: 'translateY(30px)' },
+                            'to': { opacity: '1', transform: 'translateY(0)' },
+                        },
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0px) scale(1)' },
+                            '50%': { transform: 'translateY(-20px) scale(1.05)' },
+                        },
+                    },
+                    backdropBlur: {
+                        'xs': '2px',
+                    },
+                }
             }
         }
-
-        nav {
-            display: flex;
-            align-items: center;
-            gap: 2.5rem;
-        }
-
-        nav a {
-            text-decoration: none;
-            color: #d1d5db;
-            font-weight: 500;
-            transition: all 0.3s ease;
-            position: relative;
-            padding: 0.5rem 0;
-            opacity: 0;
-            animation: slideInDown 0.6s ease forwards;
-        }
-
-        nav a:nth-child(1) {
-            animation-delay: 0.3s;
-        }
-
-        nav a:nth-child(2) {
-            animation-delay: 0.4s;
-        }
-
-        nav a:nth-child(3) {
-            animation-delay: 0.5s;
-        }
-
-        nav a:nth-child(4) {
-            animation-delay: 0.6s;
-        }
-
-        nav a:hover {
-            color: #fff;
-        }
-
-        nav a::after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            width: 0;
-            height: 2px;
-            background: linear-gradient(135deg, #4ade80, #9333ea);
-            transition: width 0.3s ease;
-        }
-
-        nav a:hover::after {
-            width: 100%;
-        }
-
-        .btn-primary {
-            background: linear-gradient(135deg, #9333ea, #4f46e5);
-            padding: 0.7rem 1.4rem;
-            border-radius: 8px;
-            border: none;
-            color: #fff;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            opacity: 0;
-            animation: slideInDown 0.6s ease 0.7s forwards;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .btn-primary::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
-            transition: left 0.5s;
-        }
-
-        .btn-primary:hover::before {
-            left: 100%;
-        }
-
-        .btn-primary:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 25px rgba(147, 51, 234, 0.4);
-        }
-
-        /* Mobile Menu */
-        .mobile-toggle {
-            display: none;
-            flex-direction: column;
-            gap: 4px;
-            cursor: pointer;
-            padding: 0.5rem;
-        }
-
-        .mobile-toggle span {
-            width: 25px;
-            height: 3px;
-            background: #fff;
-            transition: all 0.3s ease;
-            transform-origin: center;
-        }
-
-        .mobile-toggle.active span:nth-child(1) {
-            transform: rotate(45deg) translate(6px, 6px);
-        }
-
-        .mobile-toggle.active span:nth-child(2) {
-            opacity: 0;
-        }
-
-        .mobile-toggle.active span:nth-child(3) {
-            transform: rotate(-45deg) translate(6px, -6px);
-        }
-
-        /* Animations */
-        @keyframes slideInLeft {
-            from {
-                opacity: 0;
-                transform: translateX(-30px);
+    </script>
+    <style type="text/tailwindcss">
+        @layer utilities {
+            .bg-gradient-radial {
+                background: radial-gradient(circle at 30% -10%, #2b1055, #000);
             }
-
-            to {
-                opacity: 1;
-                transform: translateX(0);
+            
+            .gradient-text {
+                background: linear-gradient(to right, #fff, #a78bfa);
+                -webkit-background-clip: text;
+                -webkit-text-fill-color: transparent;
             }
-        }
-
-        @keyframes slideInDown {
-            from {
-                opacity: 0;
-                transform: translateY(-10px);
-            }
-
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(30px);
-            }
-
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        /* Hero Section */
-        .hero {
-            padding-top: 8rem;
-            text-align: center;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .hero::before,
-        .hero::after {
-            content: "";
-            position: absolute;
-            width: 400px;
-            height: 400px;
-            border-radius: 50%;
-            filter: blur(150px);
-            z-index: 0;
-        }
-
-        .hero::before {
-            top: -150px;
-            left: -100px;
-            background: #9333ea;
-            animation: float 6s ease-in-out infinite;
-        }
-
-        .hero::after {
-            bottom: -100px;
-            right: -150px;
-            background: #4ade80;
-            animation: float 6s ease-in-out infinite reverse;
-        }
-
-        @keyframes float {
-
-            0%,
-            100% {
-                transform: translateY(0px) scale(1);
-            }
-
-            50% {
-                transform: translateY(-20px) scale(1.05);
-            }
-        }
-
-        .badge {
-            background: rgba(255, 255, 255, 0.1);
-            display: inline-flex;
-            align-items: center;
-            gap: 0.4rem;
-            border-radius: 20px;
-            padding: 0.4rem 1rem;
-            font-size: 0.85rem;
-            color: #a3a3a3;
-            margin-bottom: 1.2rem;
-            opacity: 0;
-            animation: fadeInUp 0.8s ease 0.4s forwards;
-        }
-
-        .badge span {
-            background: linear-gradient(135deg, #4ade80, #9333ea);
-            color: #fff;
-            font-weight: 600;
-            padding: 0.1rem 0.6rem;
-            border-radius: 10px;
-        }
-
-        .hero h1 {
-            font-size: 3rem;
-            font-weight: 800;
-            line-height: 1.2;
-            background: linear-gradient(to right, #fff, #a78bfa);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            margin-bottom: 1rem;
-            opacity: 0;
-            animation: fadeInUp 0.8s ease 0.6s forwards;
-        }
-
-        .hero p {
-            font-size: 1.1rem;
-            color: #d1d5db;
-            margin-bottom: 2rem;
-            opacity: 0;
-            animation: fadeInUp 0.8s ease 0.8s forwards;
-        }
-
-        .hero .cta {
-            background: #fff;
-            color: #111;
-            border-radius: 10px;
-            padding: 0.9rem 1.8rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-            border: none;
-            opacity: 0;
-            animation: fadeInUp 0.8s ease 1s forwards;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .hero .cta::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(147, 51, 234, 0.2), transparent);
-            transition: left 0.5s;
-        }
-
-        .hero .cta:hover::before {
-            left: 100%;
-        }
-
-        .hero .cta:hover {
-            background: linear-gradient(135deg, #4ade80, #9333ea);
-            color: #fff;
-            transform: translateY(-2px);
-            box-shadow: 0 8px 25px rgba(147, 51, 234, 0.4);
-        }
-
-        /* Dashboard Mock */
-        .dashboard {
-            margin: 4rem auto 0;
-            max-width: 900px;
-            background: rgba(255, 255, 255, 0.05);
-            border-radius: 20px;
-            padding: 2rem;
-            backdrop-filter: blur(20px);
-            box-shadow: 0 0 30px rgba(0, 0, 0, 0.3);
-            position: relative;
-            z-index: 2;
-            opacity: 0;
-            animation: fadeInUp 0.8s ease 1.2s forwards;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-        }
-
-        .chart-placeholder {
-            width: 100%;
-            height: 250px;
-            border-radius: 12px;
-            background: rgba(255, 255, 255, 0.05);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            overflow: hidden;
-            position: relative;
-        }
-
-        .chart-placeholder img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            border-radius: 12px;
-            transition: transform 0.3s ease;
-        }
-
-        .chart-placeholder:hover img {
-            transform: scale(1.02);
-        }
-
-        /* Responsive Design */
-        @media (max-width: 768px) {
-            nav {
-                position: fixed;
-                top: 70px;
+            
+            .gradient-border::after {
+                content: '';
+                position: absolute;
+                bottom: 0;
                 left: 0;
+                width: 0;
+                height: 2px;
+                background: linear-gradient(135deg, #4ade80, #9333ea);
+                transition: width 0.3s ease;
+            }
+            
+            .gradient-border:hover::after {
                 width: 100%;
-                background: rgba(10, 10, 30, 0.95);
-                backdrop-filter: blur(30px);
-                flex-direction: column;
-                padding: 2rem;
-                gap: 1.5rem;
+            }
+            
+            .btn-hover::before {
+                content: '';
+                position: absolute;
+                top: 0;
+                left: -100%;
+                width: 100%;
+                height: 100%;
+                background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+                transition: left 0.5s;
+            }
+            
+            .btn-hover:hover::before {
+                left: 100%;
+            }
+            
+            .mobile-nav {
                 transform: translateY(-100%);
                 opacity: 0;
                 transition: all 0.3s ease;
-                border-bottom: 1px solid rgba(255, 255, 255, 0.1);
             }
-
-            nav.active {
+            
+            .mobile-nav.active {
                 transform: translateY(0);
                 opacity: 1;
             }
-
-            .mobile-toggle {
-                display: flex;
+            
+            .mobile-toggle span {
+                transition: all 0.3s ease;
+                transform-origin: center;
+            }
+            
+            .mobile-toggle.active span:nth-child(1) {
+                transform: rotate(45deg) translate(6px, 6px);
+            }
+            
+            .mobile-toggle.active span:nth-child(2) {
                 opacity: 0;
-                animation: slideInDown 0.6s ease 0.7s forwards;
             }
-
-            .hero h1 {
-                font-size: 2.2rem;
-            }
-
-            .dashboard {
-                margin: 2rem 1rem 0;
-                padding: 1.5rem;
+            
+            .mobile-toggle.active span:nth-child(3) {
+                transform: rotate(-45deg) translate(6px, -6px);
             }
         }
     </style>
 </head>
 
-<body>
-
-    <header>
-        <div class="logo"><span></span>ScalePlus</div>
-        <nav>
-            <a href="#">Features</a>
-            <a href="#">Pricing</a>
-            <a href="#">Blog</a>
-            <a href="#">Contact</a>
-            <button class="btn-primary">Get Started</button>
+<body class="font-inter bg-gradient-radial text-white overflow-x-hidden">
+    <!-- Header Navigation -->
+    <header class="w-full py-6 px-[6%] flex justify-between items-center fixed top-0 left-0 z-50 bg-[rgba(10,10,30,0.6)] backdrop-blur-xl border-b border-white/10 transition-all duration-400 ease-[cubic-bezier(0.4,0,0.2,1)]">
+        <div class="logo flex items-center gap-2 font-bold text-xl text-white opacity-0 animate-slide-in-left">
+            <span class="w-4 h-4 rounded bg-gradient-to-br from-green-400 to-purple-600 animate-logo-pulse"></span>
+            ScalePlus
+        </div>
+        <nav class="flex items-center gap-10 md:gap-6">
+            <a href="#" class="text-gray-300 font-medium transition-colors duration-300 relative py-2 opacity-0 animate-slide-in-down gradient-border hover:text-white" style="animation-delay: 0.3s">Features</a>
+            <a href="#" class="text-gray-300 font-medium transition-colors duration-300 relative py-2 opacity-0 animate-slide-in-down gradient-border hover:text-white" style="animation-delay: 0.4s">Pricing</a>
+            <a href="#" class="text-gray-300 font-medium transition-colors duration-300 relative py-2 opacity-0 animate-slide-in-down gradient-border hover:text-white" style="animation-delay: 0.5s">Blog</a>
+            <a href="#" class="text-gray-300 font-medium transition-colors duration-300 relative py-2 opacity-0 animate-slide-in-down gradient-border hover:text-white" style="animation-delay: 0.6s">Contact</a>
+            <button class="btn-primary bg-gradient-to-br from-purple-600 to-indigo-600 py-3 px-5 rounded-lg border-none text-white font-semibold cursor-pointer transition-all duration-300 opacity-0 animate-slide-in-down btn-hover relative overflow-hidden hover:-translate-y-1 hover:shadow-[0_8px_25px_rgba(147,51,234,0.4)]" style="animation-delay: 0.7s">
+                Get Started
+            </button>
         </nav>
-        <div class="mobile-toggle">
-            <span></span>
-            <span></span>
-            <span></span>
+        <div class="mobile-toggle hidden flex-col gap-1 cursor-pointer p-2 opacity-0 animate-slide-in-down" style="animation-delay: 0.7s">
+            <span class="w-6 h-0.5 bg-white"></span>
+            <span class="w-6 h-0.5 bg-white"></span>
+            <span class="w-6 h-0.5 bg-white"></span>
         </div>
     </header>
 
-    <section class="hero">
-        <div class="badge"><span>NEW</span> We've just released new features →</div>
-        <h1>Streamline Operations.<br>Deliver Results.</h1>
-        <p>Boost your efficiency and streamline tasks effortlessly.</p>
-        <button class="cta">Book A Free Demo →</button>
+    <!-- Hero Section -->
+    <section class="hero pt-32 text-center relative overflow-hidden">
+        <!-- Background elements -->
+        <div class="absolute top-[-150px] left-[-100px] w-96 h-96 rounded-full bg-purple-600 blur-[150px] z-0 animate-float"></div>
+        <div class="absolute bottom-[-100px] right-[-150px] w-96 h-96 rounded-full bg-green-400 blur-[150px] z-0 animate-float-reverse"></div>
+        
+        <!-- Content -->
+        <div class="badge bg-white/10 inline-flex items-center gap-2 rounded-full py-1.5 px-4 text-sm text-gray-400 mb-5 opacity-0 animate-fade-in-up" style="animation-delay: 0.4s">
+            <span class="bg-gradient-to-br from-green-400 to-purple-600 text-white font-semibold py-0.5 px-2.5 rounded-full">NEW</span>
+            We've just released new features →
+        </div>
+        
+        <h1 class="text-5xl font-extrabold leading-tight mb-4 gradient-text opacity-0 animate-fade-in-up" style="animation-delay: 0.6s">
+            Streamline Operations.<br>Deliver Results.
+        </h1>
+        
+        <p class="text-lg text-gray-300 mb-8 opacity-0 animate-fade-in-up" style="animation-delay: 0.8s">
+            Boost your efficiency and streamline tasks effortlessly.
+        </p>
+        
+        <button class="cta bg-white text-black rounded-xl py-3.5 px-7 font-semibold cursor-pointer transition-all duration-300 inline-flex items-center gap-2 border-none opacity-0 animate-fade-in-up btn-hover relative overflow-hidden hover:bg-gradient-to-br hover:from-green-400 hover:to-purple-600 hover:text-white hover:-translate-y-1 hover:shadow-[0_8px_25px_rgba(147,51,234,0.4)]" style="animation-delay: 1s">
+            Book A Free Demo →
+        </button>
 
-        <div class="dashboard">
-            <div class="chart-placeholder">
+        <!-- Dashboard Mock -->
+        <div class="dashboard mt-16 mx-auto max-w-4xl bg-white/5 rounded-2xl p-8 backdrop-blur-xl shadow-[0_0_30px_rgba(0,0,0,0.3)] relative z-10 border border-white/10 opacity-0 animate-fade-in-up" style="animation-delay: 1.2s">
+            <div class="chart-placeholder w-full h-64 rounded-xl bg-white/5 flex items-center justify-center overflow-hidden relative">
                 <!-- Replace with your image -->
-                <img src="./images/5wT2ymuIbFmOKzWToOUSVLk10.jpg"
-                    alt="Dashboard Preview">
+                <img src="./images/5wT2ymuIbFmOKzWToOUSVLk10.jpg" alt="Dashboard Preview" class="w-full h-full object-cover rounded-xl transition-transform duration-300 hover:scale-102">
             </div>
         </div>
     </section>
@@ -477,8 +189,12 @@
             const header = document.querySelector('header');
             if (window.scrollY > 50) {
                 header.classList.add('scrolled');
+                header.classList.add('bg-[rgba(10,10,30,0.95)]', 'backdrop-blur-2xl', 'py-4', 'shadow-[0_4px_30px_rgba(0,0,0,0.3)]');
+                header.classList.remove('py-6', 'bg-[rgba(10,10,30,0.6)]', 'backdrop-blur-xl');
             } else {
                 header.classList.remove('scrolled');
+                header.classList.remove('bg-[rgba(10,10,30,0.95)]', 'backdrop-blur-2xl', 'py-4', 'shadow-[0_4px_30px_rgba(0,0,0,0.3)]');
+                header.classList.add('py-6', 'bg-[rgba(10,10,30,0.6)]', 'backdrop-blur-xl');
             }
         });
 
@@ -489,15 +205,45 @@
         mobileToggle.addEventListener('click', () => {
             mobileToggle.classList.toggle('active');
             nav.classList.toggle('active');
+            
+            // Toggle mobile menu visibility
+            if (window.innerWidth < 768) {
+                if (nav.classList.contains('active')) {
+                    nav.classList.remove('hidden');
+                    nav.classList.add('flex', 'fixed', 'top-16', 'left-0', 'w-full', 'bg-[rgba(10,10,30,0.95)]', 'backdrop-blur-2xl', 'flex-col', 'p-8', 'gap-6', 'border-b', 'border-white/10', 'mobile-nav', 'active');
+                } else {
+                    nav.classList.remove('flex', 'fixed', 'top-16', 'left-0', 'w-full', 'bg-[rgba(10,10,30,0.95)]', 'backdrop-blur-2xl', 'flex-col', 'p-8', 'gap-6', 'border-b', 'border-white/10', 'mobile-nav', 'active');
+                    nav.classList.add('hidden', 'md:flex', 'md:items-center', 'md:gap-10', 'md:static', 'md:bg-transparent', 'md:backdrop-blur-0', 'md:flex-row', 'md:p-0', 'md:border-none');
+                }
+            }
         });
 
         // Close mobile menu when clicking on links
         document.querySelectorAll('nav a').forEach(link => {
             link.addEventListener('click', () => {
-                mobileToggle.classList.remove('active');
-                nav.classList.remove('active');
+                if (window.innerWidth < 768) {
+                    mobileToggle.classList.remove('active');
+                    nav.classList.remove('active', 'flex', 'fixed', 'top-16', 'left-0', 'w-full', 'bg-[rgba(10,10,30,0.95)]', 'backdrop-blur-2xl', 'flex-col', 'p-8', 'gap-6', 'border-b', 'border-white/10', 'mobile-nav');
+                    nav.classList.add('hidden', 'md:flex', 'md:items-center', 'md:gap-10', 'md:static', 'md:bg-transparent', 'md:backdrop-blur-0', 'md:flex-row', 'md:p-0', 'md:border-none');
+                }
             });
         });
+
+        // Responsive navigation
+        function handleResize() {
+            if (window.innerWidth >= 768) {
+                nav.classList.remove('hidden', 'fixed', 'top-16', 'left-0', 'w-full', 'bg-[rgba(10,10,30,0.95)]', 'backdrop-blur-2xl', 'flex-col', 'p-8', 'gap-6', 'border-b', 'border-white/10', 'mobile-nav', 'active');
+                nav.classList.add('flex', 'items-center', 'gap-10');
+                mobileToggle.classList.remove('active');
+            } else {
+                if (!nav.classList.contains('active')) {
+                    nav.classList.add('hidden');
+                }
+            }
+        }
+
+        window.addEventListener('resize', handleResize);
+        handleResize(); // Initial check
 
         // Smooth loading animation
         window.addEventListener('load', () => {
@@ -509,7 +255,5 @@
             }, 100);
         });
     </script>
-
 </body>
-
 </html>
