@@ -1,0 +1,607 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ScalePlus Clone Header</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        'inter': ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        'ztore-purple': '#8A00FF',
+                        'ztore-pink': '#FF00A8',
+                        'custom-dark': '#000',
+                    },
+                    animation: {
+                        'logo-pulse': 'logoPulse 2s ease-in-out infinite',
+                        'slide-in-left': 'slideInLeft 0.8s ease 0.2s forwards',
+                        'slide-in-down': 'slideInDown 0.6s ease forwards',
+                        'fade-in-up': 'fadeInUp 0.8s ease forwards',
+                        'float': 'float 6s ease-in-out infinite',
+                        'float-reverse': 'float 6s ease-in-out infinite reverse',
+                    },
+                    keyframes: {
+                        logoPulse: {
+                            '0%, 100%': { transform: 'scale(1)' },
+                            '50%': { transform: 'scale(1.1)' },
+                        },
+                        slideInLeft: {
+                            'from': { opacity: '0', transform: 'translateX(-30px)' },
+                            'to': { opacity: '1', transform: 'translateX(0)' },
+                        },
+                        slideInDown: {
+                            'from': { opacity: '0', transform: 'translateY(-10px)' },
+                            'to': { opacity: '1', transform: 'translateY(0)' },
+                        },
+                        fadeInUp: {
+                            'from': { opacity: '0', transform: 'translateY(30px)' },
+                            'to': { opacity: '1', transform: 'translateY(0)' },
+                        },
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0px) scale(1)' },
+                            '50%': { transform: 'translateY(-20px) scale(1.05)' },
+                        },
+                    },
+                    backdropBlur: {
+                        'xs': '2px',
+                    },
+                }
+            }
+        }
+    </script>
+    <style type="text/tailwindcss">
+        @layer utilities {
+            .bg-gradient-radial {
+                background: radial-gradient(circle at 30% -10%, #1a0a2e, #000);
+            }
+            
+           .text-gradient {
+  background: linear-gradient(135deg, #8A00FF 0%, #FF00A8 100%);
+  -webkit-background-clip: text; /* For Safari and Chrome */
+  background-clip: text;          /* Standard property */
+  -webkit-text-fill-color: transparent; /* Makes text itself transparent */
+  color: transparent;             /* Fallback for other browsers */
+}
+
+
+            .gradient-border::after {
+                content: '';
+                position: absolute;
+                bottom: 0;
+                left: 0;
+                width: 0;
+                height: 2px;
+                background: linear-gradient(135deg, #8A00FF, #FF00A8);
+                transition: width 0.3s ease;
+            }
+            
+            .gradient-border:hover::after {
+                width: 100%;
+            }
+            
+            .btn-hover::before {
+                content: '';
+                position: absolute;
+                top: 0;
+                left: -100%;
+                width: 100%;
+                height: 100%;
+                background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+                transition: left 0.5s;
+            }
+            
+            .btn-hover:hover::before {
+                left: 100%;
+            }
+            
+            /* Smooth slide animation for nav */
+            .mobile-nav-menu {
+                transform: translateX(-100%);
+                opacity: 0;
+                visibility: hidden;
+                transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1),
+                  opacity 0.4s ease, visibility 0.4s ease;
+            }
+            
+            .mobile-nav-menu.active {
+                transform: translateX(0);
+                opacity: 1;
+                visibility: visible;
+            }
+            
+            body.no-scroll {
+                overflow: hidden;
+            }
+            
+            /* Fade-in links for mobile */
+            .mobile-nav-menu nav a {
+                opacity: 0;
+                transform: translateY(10px);
+                transition: opacity 0.3s ease, transform 0.3s ease;
+            }
+            
+            .mobile-nav-menu.active nav a {
+                opacity: 1;
+                transform: translateY(0);
+            }
+            
+            /* Stagger animation for mobile nav links */
+            .mobile-nav-menu.active nav a:nth-child(1) { transition-delay: 0.1s; }
+            .mobile-nav-menu.active nav a:nth-child(2) { transition-delay: 0.15s; }
+            .mobile-nav-menu.active nav a:nth-child(3) { transition-delay: 0.2s; }
+            .mobile-nav-menu.active nav a:nth-child(4) { transition-delay: 0.25s; }
+            .mobile-nav-menu.active nav a:nth-child(5) { transition-delay: 0.3s; }
+            
+        }
+        @layer utilities {
+          .glow-border {
+            position: absolute;
+            inset: 0;
+            border-radius: 1rem;
+            overflow: hidden;
+            pointer-events: none;
+          }
+          .glow-border::before {
+  content: "";
+  position: absolute;
+  width: 140%;
+  height: 140%;
+  top: -2.5%;
+  left: -2.5%;
+  background: conic-gradient(
+    from 0deg,
+    #aaff00,
+    #00ffcc,
+    #a000ff,
+    #ff00c8,
+    #aaff00
+  );
+  animation: rotateGlow 10s linear infinite;
+  filter: blur(1px);
+  border-radius: 1rem;
+}
+          .glow-border::after {
+            content: "";
+            position: absolute;
+            inset: 2px;
+            border-radius: 1rem;
+            background: #121019;
+          }
+
+          @keyframes rotateGlow {
+            0% {
+              transform: rotate(0deg);
+            }
+            100% {
+              transform: rotate(360deg);
+            }
+          }
+          
+          /* Fix for mobile animation performance */
+          @media (max-width: 768px) {
+            .glow-border::before {
+              animation: rotateGlow 15s linear infinite;
+            }
+            .video-glow-border::before {
+                animation: rotateBorder 5s linear infinite;
+            }
+          }
+        }
+    </style>
+</head>
+
+<body class="font-inter bg-gradient-radial text-white overflow-x-hidden">
+    <!-- Header Navigation -->
+    <header
+        class="w-full py-6 px-4 sm:px-[6%] flex justify-between items-center fixed top-0 left-0 z-50 bg-[rgba(10,10,30,0.6)] backdrop-blur-xl border-b border-white/10 transition-all duration-400 ease-[cubic-bezier(0.4,0,0.2,1)]">
+        <!-- Logo -->
+        <div class="logo flex items-center gap-2 font-bold text-xl text-white opacity-0 animate-slide-in-left">
+            <img src="./images/logo.png" alt="ScalePlus Logo" class="h-10 sm:h-12 lg:h-14 w-auto">
+        </div>
+
+        <!-- Desktop Navigation -->
+        <nav class="hidden lg:flex items-center justify-center flex-1 relative">
+            <!-- Centered Navigation Links -->
+            <div class="flex items-center gap-8 absolute left-1/2 -translate-x-1/2">
+                <a href="#"
+                    class="text-gray-300 font-medium transition-colors duration-300 hover:text-white text-sm xl:text-base">Features</a>
+                <a href="#"
+                    class="text-gray-300 font-medium transition-colors duration-300 hover:text-white text-sm xl:text-base">Pricing</a>
+                <a href="#"
+                    class="text-gray-300 font-medium transition-colors duration-300 hover:text-white text-sm xl:text-base">Themes</a>
+                <a href="#"
+                    class="text-gray-300 font-medium transition-colors duration-300 hover:text-white text-sm xl:text-base">Help
+                    Videos</a>
+            </div>
+
+            <!-- Right CTA Button -->
+            <div class="ml-auto">
+                <a href="./test.html">
+                    <button
+                        class="bg-gradient-to-br from-ztore-purple to-ztore-pink py-2 px-5 rounded-lg text-white font-semibold transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_8px_25px_rgba(138,0,255,0.4)] text-sm xl:text-base">
+                        Get Started
+                    </button>
+                </a>
+            </div>
+        </nav>
+
+        <!-- Mobile Toggle Button -->
+        <div class="mobile-toggle lg:hidden cursor-pointer p-2 z-50">
+            <img src="./images/nav_icon.svg" alt="Menu" class="w-7 h-7 mobile-icon">
+        </div>
+    </header>
+
+    <!-- Mobile Navigation -->
+    <nav
+        class="mobile-nav-menu fixed top-0 left-0 w-full sm:w-80 h-full bg-[rgba(10,10,30,0.98)] backdrop-blur-2xl z-40 flex flex-col p-6 sm:p-8 lg:hidden">
+        <!-- Close Button -->
+        <div class="flex justify-between items-center mb-12">
+            <div class="logo flex items-center gap-2 font-bold text-xl text-white">
+                <img src="./images/logo.png" alt="ScalePlus Logo" class="h-8 w-auto">
+                <span class="text-gradient">ScalePlus</span>
+            </div>
+            <button class="close-mobile-menu text-gray-300 hover:text-white p-2">
+                <img src="./images/nav_close.svg" alt="Close Menu" class="w-6 h-6">
+            </button>
+        </div>
+
+        <!-- Mobile Navigation Links -->
+        <div class="flex flex-col gap-6">
+            <a href="#"
+                class="text-lg font-medium text-gray-300 transition-colors duration-300 hover:text-white py-3 border-b border-white/10">Features</a>
+            <a href="#"
+                class="text-lg font-medium text-gray-300 transition-colors duration-300 hover:text-white py-3 border-b border-white/10">Pricing</a>
+            <a href="#"
+                class="text-lg font-medium text-gray-300 transition-colors duration-300 hover:text-white py-3 border-b border-white/10">Themes</a>
+            <a href="#"
+                class="text-lg font-medium text-gray-300 transition-colors duration-300 hover:text-white py-3 border-b border-white/10">Help
+                Videos</a>
+
+            <!-- Smaller Mobile Get Started Button -->
+            <div class="mt-6">
+                <a href="./test.html">
+                    <button
+                        class="bg-gradient-to-br from-ztore-purple to-ztore-pink py-3 px-6 rounded-lg text-white font-semibold w-full text-center transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_6px_20px_rgba(138,0,255,0.4)] text-base">
+                        Get Started
+                    </button>
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="pt-32 relative overflow-hidden px-4 sm:px-6">
+        <!-- Hero Section -->
+        <section class="hero text-center">
+            <!-- Background Elements -->
+            <div
+                class="absolute top-[-150px] left-[-100px] w-64 sm:w-96 h-64 sm:h-96 rounded-full bg-ztore-pink blur-[100px] sm:blur-[150px] z-0 animate-float">
+            </div>
+            <!-- <div
+                class="absolute bottom-[-100px] right-[-150px] w-64 sm:w-96 h-64 sm:h-96 rounded-full bg-ztore-purple blur-[100px] sm:blur-[150px] z-0 animate-float-reverse">
+            </div> -->
+            <div class="badge bg-white/10 inline-flex items-center gap-2 rounded-full py-1.5 px-4 text-xs sm:text-sm text-gray-400 mb-5 opacity-0 animate-fade-in-up"
+                style="animation-delay: 0.4s">
+
+                <span
+                    class="bg-gradient-to-br from-ztore-purple to-ztore-pink text-white font-semibold py-0.5 px-2.5 rounded-full text-xs">NEW</span>
+                We've just released new features →
+            </div>
+
+            <h1 class="text-3xl sm:text-4xl md:text-5xl font-extrabold leading-tight mb-4 text-gradient opacity-0 animate-fade-in-up"
+                style="animation-delay: 0.6s">
+                Test Page Operations.<br>Deliver Results.
+            </h1>
+
+            <p class="text-base sm:text-lg text-gray-300 mb-8 opacity-0 animate-fade-in-up max-w-2xl mx-auto px-4"
+                style="animation-delay: 0.8s">
+                Boost your efficiency and streamline tasks effortlessly.
+            </p>
+
+            <button
+                class="cta bg-white text-black rounded-xl py-3 px-6 sm:py-3.5 sm:px-7 font-semibold cursor-pointer transition-all duration-300 inline-flex items-center gap-2 border-none opacity-0 animate-fade-in-up btn-hover relative overflow-hidden hover:bg-gradient-to-br hover:from-ztore-purple hover:to-ztore-pink hover:text-white hover:-translate-y-1 hover:shadow-[0_8px_25px_rgba(138,0,255,0.4)] text-sm sm:text-base"
+                style="animation-delay: 1s">
+                Book A Free Demo →
+            </button>
+
+            <!-- Dashboard Section -->
+            <section
+                class="dashboard mt-12 sm:mt-16 mx-auto w-full max-w-4xl xl:max-w-5xl bg-[#121019]/80 rounded-2xl p-4 sm:p-6 backdrop-blur-xl shadow-[0_0_40px_rgba(0,0,0,0.4)] relative z-[30] overflow-hidden mb-9 transform-gpu transition-transform duration-700 will-change-transform">
+                <div class="glow-border"></div>
+
+                <!-- Video container with line animation -->
+                <div class="relative z-10">
+                    <div class="w-full h-64 sm:h-80 md:h-96 lg:h-[28rem] xl:h-[30rem] rounded-xl overflow-hidden">
+                        <!-- Video with full view - no cropping -->
+                        <video
+                            class="w-full h-full object-cover rounded-xl transition-transform duration-700 hover:scale-105"
+                            autoplay muted loop playsinline preload="auto" poster="./images/hero.jpg">
+                            <source src="./images/Hero.webm" type="video/webm">
+                            <source src="./images/Hero.mp4" type="video/mp4">
+                            <!-- Fallback to image if video not supported -->
+                            <img src="./images/hero.jpg" alt="Dashboard Preview"
+                                class="w-full h-full object-cover rounded-xl">
+                        </video>
+                    </div>
+                </div>
+            </section>
+        </section>
+
+        <!-- Problem → Solution Section -->
+        <section class="problem-solution py-20 px-4 sm:px-6 relative overflow-hidden">
+            <!-- Background Elements -->
+            <div class="absolute top-1/4 left-10 w-32 h-32 bg-ztore-purple/20 rounded-full blur-3xl animate-pulse">
+            </div>
+            <div class="absolute bottom-1/4 right-10 w-40 h-40 bg-ztore-pink/20 rounded-full blur-3xl animate-pulse"
+                style="animation-delay: 2s"></div>
+
+            <div class="max-w-6xl mx-auto">
+                <!-- Section Header -->
+                <header class="text-center mb-16 opacity-0 animate-fade-in-up">
+                    <h2 class="text-3xl sm:text-4xl md:text-5xl font-bold mb-4">
+                        Tired of <span class="text-red-400">Complex Setup</span>
+                        <span class="block">Holding You Back?</span>
+                    </h2>
+                    <p class="text-xl text-gray-300 max-w-3xl mx-auto">
+                        You have the vision. We provide the seamless platform to bring it to life.
+                    </p>
+                </header>
+
+                <!-- Problem & Solution Grid -->
+                <div class="grid md:grid-cols-2 gap-8 lg:gap-12">
+                    <!-- Problem Side (Dark) -->
+                    <article class="problem-card text-left opacity-0 animate-slide-in-left">
+                        <div
+                            class="bg-gradient-to-br from-red-900/30 to-red-800/10 rounded-2xl p-8 h-full border border-red-500/30 backdrop-blur-xl">
+                            <header class="flex items-center gap-3 mb-6">
+                                <div class="w-12 h-12 bg-red-500/20 rounded-xl flex items-center justify-center">
+                                    <!-- Warning Icon -->
+                                    <svg class="w-6 h-6 text-red-400" fill="none" stroke="currentColor"
+                                        viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L4.082 16.5c-.77.833.192 2.5 1.732 2.5z" />
+                                    </svg>
+                                </div>
+                                <h3 class="text-2xl font-bold text-red-300">The Struggle</h3>
+                            </header>
+
+                            <ul class="space-y-4">
+                                <li class="flex items-start gap-3">
+                                    <svg class="w-5 h-5 text-red-400 mt-0.5 flex-shrink-0" fill="none"
+                                        stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M6 18L18 6M6 6l12 12" />
+                                    </svg>
+                                    <span class="text-gray-300">Hours wasted on complicated setup processes</span>
+                                </li>
+                                <li class="flex items-start gap-3">
+                                    <svg class="w-5 h-5 text-red-400 mt-0.5 flex-shrink-0" fill="none"
+                                        stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M6 18L18 6M6 6l12 12" />
+                                    </svg>
+                                    <span class="text-gray-300">Missing deadlines due to technical hurdles</span>
+                                </li>
+                                <li class="flex items-start gap-3">
+                                    <svg class="w-5 h-5 text-red-400 mt-0.5 flex-shrink-0" fill="none"
+                                        stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M6 18L18 6M6 6l12 12" />
+                                    </svg>
+                                    <span class="text-gray-300">Frustration with clunky, outdated interfaces</span>
+                                </li>
+                                <li class="flex items-start gap-3">
+                                    <svg class="w-5 h-5 text-red-400 mt-0.5 flex-shrink-0" fill="none"
+                                        stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M6 18L18 6M6 6l12 12" />
+                                    </svg>
+                                    <span class="text-gray-300">Lost opportunities while you're stuck debugging</span>
+                                </li>
+                            </ul>
+
+                            <footer class="mt-8 p-4 bg-red-500/10 rounded-xl border border-red-500/20">
+                                <p class="text-red-300 text-sm italic">
+                                    "I almost gave up... the setup was so complicated I lost my first client."
+                                </p>
+                            </footer>
+                        </div>
+                    </article>
+
+                    <!-- Solution Side (Bright) -->
+                    <article class="solution-card text-left opacity-0 animate-slide-in-left"
+                        style="animation-delay: 0.3s">
+                        <div
+                            class="bg-gradient-to-br from-green-900/30 to-emerald-800/10 rounded-2xl p-8 h-full border border-emerald-500/30 backdrop-blur-xl relative overflow-hidden">
+                            <!-- Shimmer Effect -->
+                            <div class="absolute top-0 right-0 w-32 h-32 bg-emerald-400/10 rounded-full blur-2xl"></div>
+
+                            <header class="flex items-center gap-3 mb-6">
+                                <div class="w-12 h-12 bg-emerald-500/20 rounded-xl flex items-center justify-center">
+                                    <!-- Rocket Icon -->
+                                    <svg class="w-6 h-6 text-emerald-400" fill="none" stroke="currentColor"
+                                        viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M13 10V3L4 14h7v7l9-11h-7z" />
+                                    </svg>
+                                </div>
+                                <h3 class="text-2xl font-bold text-emerald-300">The ScalePlus Way</h3>
+                            </header>
+
+                            <ul class="space-y-4">
+                                <li class="flex items-start gap-3">
+                                    <svg class="w-5 h-5 text-emerald-400 mt-0.5 flex-shrink-0" fill="none"
+                                        stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M5 13l4 4L19 7" />
+                                    </svg>
+                                    <span class="text-gray-300"><strong>One-click setup</strong> - Ready in minutes, not
+                                        hours</span>
+                                </li>
+                                <li class="flex items-start gap-3">
+                                    <svg class="w-5 h-5 text-emerald-400 mt-0.5 flex-shrink-0" fill="none"
+                                        stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M5 13l4 4L19 7" />
+                                    </svg>
+                                    <span class="text-gray-300"><strong>Intuitive interface</strong> - No technical
+                                        skills needed</span>
+                                </li>
+                                <li class="flex items-start gap-3">
+                                    <svg class="w-5 h-5 text-emerald-400 mt-0.5 flex-shrink-0" fill="none"
+                                        stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M5 13l4 4L19 7" />
+                                    </svg>
+                                    <span class="text-gray-300"><strong>24/7 support</strong> - Real humans, real
+                                        help</span>
+                                </li>
+                                <li class="flex items-start gap-3">
+                                    <svg class="w-5 h-5 text-emerald-400 mt-0.5 flex-shrink-0" fill="none"
+                                        stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M5 13l4 4L19 7" />
+                                    </svg>
+                                    <span class="text-gray-300"><strong>Focus on growth</strong> - Not on fixing
+                                        problems</span>
+                                </li>
+                            </ul>
+
+                            <footer class="mt-8 p-4 bg-emerald-500/10 rounded-xl border border-emerald-500/20">
+                                <p class="text-emerald-300 text-sm italic">
+                                    "With ScalePlus, I launched my store in 15 minutes and made my first sale the same
+                                    day!"
+                                </p>
+                            </footer>
+                        </div>
+                    </article>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <script>
+        // Your existing JavaScript remains the same...
+        const mobileToggle = document.querySelector('.mobile-toggle');
+        const mobileIcon = document.querySelector('.mobile-icon');
+        const mobileNavMenu = document.querySelector('.mobile-nav-menu');
+        const closeMobileMenu = document.querySelector('.close-mobile-menu');
+        const body = document.body;
+
+        const menuIconSrc = "./images/nav_icon.svg";
+        const closeIconSrc = "./images/nav_close.svg";
+
+        function openMobileMenu() {
+            mobileNavMenu.classList.add('active');
+            body.classList.add('no-scroll');
+            setTimeout(() => {
+                mobileIcon.src = closeIconSrc;
+            }, 150);
+        }
+
+        function closeMobileMenuFunc() {
+            mobileNavMenu.classList.remove('active');
+            body.classList.remove('no-scroll');
+            setTimeout(() => {
+                mobileIcon.src = menuIconSrc;
+            }, 250);
+        }
+
+        // Toggle on icon click
+        mobileToggle.addEventListener('click', () => {
+            if (mobileNavMenu.classList.contains('active')) {
+                closeMobileMenuFunc();
+            } else {
+                openMobileMenu();
+            }
+        });
+
+        // Inside menu close button
+        closeMobileMenu.addEventListener('click', closeMobileMenuFunc);
+
+        // Close on link click
+        document.querySelectorAll('.mobile-nav-menu a').forEach(link => {
+            link.addEventListener('click', closeMobileMenuFunc);
+        });
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && mobileNavMenu.classList.contains('active')) {
+                closeMobileMenuFunc();
+            }
+        });
+
+        window.addEventListener('scroll', () => {
+            const header = document.querySelector('header');
+            if (window.scrollY > 50) {
+                header.classList.add('scrolled');
+                header.classList.add('bg-[rgba(10,10,30,0.95)]', 'backdrop-blur-2xl', 'py-4', 'shadow-[0_4px_30px_rgba(0,0,0,0.3)]');
+                header.classList.remove('py-6', 'bg-[rgba(10,10,30,0.6)]', 'backdrop-blur-xl');
+            } else {
+                header.classList.remove('scrolled');
+                header.classList.remove('bg-[rgba(10,10,30,0.95)]', 'backdrop-blur-2xl', 'py-4', 'shadow-[0_4px_30px_rgba(0,0,0,0.3)]');
+                header.classList.add('py-6', 'bg-[rgba(10,10,30,0.6)]', 'backdrop-blur-xl');
+            }
+        });
+
+        window.addEventListener('load', () => {
+            document.body.style.opacity = '0';
+            document.body.style.transition = 'opacity 0.5s ease';
+            setTimeout(() => { document.body.style.opacity = '1'; }, 100);
+        });
+
+
+        //Style For Hro Vide Line animation
+        const section = document.querySelector(".dashboard");
+        const video = document.querySelector("video");
+
+        // Video autoplay when section is straight to viewer
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    // Section is visible and straight to viewer
+                    video.play().catch(e => console.log("Video autoplay failed:", e));
+                } else {
+                    // Section is not visible
+                    video.pause();
+                }
+            });
+        }, {
+            threshold: 0.7 // Trigger when 70% of section is visible
+        });
+
+        if (section) {
+            observer.observe(section);
+        }
+
+        window.addEventListener("scroll", () => {
+            if (!section) return;
+
+            const rect = section.getBoundingClientRect();
+            const windowHeight = window.innerHeight;
+            const sectionCenter = rect.top + rect.height / 2;
+
+            // Calculate how far the section is from the center of the viewport
+            const distanceFromCenter = sectionCenter - windowHeight / 2;
+
+            // Clamp the tilt so it doesn't go too extreme
+            const maxTilt = 10; // degrees
+            const tilt = Math.max(-maxTilt, Math.min(maxTilt, distanceFromCenter * 0.05));
+
+            // When section is centered, rotateX = 0 (flat)
+            // Above center → tilts back (positive), below → slightly forward (negative)
+            section.style.transform = `perspective(1000px) rotateX(${tilt}deg) translateY(${distanceFromCenter * 0.05}px)`;
+        });
+
+        // Set initial state (lying back when page loads)
+        section.style.transform = `perspective(1000px) rotateX(8deg) translateY(20px)`;
+    </script>
+</body>
+
+</html>

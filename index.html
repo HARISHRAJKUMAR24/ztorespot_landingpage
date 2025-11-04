@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -14,7 +15,8 @@
                         'inter': ['Inter', 'sans-serif'],
                     },
                     colors: {
-                        'custom-purple': '#2b1055',
+                        'ztore-purple': '#8A00FF',
+                        'ztore-pink': '#FF00A8',
                         'custom-dark': '#000',
                     },
                     animation: {
@@ -57,15 +59,18 @@
     <style type="text/tailwindcss">
         @layer utilities {
             .bg-gradient-radial {
-                background: radial-gradient(circle at 30% -10%, #2b1055, #000);
+                background: radial-gradient(circle at 30% -10%, #1a0a2e, #000);
             }
             
-            .gradient-text {
-                background: linear-gradient(to right, #fff, #a78bfa);
-                -webkit-background-clip: text;
-                -webkit-text-fill-color: transparent;
-            }
-            
+           .text-gradient {
+  background: linear-gradient(135deg, #8A00FF 0%, #FF00A8 100%);
+  -webkit-background-clip: text; /* For Safari and Chrome */
+  background-clip: text;          /* Standard property */
+  -webkit-text-fill-color: transparent; /* Makes text itself transparent */
+  color: transparent;             /* Fallback for other browsers */
+}
+
+
             .gradient-border::after {
                 content: '';
                 position: absolute;
@@ -73,7 +78,7 @@
                 left: 0;
                 width: 0;
                 height: 2px;
-                background: linear-gradient(135deg, #4ade80, #9333ea);
+                background: linear-gradient(135deg, #8A00FF, #FF00A8);
                 transition: width 0.3s ease;
             }
             
@@ -96,95 +101,566 @@
                 left: 100%;
             }
             
-            .mobile-nav {
-                transform: translateY(-100%);
+            /* Smooth slide animation for nav */
+            .mobile-nav-menu {
+                transform: translateX(-100%);
                 opacity: 0;
-                transition: all 0.3s ease;
+                visibility: hidden;
+                transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1),
+                  opacity 0.4s ease, visibility 0.4s ease;
             }
             
-            .mobile-nav.active {
-                transform: translateY(0);
+            .mobile-nav-menu.active {
+                transform: translateX(0);
                 opacity: 1;
+                visibility: visible;
             }
             
-            .mobile-toggle span {
-                transition: all 0.3s ease;
-                transform-origin: center;
+            body.no-scroll {
+                overflow: hidden;
             }
             
-            .mobile-toggle.active span:nth-child(1) {
-                transform: rotate(45deg) translate(6px, 6px);
-            }
-            
-            .mobile-toggle.active span:nth-child(2) {
+            /* Fade-in links for mobile */
+            .mobile-nav-menu nav a {
                 opacity: 0;
+                transform: translateY(10px);
+                transition: opacity 0.3s ease, transform 0.3s ease;
             }
             
-            .mobile-toggle.active span:nth-child(3) {
-                transform: rotate(-45deg) translate(6px, -6px);
+            .mobile-nav-menu.active nav a {
+                opacity: 1;
+                transform: translateY(0);
             }
+            
+            /* Stagger animation for mobile nav links */
+            .mobile-nav-menu.active nav a:nth-child(1) { transition-delay: 0.1s; }
+            .mobile-nav-menu.active nav a:nth-child(2) { transition-delay: 0.15s; }
+            .mobile-nav-menu.active nav a:nth-child(3) { transition-delay: 0.2s; }
+            .mobile-nav-menu.active nav a:nth-child(4) { transition-delay: 0.25s; }
+            .mobile-nav-menu.active nav a:nth-child(5) { transition-delay: 0.3s; }
+            
+        }
+        @layer utilities {
+          .glow-border {
+            position: absolute;
+            inset: 0;
+            border-radius: 1rem;
+            overflow: hidden;
+            pointer-events: none;
+          }
+          .glow-border::before {
+  content: "";
+  position: absolute;
+  width: 140%;
+  height: 140%;
+  top: -2.5%;
+  left: -2.5%;
+  background: conic-gradient(
+    from 0deg,
+    #aaff00,
+    #00ffcc,
+    #a000ff,
+    #ff00c8,
+    #aaff00
+  );
+  animation: rotateGlow 10s linear infinite;
+  filter: blur(1px);
+  border-radius: 1rem;
+}
+          .glow-border::after {
+            content: "";
+            position: absolute;
+            inset: 2px;
+            border-radius: 1rem;
+            background: #121019;
+          }
+
+          @keyframes rotateGlow {
+            0% {
+              transform: rotate(0deg);
+            }
+            100% {
+              transform: rotate(360deg);
+            }
+          }
+          
+          /* Fix for mobile animation performance */
+          @media (max-width: 768px) {
+            .glow-border::before {
+              animation: rotateGlow 15s linear infinite;
+            }
+            .video-glow-border::before {
+                animation: rotateBorder 5s linear infinite;
+            }
+          }
         }
     </style>
 </head>
 
 <body class="font-inter bg-gradient-radial text-white overflow-x-hidden">
-    <!-- Header Navigation -->
-    <header class="w-full py-6 px-[6%] flex justify-between items-center fixed top-0 left-0 z-50 bg-[rgba(10,10,30,0.6)] backdrop-blur-xl border-b border-white/10 transition-all duration-400 ease-[cubic-bezier(0.4,0,0.2,1)]">
+    <!-- Header Navigation - Only navigation content -->
+    <header
+        class="w-full py-6 px-4 sm:px-[6%] flex justify-between items-center fixed top-0 left-0 z-50 bg-[rgba(10,10,30,0.6)] backdrop-blur-xl border-b border-white/10 transition-all duration-400 ease-[cubic-bezier(0.4,0,0.2,1)]">
+        <!-- Logo -->
         <div class="logo flex items-center gap-2 font-bold text-xl text-white opacity-0 animate-slide-in-left">
-            <span class="w-4 h-4 rounded bg-gradient-to-br from-green-400 to-purple-600 animate-logo-pulse"></span>
-            ScalePlus
+            <img src="./images/logo.png" alt="ScalePlus Logo" class="h-10 sm:h-12 lg:h-14 w-auto">
         </div>
-        <nav class="flex items-center gap-10 md:gap-6">
-            <a href="#" class="text-gray-300 font-medium transition-colors duration-300 relative py-2 opacity-0 animate-slide-in-down gradient-border hover:text-white" style="animation-delay: 0.3s">Features</a>
-            <a href="#" class="text-gray-300 font-medium transition-colors duration-300 relative py-2 opacity-0 animate-slide-in-down gradient-border hover:text-white" style="animation-delay: 0.4s">Pricing</a>
-            <a href="#" class="text-gray-300 font-medium transition-colors duration-300 relative py-2 opacity-0 animate-slide-in-down gradient-border hover:text-white" style="animation-delay: 0.5s">Blog</a>
-            <a href="#" class="text-gray-300 font-medium transition-colors duration-300 relative py-2 opacity-0 animate-slide-in-down gradient-border hover:text-white" style="animation-delay: 0.6s">Contact</a>
-            <button class="btn-primary bg-gradient-to-br from-purple-600 to-indigo-600 py-3 px-5 rounded-lg border-none text-white font-semibold cursor-pointer transition-all duration-300 opacity-0 animate-slide-in-down btn-hover relative overflow-hidden hover:-translate-y-1 hover:shadow-[0_8px_25px_rgba(147,51,234,0.4)]" style="animation-delay: 0.7s">
-                Get Started
-            </button>
+
+        <!-- Desktop Navigation -->
+        <nav class="hidden lg:flex items-center justify-center flex-1 relative">
+            <!-- Centered Navigation Links -->
+            <div class="flex items-center gap-8 absolute left-1/2 -translate-x-1/2">
+                <a href="#features"
+                    class="text-gray-300 font-medium transition-colors duration-300 hover:text-white text-sm xl:text-base">Features</a>
+                <a href="#pricing"
+                    class="text-gray-300 font-medium transition-colors duration-300 hover:text-white text-sm xl:text-base">Pricing</a>
+                <a href="#themes"
+                    class="text-gray-300 font-medium transition-colors duration-300 hover:text-white text-sm xl:text-base">Themes</a>
+                <a href="#help"
+                    class="text-gray-300 font-medium transition-colors duration-300 hover:text-white text-sm xl:text-base">Help
+                    Videos</a>
+            </div>
+
+            <!-- Right CTA Button -->
+            <div class="ml-auto">
+                <a href="./test.html">
+                    <button
+                        class="bg-gradient-to-br from-ztore-purple to-ztore-pink py-2 px-5 rounded-lg text-white font-semibold transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_8px_25px_rgba(138,0,255,0.4)] text-sm xl:text-base">
+                        Get Started
+                    </button>
+                </a>
+            </div>
         </nav>
-        <div class="mobile-toggle hidden flex-col gap-1 cursor-pointer p-2 opacity-0 animate-slide-in-down" style="animation-delay: 0.7s">
-            <span class="w-6 h-0.5 bg-white"></span>
-            <span class="w-6 h-0.5 bg-white"></span>
-            <span class="w-6 h-0.5 bg-white"></span>
+
+        <!-- Mobile Toggle Button -->
+        <div class="mobile-toggle lg:hidden cursor-pointer p-2 z-50">
+            <img src="./images/nav_icon.svg" alt="Menu" class="w-7 h-7 mobile-icon">
         </div>
     </header>
 
-    <!-- Hero Section -->
-    <section class="hero pt-32 text-center relative overflow-hidden">
-        <!-- Background elements -->
-        <div class="absolute top-[-150px] left-[-100px] w-96 h-96 rounded-full bg-purple-600 blur-[150px] z-0 animate-float"></div>
-        <div class="absolute bottom-[-100px] right-[-150px] w-96 h-96 rounded-full bg-green-400 blur-[150px] z-0 animate-float-reverse"></div>
-        
-        <!-- Content -->
-        <div class="badge bg-white/10 inline-flex items-center gap-2 rounded-full py-1.5 px-4 text-sm text-gray-400 mb-5 opacity-0 animate-fade-in-up" style="animation-delay: 0.4s">
-            <span class="bg-gradient-to-br from-green-400 to-purple-600 text-white font-semibold py-0.5 px-2.5 rounded-full">NEW</span>
-            We've just released new features →
+    <!-- Mobile Navigation -->
+    <nav
+        class="mobile-nav-menu fixed top-0 left-0 w-full sm:w-80 h-full bg-[rgba(10,10,30,0.98)] backdrop-blur-2xl z-40 flex flex-col p-6 sm:p-8 lg:hidden">
+        <!-- Close Button -->
+        <div class="flex justify-between items-center mb-12">
+            <div class="logo flex items-center gap-2 font-bold text-xl text-white">
+                <img src="./images/logo.png" alt="ScalePlus Logo" class="h-8 w-auto">
+                <span class="text-gradient">ScalePlus</span>
+            </div>
+            <button class="close-mobile-menu text-gray-300 hover:text-white p-2">
+                <img src="./images/nav_close.svg" alt="Close Menu" class="w-6 h-6">
+            </button>
         </div>
-        
-        <h1 class="text-5xl font-extrabold leading-tight mb-4 gradient-text opacity-0 animate-fade-in-up" style="animation-delay: 0.6s">
-            Streamline Operations.<br>Deliver Results.
-        </h1>
-        
-        <p class="text-lg text-gray-300 mb-8 opacity-0 animate-fade-in-up" style="animation-delay: 0.8s">
-            Boost your efficiency and streamline tasks effortlessly.
-        </p>
-        
-        <button class="cta bg-white text-black rounded-xl py-3.5 px-7 font-semibold cursor-pointer transition-all duration-300 inline-flex items-center gap-2 border-none opacity-0 animate-fade-in-up btn-hover relative overflow-hidden hover:bg-gradient-to-br hover:from-green-400 hover:to-purple-600 hover:text-white hover:-translate-y-1 hover:shadow-[0_8px_25px_rgba(147,51,234,0.4)]" style="animation-delay: 1s">
-            Book A Free Demo →
-        </button>
 
-        <!-- Dashboard Mock -->
-        <div class="dashboard mt-16 mx-auto max-w-4xl bg-white/5 rounded-2xl p-8 backdrop-blur-xl shadow-[0_0_30px_rgba(0,0,0,0.3)] relative z-10 border border-white/10 opacity-0 animate-fade-in-up" style="animation-delay: 1.2s">
-            <div class="chart-placeholder w-full h-64 rounded-xl bg-white/5 flex items-center justify-center overflow-hidden relative">
-                <!-- Replace with your image -->
-                <img src="./images/5wT2ymuIbFmOKzWToOUSVLk10.jpg" alt="Dashboard Preview" class="w-full h-full object-cover rounded-xl transition-transform duration-300 hover:scale-102">
+        <!-- Mobile Navigation Links -->
+        <div class="flex flex-col gap-6">
+            <a href="#features"
+                class="text-lg font-medium text-gray-300 transition-colors duration-300 hover:text-white py-3 border-b border-white/10">Features</a>
+            <a href="#pricing"
+                class="text-lg font-medium text-gray-300 transition-colors duration-300 hover:text-white py-3 border-b border-white/10">Pricing</a>
+            <a href="#themes"
+                class="text-lg font-medium text-gray-300 transition-colors duration-300 hover:text-white py-3 border-b border-white/10">Themes</a>
+            <a href="#help"
+                class="text-lg font-medium text-gray-300 transition-colors duration-300 hover:text-white py-3 border-b border-white/10">Help
+                Videos</a>
+
+            <!-- Smaller Mobile Get Started Button -->
+            <div class="mt-6">
+                <a href="./test.html">
+                    <button
+                        class="bg-gradient-to-br from-ztore-purple to-ztore-pink py-3 px-6 rounded-lg text-white font-semibold w-full text-center transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_6px_20px_rgba(138,0,255,0.4)] text-base">
+                        Get Started
+                    </button>
+                </a>
             </div>
         </div>
-    </section>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="pt-32 relative overflow-hidden">
+        <!-- Hero Section -->
+        <section class="hero text-center px-4 sm:px-6">
+            <!-- Background Elements -->
+            <div
+                class="absolute top-[-150px] left-[-100px] w-64 sm:w-96 h-64 sm:h-96 rounded-full bg-ztore-pink blur-[100px] sm:blur-[150px] z-0 animate-float">
+            </div>
+            <!-- <div
+            class="absolute bottom-[-100px] right-[-150px] w-64 sm:w-96 h-64 sm:h-96 rounded-full bg-ztore-purple blur-[100px] sm:blur-[150px] z-0 animate-float-reverse">
+        </div> -->
+
+            <div class="badge bg-white/10 inline-flex items-center gap-2 rounded-full py-1.5 px-4 text-xs sm:text-sm text-gray-400 mb-5 opacity-0 animate-fade-in-up"
+                style="animation-delay: 0.4s">
+
+                <span
+                    class="bg-gradient-to-br from-ztore-purple to-ztore-pink text-white font-semibold py-0.5 px-2.5 rounded-full text-xs">NEW</span>
+                We've just released new features →
+            </div>
+
+            <h1 class="text-3xl sm:text-4xl md:text-5xl font-extrabold leading-tight mb-4 text-gradient opacity-0 animate-fade-in-up"
+                style="animation-delay: 0.6s">
+                Test Page Operations.<br>Deliver Results.
+            </h1>
+
+            <p class="text-base sm:text-lg text-gray-300 mb-8 opacity-0 animate-fade-in-up max-w-2xl mx-auto px-4"
+                style="animation-delay: 0.8s">
+                Boost your efficiency and streamline tasks effortlessly.
+            </p>
+
+            <button
+                class="cta bg-white text-black rounded-xl py-3 px-6 sm:py-3.5 sm:px-7 font-semibold cursor-pointer transition-all duration-300 inline-flex items-center gap-2 border-none opacity-0 animate-fade-in-up btn-hover relative overflow-hidden hover:bg-gradient-to-br hover:from-ztore-purple hover:to-ztore-pink hover:text-white hover:-translate-y-1 hover:shadow-[0_8px_25px_rgba(138,0,255,0.4)] text-sm sm:text-base"
+                style="animation-delay: 1s">
+                Book A Free Demo →
+            </button>
+
+            <!-- Dashboard Section -->
+            <section
+                class="dashboard mt-12 sm:mt-16 mx-auto w-full max-w-4xl xl:max-w-5xl bg-[#121019]/80 rounded-2xl p-4 sm:p-6 backdrop-blur-xl shadow-[0_0_40px_rgba(0,0,0,0.4)] relative z-[30] overflow-hidden mb-9 transform-gpu transition-transform duration-700 will-change-transform">
+                <div class="glow-border"></div>
+
+                <!-- Video container with line animation -->
+                <div class="relative z-10">
+                    <div class="w-full h-64 sm:h-80 md:h-96 lg:h-[28rem] xl:h-[30rem] rounded-xl overflow-hidden">
+                        <!-- Video with full view - no cropping -->
+                        <video
+                            class="w-full h-full object-cover rounded-xl transition-transform duration-700 hover:scale-105"
+                            autoplay muted loop playsinline preload="auto" poster="./images/hero.jpg">
+                            <source src="./images/Hero.webm" type="video/webm">
+                            <source src="./images/Hero.mp4" type="video/mp4">
+                            <!-- Fallback to image if video not supported -->
+                            <img src="./images/hero.jpg" alt="Dashboard Preview"
+                                class="w-full h-full object-cover rounded-xl">
+                        </video>
+                    </div>
+                </div>
+            </section>
+        </section>
+
+        <!-- Problem → Solution Section -->
+        <section class="problem-solution py-20 px-4 sm:px-6 relative overflow-hidden">
+            <!-- Background Elements -->
+            <div class="absolute top-1/4 left-10 w-32 h-32 bg-ztore-purple/20 rounded-full blur-3xl animate-pulse">
+            </div>
+            <div class="absolute bottom-1/4 right-10 w-40 h-40 bg-ztore-pink/20 rounded-full blur-3xl animate-pulse"
+                style="animation-delay: 2s"></div>
+
+            <div class="max-w-6xl mx-auto">
+                <!-- Section Header -->
+                <header class="text-center mb-16 opacity-0 animate-fade-in-up">
+                    <h2 class="text-3xl sm:text-4xl md:text-5xl font-bold mb-4">
+                        Tired of <span class="text-red-400">Complex Setup</span>
+                        <span class="block">Holding You Back?</span>
+                    </h2>
+                    <p class="text-xl text-gray-300 max-w-3xl mx-auto">
+                        You have the vision. We provide the seamless platform to bring it to life.
+                    </p>
+                </header>
+
+                <!-- Problem & Solution Grid -->
+                <div class="grid md:grid-cols-2 gap-8 lg:gap-12">
+                    <!-- Problem Side (Dark) -->
+                    <article class="problem-card text-left opacity-0 animate-slide-in-left">
+                        <div
+                            class="bg-gradient-to-br from-red-900/30 to-red-800/10 rounded-2xl p-8 h-full border border-red-500/30 backdrop-blur-xl">
+                            <header class="flex items-center gap-3 mb-6">
+                                <div class="w-12 h-12 bg-red-500/20 rounded-xl flex items-center justify-center">
+                                    <!-- Warning Icon -->
+                                    <svg class="w-6 h-6 text-red-400" fill="none" stroke="currentColor"
+                                        viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L4.082 16.5c-.77.833.192 2.5 1.732 2.5z" />
+                                    </svg>
+                                </div>
+                                <h3 class="text-2xl font-bold text-red-300">The Struggle</h3>
+                            </header>
+
+                            <ul class="space-y-4">
+                                <li class="flex items-start gap-3">
+                                    <svg class="w-5 h-5 text-red-400 mt-0.5 flex-shrink-0" fill="none"
+                                        stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M6 18L18 6M6 6l12 12" />
+                                    </svg>
+                                    <span class="text-gray-300">Hours wasted on complicated setup processes</span>
+                                </li>
+                                <li class="flex items-start gap-3">
+                                    <svg class="w-5 h-5 text-red-400 mt-0.5 flex-shrink-0" fill="none"
+                                        stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M6 18L18 6M6 6l12 12" />
+                                    </svg>
+                                    <span class="text-gray-300">Missing deadlines due to technical hurdles</span>
+                                </li>
+                                <li class="flex items-start gap-3">
+                                    <svg class="w-5 h-5 text-red-400 mt-0.5 flex-shrink-0" fill="none"
+                                        stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M6 18L18 6M6 6l12 12" />
+                                    </svg>
+                                    <span class="text-gray-300">Frustration with clunky, outdated interfaces</span>
+                                </li>
+                                <li class="flex items-start gap-3">
+                                    <svg class="w-5 h-5 text-red-400 mt-0.5 flex-shrink-0" fill="none"
+                                        stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M6 18L18 6M6 6l12 12" />
+                                    </svg>
+                                    <span class="text-gray-300">Lost opportunities while you're stuck debugging</span>
+                                </li>
+                            </ul>
+
+                            <footer class="mt-8 p-4 bg-red-500/10 rounded-xl border border-red-500/20">
+                                <p class="text-red-300 text-sm italic">
+                                    "I almost gave up... the setup was so complicated I lost my first client."
+                                </p>
+                            </footer>
+                        </div>
+                    </article>
+
+                    <!-- Solution Side (Bright) -->
+                    <article class="solution-card text-left opacity-0 animate-slide-in-left"
+                        style="animation-delay: 0.3s">
+                        <div
+                            class="bg-gradient-to-br from-green-900/30 to-emerald-800/10 rounded-2xl p-8 h-full border border-emerald-500/30 backdrop-blur-xl relative overflow-hidden">
+                            <!-- Shimmer Effect -->
+                            <div class="absolute top-0 right-0 w-32 h-32 bg-emerald-400/10 rounded-full blur-2xl"></div>
+
+                            <header class="flex items-center gap-3 mb-6">
+                                <div class="w-12 h-12 bg-emerald-500/20 rounded-xl flex items-center justify-center">
+                                    <!-- Rocket Icon -->
+                                    <svg class="w-6 h-6 text-emerald-400" fill="none" stroke="currentColor"
+                                        viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M13 10V3L4 14h7v7l9-11h-7z" />
+                                    </svg>
+                                </div>
+                                <h3 class="text-2xl font-bold text-emerald-300">The ScalePlus Way</h3>
+                            </header>
+
+                            <ul class="space-y-4">
+                                <li class="flex items-start gap-3">
+                                    <svg class="w-5 h-5 text-emerald-400 mt-0.5 flex-shrink-0" fill="none"
+                                        stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M5 13l4 4L19 7" />
+                                    </svg>
+                                    <span class="text-gray-300"><strong>One-click setup</strong> - Ready in minutes, not
+                                        hours</span>
+                                </li>
+                                <li class="flex items-start gap-3">
+                                    <svg class="w-5 h-5 text-emerald-400 mt-0.5 flex-shrink-0" fill="none"
+                                        stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M5 13l4 4L19 7" />
+                                    </svg>
+                                    <span class="text-gray-300"><strong>Intuitive interface</strong> - No technical
+                                        skills needed</span>
+                                </li>
+                                <li class="flex items-start gap-3">
+                                    <svg class="w-5 h-5 text-emerald-400 mt-0.5 flex-shrink-0" fill="none"
+                                        stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M5 13l4 4L19 7" />
+                                    </svg>
+                                    <span class="text-gray-300"><strong>24/7 support</strong> - Real humans, real
+                                        help</span>
+                                </li>
+                                <li class="flex items-start gap-3">
+                                    <svg class="w-5 h-5 text-emerald-400 mt-0.5 flex-shrink-0" fill="none"
+                                        stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M5 13l4 4L19 7" />
+                                    </svg>
+                                    <span class="text-gray-300"><strong>Focus on growth</strong> - Not on fixing
+                                        problems</span>
+                                </li>
+                            </ul>
+
+                            <footer class="mt-8 p-4 bg-emerald-500/10 rounded-xl border border-emerald-500/20">
+                                <p class="text-emerald-300 text-sm italic">
+                                    "With ScalePlus, I launched my store in 15 minutes and made my first sale the same
+                                    day!"
+                                </p>
+                            </footer>
+                        </div>
+                    </article>
+                </div>
+            </div>
+        </section>
+
+        <section class="customer-logos py-12 px-4 sm:px-6 relative overflow-hidden">
+            <!-- Background Elements -->
+            <div class="absolute top-20 left-5 w-24 h-24 bg-ztore-purple/10 rounded-full blur-2xl"></div>
+            <div class="absolute bottom-20 right-5 w-28 h-28 bg-ztore-pink/10 rounded-full blur-2xl"></div>
+
+            <div class="max-w-4xl mx-auto">
+                <!-- Section Header -->
+                <div class="text-center mb-8">
+                    <h3 class="text-2xl sm:text-3xl font-bold text-white mb-3">
+                        Trusted by Industry Leaders
+                    </h3>
+                    <p class="text-gray-400 text-base max-w-2xl mx-auto">
+                        Join thousands of businesses accelerating their growth with ScalePlus
+                    </p>
+                </div>
+
+                <!-- Logos Grid - Fully Responsive -->
+                <div class="grid grid-cols-3 sm:grid-cols-4 lg:grid-cols-6 gap-1 mb-8">
+                    <!-- Logos 1-8 -->
+                    <div class="flex items-center justify-center p-1 sm:p-2">
+                        <div
+                            class="w-14 h-14 sm:w-16 sm:h-16 md:w-18 md:h-18 lg:w-20 lg:h-20 rounded-full overflow-hidden border-2 border-white/20 bg-white/5">
+                            <img src="https://web.ztorespot.com/uploads/images/5749/2025/07/17/1752741539/WhatsAppImage2025-07-17at1.47.13PM.jpeg"
+                                alt="Logo 1" class="w-full h-full object-cover">
+                        </div>
+                    </div>
+
+                    <div class="flex items-center justify-center p-1 sm:p-2">
+                        <div
+                            class="w-14 h-14 sm:w-16 sm:h-16 md:w-18 md:h-18 lg:w-20 lg:h-20 rounded-full overflow-hidden border-2 border-white/20 bg-white/5">
+                            <img src="./images/hero.jpg" alt="Logo 2" class="w-full h-full object-cover">
+                        </div>
+                    </div>
+
+                    <div class="flex items-center justify-center p-1 sm:p-2">
+                        <div
+                            class="w-14 h-14 sm:w-16 sm:h-16 md:w-18 md:h-18 lg:w-20 lg:h-20 rounded-full overflow-hidden border-2 border-white/20 bg-white/5">
+                            <img src="./images/hero.jpg" alt="Logo 3" class="w-full h-full object-cover">
+                        </div>
+                    </div>
+
+                    <div class="flex items-center justify-center p-1 sm:p-2">
+                        <div
+                            class="w-14 h-14 sm:w-16 sm:h-16 md:w-18 md:h-18 lg:w-20 lg:h-20 rounded-full overflow-hidden border-2 border-white/20 bg-white/5">
+                            <img src="./images/hero.jpg" alt="Logo 4" class="w-full h-full object-cover">
+                        </div>
+                    </div>
+
+                    <div class="flex items-center justify-center p-1 sm:p-2">
+                        <div
+                            class="w-14 h-14 sm:w-16 sm:h-16 md:w-18 md:h-18 lg:w-20 lg:h-20 rounded-full overflow-hidden border-2 border-white/20 bg-white/5">
+                            <img src="./images/hero.jpg" alt="Logo 5" class="w-full h-full object-cover">
+                        </div>
+                    </div>
+
+                    <div class="flex items-center justify-center p-1 sm:p-2">
+                        <div
+                            class="w-14 h-14 sm:w-16 sm:h-16 md:w-18 md:h-18 lg:w-20 lg:h-20 rounded-full overflow-hidden border-2 border-white/20 bg-white/5">
+                            <img src="./images/hero.jpg" alt="Logo 6" class="w-full h-full object-cover">
+                        </div>
+                    </div>
+
+                    <div class="flex items-center justify-center p-1 sm:p-2">
+                        <div
+                            class="w-14 h-14 sm:w-16 sm:h-16 md:w-18 md:h-18 lg:w-20 lg:h-20 rounded-full overflow-hidden border-2 border-white/20 bg-white/5">
+                            <img src="./images/hero.jpg" alt="Logo 7" class="w-full h-full object-cover">
+                        </div>
+                    </div>
+
+                    <div class="flex items-center justify-center p-1 sm:p-2">
+                        <div
+                            class="w-14 h-14 sm:w-16 sm:h-16 md:w-18 md:h-18 lg:w-20 lg:h-20 rounded-full overflow-hidden border-2 border-white/20 bg-white/5">
+                            <img src="./images/hero.jpg" alt="Logo 8" class="w-full h-full object-cover">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Image Arrow -->
+<div class="flex justify-center mb-6">
+    <div class="flex flex-col items-center">
+        <!-- Arrow Image with smooth fade and shake effects -->
+        <img src="./images/arrow.gif" alt="Arrow" 
+             class="w-24 h-20 sm:w-28 sm:h-24 md:w-32 md:h-28 animate-smoothFadeShake">
+    </div>
+</div>
+                <style>
+                    @keyframes fadeUp {
+                        0% {
+                            opacity: 0;
+                            transform: translateY(20px);
+                        }
+
+                        100% {
+                            opacity: 1;
+                            transform: translateY(0);
+                        }
+                    }
+                </style>
+
+                <!-- "Next You" Section -->
+                <div class="text-center">
+                    <div
+                        class="inline-flex flex-col items-center gap-2 sm:gap-3 p-3 sm:p-4 bg-white/5 rounded-xl border border-white/10 backdrop-blur-xl">
+                        <!-- Empty Frame with Green Question Mark -->
+                        <div
+                            class="w-14 h-14 sm:w-16 sm:h-16 rounded-full border-2 border-dashed border-gray-500 flex items-center justify-center overflow-hidden bg-white/5">
+                            <span class="text-xl sm:text-2xl font-bold text-green-400">?</span>
+                        </div>
+
+                        <!-- Text -->
+                        <div>
+                            <h4 class="text-sm sm:text-base font-bold text-white mb-1">Next You?</h4>
+                            <p class="text-gray-400 text-xs max-w-xs">
+                                Join our growing community of successful businesses
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+
+    </main>
 
     <script>
-        // Scroll effect for header
+        // Your existing JavaScript remains the same...
+        const mobileToggle = document.querySelector('.mobile-toggle');
+        const mobileIcon = document.querySelector('.mobile-icon');
+        const mobileNavMenu = document.querySelector('.mobile-nav-menu');
+        const closeMobileMenu = document.querySelector('.close-mobile-menu');
+        const body = document.body;
+
+        const menuIconSrc = "./images/nav_icon.svg";
+        const closeIconSrc = "./images/nav_close.svg";
+
+        function openMobileMenu() {
+            mobileNavMenu.classList.add('active');
+            body.classList.add('no-scroll');
+            setTimeout(() => {
+                mobileIcon.src = closeIconSrc;
+            }, 150);
+        }
+
+        function closeMobileMenuFunc() {
+            mobileNavMenu.classList.remove('active');
+            body.classList.remove('no-scroll');
+            setTimeout(() => {
+                mobileIcon.src = menuIconSrc;
+            }, 250);
+        }
+
+        // Toggle on icon click
+        mobileToggle.addEventListener('click', () => {
+            if (mobileNavMenu.classList.contains('active')) {
+                closeMobileMenuFunc();
+            } else {
+                openMobileMenu();
+            }
+        });
+
+        // Inside menu close button
+        closeMobileMenu.addEventListener('click', closeMobileMenuFunc);
+
+        // Close on link click
+        document.querySelectorAll('.mobile-nav-menu a').forEach(link => {
+            link.addEventListener('click', closeMobileMenuFunc);
+        });
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && mobileNavMenu.classList.contains('active')) {
+                closeMobileMenuFunc();
+            }
+        });
+
         window.addEventListener('scroll', () => {
             const header = document.querySelector('header');
             if (window.scrollY > 50) {
@@ -198,62 +674,59 @@
             }
         });
 
-        // Mobile menu toggle
-        const mobileToggle = document.querySelector('.mobile-toggle');
-        const nav = document.querySelector('nav');
-
-        mobileToggle.addEventListener('click', () => {
-            mobileToggle.classList.toggle('active');
-            nav.classList.toggle('active');
-            
-            // Toggle mobile menu visibility
-            if (window.innerWidth < 768) {
-                if (nav.classList.contains('active')) {
-                    nav.classList.remove('hidden');
-                    nav.classList.add('flex', 'fixed', 'top-16', 'left-0', 'w-full', 'bg-[rgba(10,10,30,0.95)]', 'backdrop-blur-2xl', 'flex-col', 'p-8', 'gap-6', 'border-b', 'border-white/10', 'mobile-nav', 'active');
-                } else {
-                    nav.classList.remove('flex', 'fixed', 'top-16', 'left-0', 'w-full', 'bg-[rgba(10,10,30,0.95)]', 'backdrop-blur-2xl', 'flex-col', 'p-8', 'gap-6', 'border-b', 'border-white/10', 'mobile-nav', 'active');
-                    nav.classList.add('hidden', 'md:flex', 'md:items-center', 'md:gap-10', 'md:static', 'md:bg-transparent', 'md:backdrop-blur-0', 'md:flex-row', 'md:p-0', 'md:border-none');
-                }
-            }
-        });
-
-        // Close mobile menu when clicking on links
-        document.querySelectorAll('nav a').forEach(link => {
-            link.addEventListener('click', () => {
-                if (window.innerWidth < 768) {
-                    mobileToggle.classList.remove('active');
-                    nav.classList.remove('active', 'flex', 'fixed', 'top-16', 'left-0', 'w-full', 'bg-[rgba(10,10,30,0.95)]', 'backdrop-blur-2xl', 'flex-col', 'p-8', 'gap-6', 'border-b', 'border-white/10', 'mobile-nav');
-                    nav.classList.add('hidden', 'md:flex', 'md:items-center', 'md:gap-10', 'md:static', 'md:bg-transparent', 'md:backdrop-blur-0', 'md:flex-row', 'md:p-0', 'md:border-none');
-                }
-            });
-        });
-
-        // Responsive navigation
-        function handleResize() {
-            if (window.innerWidth >= 768) {
-                nav.classList.remove('hidden', 'fixed', 'top-16', 'left-0', 'w-full', 'bg-[rgba(10,10,30,0.95)]', 'backdrop-blur-2xl', 'flex-col', 'p-8', 'gap-6', 'border-b', 'border-white/10', 'mobile-nav', 'active');
-                nav.classList.add('flex', 'items-center', 'gap-10');
-                mobileToggle.classList.remove('active');
-            } else {
-                if (!nav.classList.contains('active')) {
-                    nav.classList.add('hidden');
-                }
-            }
-        }
-
-        window.addEventListener('resize', handleResize);
-        handleResize(); // Initial check
-
-        // Smooth loading animation
         window.addEventListener('load', () => {
             document.body.style.opacity = '0';
             document.body.style.transition = 'opacity 0.5s ease';
-
-            setTimeout(() => {
-                document.body.style.opacity = '1';
-            }, 100);
+            setTimeout(() => { document.body.style.opacity = '1'; }, 100);
         });
+
+
+        //Style For Hro Vide Line animation
+        const section = document.querySelector(".dashboard");
+        const video = document.querySelector("video");
+
+        // Video autoplay when section is straight to viewer
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    // Section is visible and straight to viewer
+                    video.play().catch(e => console.log("Video autoplay failed:", e));
+                } else {
+                    // Section is not visible
+                    video.pause();
+                }
+            });
+        }, {
+            threshold: 0.7 // Trigger when 70% of section is visible
+        });
+
+        if (section) {
+            observer.observe(section);
+        }
+
+        window.addEventListener("scroll", () => {
+            if (!section) return;
+
+            const rect = section.getBoundingClientRect();
+            const windowHeight = window.innerHeight;
+            const sectionCenter = rect.top + rect.height / 2;
+
+            // Calculate how far the section is from the center of the viewport
+            const distanceFromCenter = sectionCenter - windowHeight / 2;
+
+            // Clamp the tilt so it doesn't go too extreme
+            const maxTilt = 10; // degrees
+            const tilt = Math.max(-maxTilt, Math.min(maxTilt, distanceFromCenter * 0.05));
+
+            // When section is centered, rotateX = 0 (flat)
+            // Above center → tilts back (positive), below → slightly forward (negative)
+            section.style.transform = `perspective(1000px) rotateX(${tilt}deg) translateY(${distanceFromCenter * 0.05}px)`;
+        });
+
+        // Set initial state (lying back when page loads)
+        section.style.transform = `perspective(1000px) rotateX(8deg) translateY(20px)`;
+
     </script>
 </body>
+
 </html>
