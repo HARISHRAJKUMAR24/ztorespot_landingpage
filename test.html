@@ -62,12 +62,15 @@
                 background: radial-gradient(circle at 30% -10%, #1a0a2e, #000);
             }
             
-            .text-gradient {
-                background: linear-gradient(135deg, #8A00FF 0%, #FF00A8 100%);
-                -webkit-background-clip: text;
-                -webkit-text-fill-color: transparent;
-            }
-            
+           .text-gradient {
+  background: linear-gradient(135deg, #8A00FF 0%, #FF00A8 100%);
+  -webkit-background-clip: text; /* For Safari and Chrome */
+  background-clip: text;          /* Standard property */
+  -webkit-text-fill-color: transparent; /* Makes text itself transparent */
+  color: transparent;             /* Fallback for other browsers */
+}
+
+
             .gradient-border::after {
                 content: '';
                 position: absolute;
@@ -136,112 +139,289 @@
             .mobile-nav-menu.active nav a:nth-child(4) { transition-delay: 0.25s; }
             .mobile-nav-menu.active nav a:nth-child(5) { transition-delay: 0.3s; }
             
-            /* Fix for gradient border animation on mobile */
-            @media (hover: none) and (pointer: coarse) {
-                .gradient-border::after {
-                    width: 0;
+        }
+        @layer utilities {
+          .glow-border {
+            position: absolute;
+            inset: 0;
+            border-radius: 1rem;
+            overflow: hidden;
+            pointer-events: none;
+          }
+          .glow-border::before {
+  content: "";
+  position: absolute;
+  width: 140%;
+  height: 140%;
+  top: -2.5%;
+  left: -2.5%;
+  background: conic-gradient(
+    from 0deg,
+    #aaff00,
+    #00ffcc,
+    #a000ff,
+    #ff00c8,
+    #aaff00
+  );
+  animation: rotateGlow 10s linear infinite;
+  filter: blur(1px);
+  border-radius: 1rem;
+}
+          .glow-border::after {
+            content: "";
+            position: absolute;
+            inset: 2px;
+            border-radius: 1rem;
+            background: #121019;
+          }
+
+          @keyframes rotateGlow {
+            0% {
+              transform: rotate(0deg);
+            }
+            100% {
+              transform: rotate(360deg);
+            }
+          }
+          
+          /* Fix for mobile animation performance */
+          @media (max-width: 768px) {
+            .glow-border::before {
+              animation: rotateGlow 15s linear infinite;
+            }
+            .video-glow-border::before {
+                animation: rotateBorder 5s linear infinite;
+            }
+          }
+        }
+
+ /* Style For Logo Next You */
+    /* Marquee Animation */
+    @keyframes marquee {
+        0% {
+            transform: translateX(0);
+        }
+        100% {
+            transform: translateX(-50%);
+        }
+    }
+
+    .animate-marquee {
+        animation: marquee 30s linear infinite;
+    }
+
+    /* Smooth fade and shake for arrow */
+    @keyframes smoothFadeShake {
+        0%, 100% {
+            opacity: 1;
+            transform: translateY(0) rotate(0deg);
+        }
+        25% {
+            transform: translateY(-5px) rotate(2deg);
+        }
+        50% {
+            opacity: 0.8;
+            transform: translateY(0) rotate(0deg);
+        }
+        75% {
+            transform: translateY(-3px) rotate(-2deg);
+        }
+    }
+
+    .animate-smoothFadeShake {
+        animation: smoothFadeShake 2s ease-in-out infinite;
+    }
+
+    /* Hover pause effect */
+    .marquee-wrapper:hover .animate-marquee {
+        animation-play-state: paused;
+    }
+
+    /* Responsive adjustments */
+    @media (max-width: 640px) {
+        .animate-marquee {
+            animation-duration: 20s;
+        }
+    }
+
+ /* Style For Thmes Portfolio */
+            .perspective-1000 {
+                perspective: 1000px;
+            }
+
+            /* 3D Positions */
+            .carousel-item[data-position="left"] {
+                transform: translateX(-80%) scale(0.85) rotateY(10deg);
+                opacity: 0.6;
+                z-index: 5;
+            }
+
+            .carousel-item[data-position="center"] {
+                transform: translateX(0) scale(1) rotateY(0deg);
+                opacity: 1;
+                z-index: 10;
+            }
+
+            .carousel-item[data-position="right"] {
+                transform: translateX(80%) scale(0.85) rotateY(-10deg);
+                opacity: 0.6;
+                z-index: 5;
+            }
+
+            /* Static Fog */
+            .fog-bottom,
+            .fog-top {
+                position: absolute;
+                left: 0;
+                width: 100%;
+                height: 100px;
+                pointer-events: none;
+                overflow: hidden;
+                z-index: 10;
+                filter: blur(18px);
+            }
+
+            .fog-bottom {
+                bottom: 0;
+                background: linear-gradient(to top, rgba(10, 10, 30, 1) 0%, rgba(10, 10, 30, 0.8) 40%, transparent 100%),
+                    radial-gradient(circle at 50% 100%, rgba(123, 91, 255, 0.2), transparent 70%),
+                    radial-gradient(circle at 50% 100%, rgba(255, 78, 184, 0.2), transparent 70%);
+            }
+
+            .fog-top {
+                top: 0;
+                background: linear-gradient(to bottom, rgba(10, 10, 30, 1) 0%, rgba(10, 10, 30, 0.8) 40%, transparent 100%),
+                    radial-gradient(circle at 50% 0%, rgba(123, 91, 255, 0.2), transparent 70%),
+                    radial-gradient(circle at 50% 0%, rgba(255, 78, 184, 0.2), transparent 70%);
+            }
+
+            @media (max-width: 768px) {
+                .carousel-container {
+                    height: 360px;
                 }
-                .gradient-border:active::after {
-                    width: 100%;
+
+                .fog-bottom,
+                .fog-top {
+                    height: 60px;
+                    filter: blur(10px);
+                }
+
+                .carousel-item button {
+                    width: 90%;
                 }
             }
+
+ /* Style For FAQ */
+    .faq-item.active .faq-question svg {
+        transform: rotate(180deg);
+    }
+    
+    .faq-item.active .faq-answer {
+        display: block;
+        animation: slideDown 0.3s ease-out;
+    }
+    
+    @keyframes slideDown {
+        from {
+            opacity: 0;
+            transform: translateY(-10px);
         }
-        
-@layer utilities {
-  .glow-border {
-    position: absolute;
-    inset: 0;
-    border-radius: 1rem;
-    overflow: hidden;
-    pointer-events: none;
-  }
-
-  .glow-border::before {
-    content: "";
-    position: absolute;
-    width: 200%;
-    height: 200%;
-    top: -50%;
-    left: -50%;
-    background: conic-gradient(
-      from 0deg,
-      #aaff00,
-      #00ffcc,
-      #a000ff,
-      #ff00c8,
-      #aaff00
-    );
-    animation: rotateGlow 10s linear infinite;
-    filter: blur(1px);
-  }
-
-  .glow-border::after {
-    content: "";
-    position: absolute;
-    inset: 2px;
-    border-radius: 1rem;
-    background: #121019;
-  }
-
-  @keyframes rotateGlow {
-    0% {
-      transform: rotate(0deg);
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
     }
-    100% {
-      transform: rotate(360deg);
+ /* Style For footer */
+    .footer-link {
+        position: relative;
+        color: #9ca3af;
+        transition: color 0.3s ease;
     }
-  }
-}
-    </style>
+    .footer-link:hover {
+        color: #ffffff;
+    }
+    .footer-link::after {
+        content: '';
+        position: absolute;
+        width: 0;
+        height: 2px;
+        bottom: -2px;
+        left: 0;
+        background: linear-gradient(135deg, #8A00FF, #FF00A8);
+        transition: width 0.3s ease;
+    }
+    .footer-link:hover::after {
+        width: 100%;
+    }
+
+    .footer-icon {
+        width: 42px;
+        height: 42px;
+        background: rgba(255,255,255,0.05);
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.3s ease;
+        color: #aaa;
+    }
+    .footer-icon:hover {
+        background: linear-gradient(135deg, #8A00FF, #FF00A8);
+        color: #fff;
+        transform: scale(1.1);
+        box-shadow: 0 0 12px rgba(255, 0, 168, 0.3);
+    }
+
+</style>
 </head>
 
 <body class="font-inter bg-gradient-radial text-white overflow-x-hidden">
-    <!-- Header Navigation -->
+    <!-- Header Navigation - Only navigation content -->
     <header
         class="w-full py-6 px-4 sm:px-[6%] flex justify-between items-center fixed top-0 left-0 z-50 bg-[rgba(10,10,30,0.6)] backdrop-blur-xl border-b border-white/10 transition-all duration-400 ease-[cubic-bezier(0.4,0,0.2,1)]">
         <!-- Logo -->
         <div class="logo flex items-center gap-2 font-bold text-xl text-white opacity-0 animate-slide-in-left">
-            <!-- Replace with your actual logo image -->
             <img src="./images/logo.png" alt="ScalePlus Logo" class="h-10 sm:h-12 lg:h-14 w-auto">
         </div>
 
-        <!-- Desktop Navigation - Always visible on desktop -->
-        <nav class="desktop-nav hidden lg:flex items-center justify-center flex-1">
+        <!-- Desktop Navigation -->
+        <nav class="hidden lg:flex items-center justify-center flex-1 relative">
             <!-- Centered Navigation Links -->
-            <div class="flex items-center gap-6 xl:gap-8">
-                <a href="#"
-                    class="text-gray-300 font-medium transition-colors duration-300 relative py-2 gradient-border hover:text-white text-sm xl:text-base">Features</a>
-                <a href="#"
-                    class="text-gray-300 font-medium transition-colors duration-300 relative py-2 gradient-border hover:text-white text-sm xl:text-base">Pricing</a>
-                <a href="#"
-                    class="text-gray-300 font-medium transition-colors duration-300 relative py-2 gradient-border hover:text-white text-sm xl:text-base">Themes</a>
-                <a href="#"
-                    class="text-gray-300 font-medium transition-colors duration-300 relative py-2 gradient-border hover:text-white text-sm xl:text-base">Help
+            <div class="flex items-center gap-8 absolute left-1/2 -translate-x-1/2">
+                <a href="#features"
+                    class="text-gray-300 font-medium transition-colors duration-300 hover:text-white text-sm xl:text-base">Features</a>
+                <a href="#pricing"
+                    class="text-gray-300 font-medium transition-colors duration-300 hover:text-white text-sm xl:text-base">Pricing</a>
+                <a href="#themes"
+                    class="text-gray-300 font-medium transition-colors duration-300 hover:text-white text-sm xl:text-base">Themes</a>
+                <a href="#help"
+                    class="text-gray-300 font-medium transition-colors duration-300 hover:text-white text-sm xl:text-base">Help
                     Videos</a>
             </div>
 
-            <!-- CTA Button on right side -->
-            <a href="./test.html" class="ml-4">
-                <button
-                    class="btn-primary bg-gradient-to-br from-ztore-purple to-ztore-pink py-2 px-4 lg:py-3 lg:px-5 rounded-lg border-none text-white font-semibold cursor-pointer transition-all duration-300 btn-hover relative overflow-hidden hover:-translate-y-1 hover:shadow-[0_8px_25px_rgba(138,0,255,0.4)] text-sm lg:text-base">
-                    Get Started
-                </button>
-            </a>
+            <!-- Right CTA Button -->
+            <div class="ml-auto">
+                <a href="./test.html">
+                    <button
+                        class="bg-gradient-to-br from-ztore-purple to-ztore-pink py-2 px-5 rounded-lg text-white font-semibold transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_8px_25px_rgba(138,0,255,0.4)] text-sm xl:text-base">
+                        Get Started
+                    </button>
+                </a>
+            </div>
         </nav>
 
-        <!-- Mobile Toggle Button - Only visible on mobile/tablet -->
+        <!-- Mobile Toggle Button -->
         <div class="mobile-toggle lg:hidden cursor-pointer p-2 z-50">
             <img src="./images/nav_icon.svg" alt="Menu" class="w-7 h-7 mobile-icon">
         </div>
     </header>
 
-    <!-- Mobile Navigation Menu - Only for mobile/tablet -->
+    <!-- Mobile Navigation -->
     <nav
         class="mobile-nav-menu fixed top-0 left-0 w-full sm:w-80 h-full bg-[rgba(10,10,30,0.98)] backdrop-blur-2xl z-40 flex flex-col p-6 sm:p-8 lg:hidden">
         <!-- Close Button -->
         <div class="flex justify-between items-center mb-12">
             <div class="logo flex items-center gap-2 font-bold text-xl text-white">
-                <!-- Mobile logo -->
                 <img src="./images/logo.png" alt="ScalePlus Logo" class="h-8 w-auto">
                 <span class="text-gradient">ScalePlus</span>
             </div>
@@ -251,140 +431,2057 @@
         </div>
 
         <!-- Mobile Navigation Links -->
-        <nav class="flex flex-col gap-6">
-            <a href="#"
-                class="text-lg sm:text-xl font-medium text-gray-300 transition-colors duration-300 hover:text-white py-3 border-b border-white/10">Features</a>
-            <a href="#"
-                class="text-lg sm:text-xl font-medium text-gray-300 transition-colors duration-300 hover:text-white py-3 border-b border-white/10">Pricing</a>
-            <a href="#"
-                class="text-lg sm:text-xl font-medium text-gray-300 transition-colors duration-300 hover:text-white py-3 border-b border-white/10">Themes</a>
-            <a href="#"
-                class="text-lg sm:text-xl font-medium text-gray-300 transition-colors duration-300 hover:text-white py-3 border-b border-white/10">Help
+        <div class="flex flex-col gap-6">
+            <a href="#features"
+                class="text-lg font-medium text-gray-300 transition-colors duration-300 hover:text-white py-3 border-b border-white/10">Features</a>
+            <a href="#pricing"
+                class="text-lg font-medium text-gray-300 transition-colors duration-300 hover:text-white py-3 border-b border-white/10">Pricing</a>
+            <a href="#themes"
+                class="text-lg font-medium text-gray-300 transition-colors duration-300 hover:text-white py-3 border-b border-white/10">Themes</a>
+            <a href="#help"
+                class="text-lg font-medium text-gray-300 transition-colors duration-300 hover:text-white py-3 border-b border-white/10">Help
                 Videos</a>
 
-            <!-- Get Started Button in Mobile Menu (after Help Videos) -->
-            <a href="./test.html" class="mt-4">
-                <button
-                    class="btn-primary bg-gradient-to-br from-ztore-purple to-ztore-pink py-4 px-8 rounded-lg border-none text-white font-semibold cursor-pointer transition-all duration-300 btn-hover relative overflow-hidden hover:-translate-y-1 hover:shadow-[0_8px_25px_rgba(138,0,255,0.4)] text-lg sm:text-xl w-full text-center">
-                    Get Started
-                </button>
-            </a>
-        </nav>
+            <!-- Smaller Mobile Get Started Button -->
+            <div class="mt-6">
+                <a href="./test.html">
+                    <button
+                        class="bg-gradient-to-br from-ztore-purple to-ztore-pink py-3 px-6 rounded-lg text-white font-semibold w-full text-center transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_6px_20px_rgba(138,0,255,0.4)] text-base">
+                        Get Started
+                    </button>
+                </a>
+            </div>
+        </div>
     </nav>
 
-    <!-- Hero Section -->
-    <main class="hero pt-32 text-center relative overflow-hidden px-4 sm:px-6">
-        <!-- Swap the colors -->
-
-        <div
-            class="absolute top-[-150px] left-[-100px] w-64 sm:w-96 h-64 sm:h-96 rounded-full bg-ztore-pink blur-[100px] sm:blur-[150px] z-0 animate-float">
-        </div>
-
-        <div
+    <!-- Main Content -->
+    <main class="pt-32 relative overflow-hidden">
+        <!-- Hero Section -->
+        <section class="hero text-center px-4 sm:px-6">
+            <!-- Background Elements -->
+            <div
+                class="absolute top-[-150px] left-[-100px] w-64 sm:w-96 h-64 sm:h-96 rounded-full bg-ztore-pink blur-[100px] sm:blur-[150px] z-0 animate-float">
+            </div>
+            <!-- <div
             class="absolute bottom-[-100px] right-[-150px] w-64 sm:w-96 h-64 sm:h-96 rounded-full bg-ztore-purple blur-[100px] sm:blur-[150px] z-0 animate-float-reverse">
-        </div>
+        </div> -->
+
+            <div class="badge bg-white/10 inline-flex items-center gap-2 rounded-full py-1.5 px-4 text-xs sm:text-sm text-gray-400 mb-5 opacity-0 animate-fade-in-up"
+                style="animation-delay: 0.4s">
+
+                <span
+                    class="bg-gradient-to-br from-ztore-purple to-ztore-pink text-white font-semibold py-0.5 px-2.5 rounded-full text-xs">NEW</span>
+                We've just released new features →
+            </div>
+
+            <h1 class="text-3xl sm:text-4xl md:text-5xl font-extrabold leading-tight mb-4 text-gradient opacity-0 animate-fade-in-up"
+                style="animation-delay: 0.6s">
+                Test Page Operations.<br>Deliver Results.
+            </h1>
+
+            <p class="text-base sm:text-lg text-gray-300 mb-8 opacity-0 animate-fade-in-up max-w-2xl mx-auto px-4"
+                style="animation-delay: 0.8s">
+                Boost your efficiency and streamline tasks effortlessly.
+            </p>
+
+            <button
+                class="cta bg-white text-black rounded-xl py-3 px-6 sm:py-3.5 sm:px-7 font-semibold cursor-pointer transition-all duration-300 inline-flex items-center gap-2 border-none opacity-0 animate-fade-in-up btn-hover relative overflow-hidden hover:bg-gradient-to-br hover:from-ztore-purple hover:to-ztore-pink hover:text-white hover:-translate-y-1 hover:shadow-[0_8px_25px_rgba(138,0,255,0.4)] text-sm sm:text-base"
+                style="animation-delay: 1s">
+                Book A Free Demo →
+            </button>
+
+            <!-- Dashboard Section -->
+            <section
+                class="dashboard mt-12 sm:mt-16 mx-auto w-full max-w-4xl xl:max-w-5xl bg-[#121019]/80 rounded-2xl p-4 sm:p-6 backdrop-blur-xl shadow-[0_0_40px_rgba(0,0,0,0.4)] relative z-[30] overflow-hidden mb-9 transform-gpu transition-transform duration-700 will-change-transform">
+                <div class="glow-border"></div>
+
+                <!-- Video container with line animation -->
+                <div class="relative z-10">
+                    <div class="w-full h-64 sm:h-80 md:h-96 lg:h-[28rem] xl:h-[30rem] rounded-xl overflow-hidden">
+                        <!-- Video with full view - no cropping -->
+                        <video
+                            class="w-full h-full object-cover rounded-xl transition-transform duration-700 hover:scale-105"
+                            autoplay muted loop playsinline preload="auto" poster="./images/hero.jpg">
+                            <source src="./images/Hero.webm" type="video/webm">
+                            <source src="./images/Hero.mp4" type="video/mp4">
+                            <!-- Fallback to image if video not supported -->
+                            <img src="./images/hero.jpg" alt="Dashboard Preview"
+                                class="w-full h-full object-cover rounded-xl">
+                        </video>
+                    </div>
+                </div>
+            </section>
+        </section>
 
 
-        <div class="badge bg-white/10 inline-flex items-center gap-2 rounded-full py-1.5 px-4 text-xs sm:text-sm text-gray-400 mb-5 opacity-0 animate-fade-in-up"
-            style="animation-delay: 0.4s">
-            <span
-                class="bg-gradient-to-br from-ztore-purple to-ztore-pink text-white font-semibold py-0.5 px-2.5 rounded-full text-xs">NEW</span>
-            We've just released new features →
-        </div>
+        <!-- Problem → Solution Section -->
+        <section class="problem-solution py-20 px-4 sm:px-6 relative overflow-hidden">
+            <!-- Background Elements -->
+            <div class="absolute top-1/4 left-10 w-32 h-32 bg-ztore-purple/20 rounded-full blur-3xl animate-pulse">
+            </div>
+            <div class="absolute bottom-1/4 right-10 w-40 h-40 bg-ztore-pink/20 rounded-full blur-3xl animate-pulse"
+                style="animation-delay: 2s"></div>
 
-        <h1 class="text-3xl sm:text-4xl md:text-5xl font-extrabold leading-tight mb-4 text-gradient opacity-0 animate-fade-in-up"
-            style="animation-delay: 0.6s">
-            Test Page Operations.<br>Deliver Results.
-        </h1>
+            <div class="max-w-6xl mx-auto">
+                <!-- Section Header -->
+                <header class="text-center mb-16 opacity-0 animate-fade-in-up">
+                    <h2 class="text-3xl sm:text-4xl md:text-5xl font-bold mb-4">
+                        Tired of <span class="text-red-400">Complex Setup</span>
+                        <span class="block">Holding You Back?</span>
+                    </h2>
+                    <p class="text-xl text-gray-300 max-w-3xl mx-auto">
+                        You have the vision. We provide the seamless platform to bring it to life.
+                    </p>
+                </header>
 
-        <p class="text-base sm:text-lg text-gray-300 mb-8 opacity-0 animate-fade-in-up max-w-2xl mx-auto px-4"
-            style="animation-delay: 0.8s">
-            Boost your efficiency and streamline tasks effortlessly.
+                <!-- Problem & Solution Grid -->
+                <div class="grid md:grid-cols-2 gap-8 lg:gap-12">
+                    <!-- Problem Side (Dark) -->
+                    <article class="problem-card text-left opacity-0 animate-slide-in-left">
+                        <div
+                            class="bg-gradient-to-br from-red-900/30 to-red-800/10 rounded-2xl p-8 h-full border border-red-500/30 backdrop-blur-xl">
+                            <header class="flex items-center gap-3 mb-6">
+                                <div class="w-12 h-12 bg-red-500/20 rounded-xl flex items-center justify-center">
+                                    <!-- Warning Icon -->
+                                    <svg class="w-6 h-6 text-red-400" fill="none" stroke="currentColor"
+                                        viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L4.082 16.5c-.77.833.192 2.5 1.732 2.5z" />
+                                    </svg>
+                                </div>
+                                <h3 class="text-2xl font-bold text-red-300">The Struggle</h3>
+                            </header>
+
+                            <ul class="space-y-4">
+                                <li class="flex items-start gap-3">
+                                    <svg class="w-5 h-5 text-red-400 mt-0.5 flex-shrink-0" fill="none"
+                                        stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M6 18L18 6M6 6l12 12" />
+                                    </svg>
+                                    <span class="text-gray-300">Hours wasted on complicated setup processes</span>
+                                </li>
+                                <li class="flex items-start gap-3">
+                                    <svg class="w-5 h-5 text-red-400 mt-0.5 flex-shrink-0" fill="none"
+                                        stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M6 18L18 6M6 6l12 12" />
+                                    </svg>
+                                    <span class="text-gray-300">Missing deadlines due to technical hurdles</span>
+                                </li>
+                                <li class="flex items-start gap-3">
+                                    <svg class="w-5 h-5 text-red-400 mt-0.5 flex-shrink-0" fill="none"
+                                        stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M6 18L18 6M6 6l12 12" />
+                                    </svg>
+                                    <span class="text-gray-300">Frustration with clunky, outdated interfaces</span>
+                                </li>
+                                <li class="flex items-start gap-3">
+                                    <svg class="w-5 h-5 text-red-400 mt-0.5 flex-shrink-0" fill="none"
+                                        stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M6 18L18 6M6 6l12 12" />
+                                    </svg>
+                                    <span class="text-gray-300">Lost opportunities while you're stuck debugging</span>
+                                </li>
+                            </ul>
+
+                            <footer class="mt-8 p-4 bg-red-500/10 rounded-xl border border-red-500/20">
+                                <p class="text-red-300 text-sm italic">
+                                    "I almost gave up... the setup was so complicated I lost my first client."
+                                </p>
+                            </footer>
+                        </div>
+                    </article>
+
+                    <!-- Solution Side (Bright) -->
+                    <article class="solution-card text-left opacity-0 animate-slide-in-left"
+                        style="animation-delay: 0.3s">
+                        <div
+                            class="bg-gradient-to-br from-green-900/30 to-emerald-800/10 rounded-2xl p-8 h-full border border-emerald-500/30 backdrop-blur-xl relative overflow-hidden">
+                            <!-- Shimmer Effect -->
+                            <div class="absolute top-0 right-0 w-32 h-32 bg-emerald-400/10 rounded-full blur-2xl"></div>
+
+                            <header class="flex items-center gap-3 mb-6">
+                                <div class="w-12 h-12 bg-emerald-500/20 rounded-xl flex items-center justify-center">
+                                    <!-- Rocket Icon -->
+                                    <svg class="w-6 h-6 text-emerald-400" fill="none" stroke="currentColor"
+                                        viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M13 10V3L4 14h7v7l9-11h-7z" />
+                                    </svg>
+                                </div>
+                                <h3 class="text-2xl font-bold text-emerald-300">The ScalePlus Way</h3>
+                            </header>
+
+                            <ul class="space-y-4">
+                                <li class="flex items-start gap-3">
+                                    <svg class="w-5 h-5 text-emerald-400 mt-0.5 flex-shrink-0" fill="none"
+                                        stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M5 13l4 4L19 7" />
+                                    </svg>
+                                    <span class="text-gray-300"><strong>One-click setup</strong> - Ready in minutes, not
+                                        hours</span>
+                                </li>
+                                <li class="flex items-start gap-3">
+                                    <svg class="w-5 h-5 text-emerald-400 mt-0.5 flex-shrink-0" fill="none"
+                                        stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M5 13l4 4L19 7" />
+                                    </svg>
+                                    <span class="text-gray-300"><strong>Intuitive interface</strong> - No technical
+                                        skills needed</span>
+                                </li>
+                                <li class="flex items-start gap-3">
+                                    <svg class="w-5 h-5 text-emerald-400 mt-0.5 flex-shrink-0" fill="none"
+                                        stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M5 13l4 4L19 7" />
+                                    </svg>
+                                    <span class="text-gray-300"><strong>24/7 support</strong> - Real humans, real
+                                        help</span>
+                                </li>
+                                <li class="flex items-start gap-3">
+                                    <svg class="w-5 h-5 text-emerald-400 mt-0.5 flex-shrink-0" fill="none"
+                                        stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M5 13l4 4L19 7" />
+                                    </svg>
+                                    <span class="text-gray-300"><strong>Focus on growth</strong> - Not on fixing
+                                        problems</span>
+                                </li>
+                            </ul>
+
+                            <footer class="mt-8 p-4 bg-emerald-500/10 rounded-xl border border-emerald-500/20">
+                                <p class="text-emerald-300 text-sm italic">
+                                    "With ScalePlus, I launched my store in 15 minutes and made my first sale the same
+                                    day!"
+                                </p>
+                            </footer>
+                        </div>
+                    </article>
+                </div>
+            </div>
+        </section>
+
+        <section class="customer-logos py-12 px-4 sm:px-6 relative overflow-hidden">
+            <!-- Background Elements -->
+            <div class="absolute top-20 left-5 w-24 h-24 bg-ztore-purple/10 rounded-full blur-2xl"></div>
+            <div class="absolute bottom-20 right-5 w-28 h-28 bg-ztore-pink/10 rounded-full blur-2xl"></div>
+
+            <div class="max-w-6xl mx-auto">
+                <!-- Section Header -->
+                <div class="text-center mb-8">
+                    <h3 class="text-2xl sm:text-3xl font-bold text-white mb-3">
+                        Trusted by Industry Leaders
+                    </h3>
+                    <p class="text-gray-400 text-base max-w-2xl mx-auto">
+                        Join thousands of businesses accelerating their growth with ScalePlus
+                    </p>
+                </div>
+
+                <!-- Marquee Container -->
+                <div class="relative mb-8 overflow-hidden">
+                    <!-- Marquee Wrapper -->
+                    <div class="marquee-wrapper flex">
+                        <!-- First Set of Logos (Left to Right) -->
+                        <div class="marquee-track flex items-center animate-marquee whitespace-nowrap">
+                            <!-- Logo 1 -->
+                            <div class="flex items-center justify-center mx-2 sm:mx-3">
+                                <div
+                                    class="w-14 h-14 sm:w-16 sm:h-16 md:w-18 md:h-18 lg:w-20 lg:h-20 rounded-full overflow-hidden border-2 border-white/20 bg-white/5">
+                                    <img src="https://web.ztorespot.com/uploads/images/5749/2025/07/17/1752741539/WhatsAppImage2025-07-17at1.47.13PM.jpeg"
+                                        alt="Logo 1" class="w-full h-full object-cover">
+                                </div>
+                            </div>
+                            <!-- Logo 2 -->
+                            <div class="flex items-center justify-center mx-2 sm:mx-3">
+                                <div
+                                    class="w-14 h-14 sm:w-16 sm:h-16 md:w-18 md:h-18 lg:w-20 lg:h-20 rounded-full overflow-hidden border-2 border-white/20 bg-white/5">
+                                    <img src="./images/hero.jpg" alt="Logo 2" class="w-full h-full object-cover">
+                                </div>
+                            </div>
+                            <!-- Logo 3 -->
+                            <div class="flex items-center justify-center mx-2 sm:mx-3">
+                                <div
+                                    class="w-14 h-14 sm:w-16 sm:h-16 md:w-18 md:h-18 lg:w-20 lg:h-20 rounded-full overflow-hidden border-2 border-white/20 bg-white/5">
+                                    <img src="./images/hero.jpg" alt="Logo 3" class="w-full h-full object-cover">
+                                </div>
+                            </div>
+                            <!-- Logo 4 -->
+                            <div class="flex items-center justify-center mx-2 sm:mx-3">
+                                <div
+                                    class="w-14 h-14 sm:w-16 sm:h-16 md:w-18 md:h-18 lg:w-20 lg:h-20 rounded-full overflow-hidden border-2 border-white/20 bg-white/5">
+                                    <img src="./images/hero.jpg" alt="Logo 4" class="w-full h-full object-cover">
+                                </div>
+                            </div>
+                            <!-- Logo 5 -->
+                            <div class="flex items-center justify-center mx-2 sm:mx-3">
+                                <div
+                                    class="w-14 h-14 sm:w-16 sm:h-16 md:w-18 md:h-18 lg:w-20 lg:h-20 rounded-full overflow-hidden border-2 border-white/20 bg-white/5">
+                                    <img src="./images/hero.jpg" alt="Logo 5" class="w-full h-full object-cover">
+                                </div>
+                            </div>
+                            <!-- Logo 6 -->
+                            <div class="flex items-center justify-center mx-2 sm:mx-3">
+                                <div
+                                    class="w-14 h-14 sm:w-16 sm:h-16 md:w-18 md:h-18 lg:w-20 lg:h-20 rounded-full overflow-hidden border-2 border-white/20 bg-white/5">
+                                    <img src="./images/hero.jpg" alt="Logo 6" class="w-full h-full object-cover">
+                                </div>
+                            </div>
+                            <!-- Logo 7 -->
+                            <div class="flex items-center justify-center mx-2 sm:mx-3">
+                                <div
+                                    class="w-14 h-14 sm:w-16 sm:h-16 md:w-18 md:h-18 lg:w-20 lg:h-20 rounded-full overflow-hidden border-2 border-white/20 bg-white/5">
+                                    <img src="./images/hero.jpg" alt="Logo 7" class="w-full h-full object-cover">
+                                </div>
+                            </div>
+                            <!-- Logo 8 -->
+                            <div class="flex items-center justify-center mx-2 sm:mx-3">
+                                <div
+                                    class="w-14 h-14 sm:w-16 sm:h-16 md:w-18 md:h-18 lg:w-20 lg:h-20 rounded-full overflow-hidden border-2 border-white/20 bg-white/5">
+                                    <img src="./images/hero.jpg" alt="Logo 8" class="w-full h-full object-cover">
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Duplicate Set for Seamless Loop -->
+                        <div class="marquee-track flex items-center animate-marquee whitespace-nowrap"
+                            aria-hidden="true">
+                            <!-- Logo 1 -->
+                            <div class="flex items-center justify-center mx-2 sm:mx-3">
+                                <div
+                                    class="w-14 h-14 sm:w-16 sm:h-16 md:w-18 md:h-18 lg:w-20 lg:h-20 rounded-full overflow-hidden border-2 border-white/20 bg-white/5">
+                                    <img src="https://web.ztorespot.com/uploads/images/5749/2025/07/17/1752741539/WhatsAppImage2025-07-17at1.47.13PM.jpeg"
+                                        alt="Logo 1" class="w-full h-full object-cover">
+                                </div>
+                            </div>
+                            <!-- Logo 2 -->
+                            <div class="flex items-center justify-center mx-2 sm:mx-3">
+                                <div
+                                    class="w-14 h-14 sm:w-16 sm:h-16 md:w-18 md:h-18 lg:w-20 lg:h-20 rounded-full overflow-hidden border-2 border-white/20 bg-white/5">
+                                    <img src="./images/hero.jpg" alt="Logo 2" class="w-full h-full object-cover">
+                                </div>
+                            </div>
+                            <!-- Logo 3 -->
+                            <div class="flex items-center justify-center mx-2 sm:mx-3">
+                                <div
+                                    class="w-14 h-14 sm:w-16 sm:h-16 md:w-18 md:h-18 lg:w-20 lg:h-20 rounded-full overflow-hidden border-2 border-white/20 bg-white/5">
+                                    <img src="./images/hero.jpg" alt="Logo 3" class="w-full h-full object-cover">
+                                </div>
+                            </div>
+                            <!-- Logo 4 -->
+                            <div class="flex items-center justify-center mx-2 sm:mx-3">
+                                <div
+                                    class="w-14 h-14 sm:w-16 sm:h-16 md:w-18 md:h-18 lg:w-20 lg:h-20 rounded-full overflow-hidden border-2 border-white/20 bg-white/5">
+                                    <img src="./images/hero.jpg" alt="Logo 4" class="w-full h-full object-cover">
+                                </div>
+                            </div>
+                            <!-- Logo 5 -->
+                            <div class="flex items-center justify-center mx-2 sm:mx-3">
+                                <div
+                                    class="w-14 h-14 sm:w-16 sm:h-16 md:w-18 md:h-18 lg:w-20 lg:h-20 rounded-full overflow-hidden border-2 border-white/20 bg-white/5">
+                                    <img src="./images/hero.jpg" alt="Logo 5" class="w-full h-full object-cover">
+                                </div>
+                            </div>
+                            <!-- Logo 6 -->
+                            <div class="flex items-center justify-center mx-2 sm:mx-3">
+                                <div
+                                    class="w-14 h-14 sm:w-16 sm:h-16 md:w-18 md:h-18 lg:w-20 lg:h-20 rounded-full overflow-hidden border-2 border-white/20 bg-white/5">
+                                    <img src="./images/hero.jpg" alt="Logo 6" class="w-full h-full object-cover">
+                                </div>
+                            </div>
+                            <!-- Logo 7 -->
+                            <div class="flex items-center justify-center mx-2 sm:mx-3">
+                                <div
+                                    class="w-14 h-14 sm:w-16 sm:h-16 md:w-18 md:h-18 lg:w-20 lg:h-20 rounded-full overflow-hidden border-2 border-white/20 bg-white/5">
+                                    <img src="./images/hero.jpg" alt="Logo 7" class="w-full h-full object-cover">
+                                </div>
+                            </div>
+                            <!-- Logo 8 -->
+                            <div class="flex items-center justify-center mx-2 sm:mx-3">
+                                <div
+                                    class="w-14 h-14 sm:w-16 sm:h-16 md:w-18 md:h-18 lg:w-20 lg:h-20 rounded-full overflow-hidden border-2 border-white/20 bg-white/5">
+                                    <img src="./images/hero.jpg" alt="Logo 8" class="w-full h-full object-cover">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Gradient Fades -->
+                    <div class="absolute left-0 top-0 w-20 h-full bg-gradient-to-r from-[#0a0a1e] to-transparent z-10">
+                    </div>
+                    <div class="absolute right-0 top-0 w-20 h-full bg-gradient-to-l from-[#0a0a1e] to-transparent z-10">
+                    </div>
+                </div>
+
+                <!-- Image Arrow -->
+                <div class="flex justify-center mb-6">
+                    <div class="flex flex-col items-center">
+                        <!-- Arrow Image with smooth fade and shake effects -->
+                        <img src="./images/arrow.gif" alt="Arrow"
+                            class="w-24 h-20 sm:w-28 sm:h-24 md:w-32 md:h-28 animate-smoothFadeShake">
+                    </div>
+                </div>
+
+                <!-- "Next You" Section -->
+                <div class="text-center">
+                    <div
+                        class="inline-flex flex-col items-center gap-2 sm:gap-3 p-3 sm:p-4 bg-white/5 rounded-xl border border-white/10 backdrop-blur-xl">
+                        <!-- Empty Frame with Green Question Mark -->
+                        <div
+                            class="w-14 h-14 sm:w-16 sm:h-16 rounded-full border-2 border-dashed border-gray-500 flex items-center justify-center overflow-hidden bg-white/5">
+                            <span class="text-xl sm:text-2xl font-bold text-green-400">?</span>
+                        </div>
+
+                        <!-- Text -->
+                        <div>
+                            <h4 class="text-sm sm:text-base font-bold text-white mb-1">Next You?</h4>
+                            <p class="text-gray-400 text-xs max-w-xs">
+                                Join our growing community of successful businesses
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+
+
+
+        <!-- Testimonials Section - Interactive Cards -->
+        <section class="testimonials py-20 px-4 sm:px-6 relative overflow-hidden">
+            <!-- Background Elements -->
+            <div class="absolute top-20 left-5% w-48 h-48 bg-ztore-purple/10 rounded-full blur-3xl"></div>
+            <div class="absolute bottom-20 right-5% w-56 h-56 bg-ztore-pink/10 rounded-full blur-3xl"></div>
+
+            <div class="max-w-6xl mx-auto">
+                <!-- Section Header -->
+                <div class="text-center mb-16 opacity-0 animate-fade-in-up">
+                    <h2 class="text-3xl sm:text-4xl md:text-5xl font-bold mb-4">
+                        Trusted by <span class="text-gradient">Visionaries</span>
+                    </h2>
+                    <p class="text-xl text-gray-300 max-w-3xl mx-auto">
+                        See how industry leaders transformed their workflow with ScalePlus
+                    </p>
+                </div>
+
+                <!-- Interactive Testimonial Grid -->
+                <div class="testimonial-grid grid lg:grid-cols-2 gap-6 mb-12">
+                    <!-- Main Featured Testimonial -->
+                    <div class="featured-testimonial opacity-0 animate-slide-in-left">
+                        <div
+                            class="bg-gradient-to-br from-ztore-purple/20 to-ztore-pink/20 rounded-2xl p-8 h-full border border-white/10 backdrop-blur-xl relative overflow-hidden group hover:scale-[1.02] transition-transform duration-500">
+                            <!-- Floating Elements -->
+                            <div
+                                class="absolute -top-4 -right-4 w-20 h-20 bg-ztore-purple/30 rounded-full blur-xl group-hover:scale-150 transition-transform duration-500">
+                            </div>
+                            <div
+                                class="absolute -bottom-4 -left-4 w-16 h-16 bg-ztore-pink/30 rounded-full blur-xl group-hover:scale-150 transition-transform duration-500">
+                            </div>
+
+                            <!-- Quote Icon -->
+                            <div class="absolute top-6 right-6 opacity-20">
+                                <svg class="w-12 h-12 text-white" fill="currentColor" viewBox="0 0 24 24">
+                                    <path
+                                        d="M4.583 17.321C3.553 16.227 3 15 3 13.011c0-3.5 2.457-6.637 6.03-8.188l.893 1.378c-3.335 1.804-3.987 4.145-4.247 5.621.537-.278 1.24-.375 1.929-.311 1.804.167 3.226 1.648 3.226 3.489a3.5 3.5 0 01-3.5 3.5c-1.073 0-2.099-.49-2.748-1.179zm10 0C13.553 16.227 13 15 13 13.011c0-3.5 2.457-6.637 6.03-8.188l.893 1.378c-3.335 1.804-3.987 4.145-4.247 5.621.537-.278 1.24-.375 1.929-.311 1.804.167 3.226 1.648 3.226 3.489a3.5 3.5 0 01-3.5 3.5c-1.073 0-2.099-.49-2.748-1.179z" />
+                                </svg>
+                            </div>
+
+                            <div class="relative z-10">
+                                <!-- Rating Stars -->
+                                <div class="flex gap-1 mb-4">
+                                    <svg class="w-5 h-5 text-yellow-400" fill="currentColor" viewBox="0 0 20 20">
+                                        <path
+                                            d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                                    </svg>
+                                    <svg class="w-5 h-5 text-yellow-400" fill="currentColor" viewBox="0 0 20 20">
+                                        <path
+                                            d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                                    </svg>
+                                    <svg class="w-5 h-5 text-yellow-400" fill="currentColor" viewBox="0 0 20 20">
+                                        <path
+                                            d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                                    </svg>
+                                    <svg class="w-5 h-5 text-yellow-400" fill="currentColor" viewBox="0 0 20 20">
+                                        <path
+                                            d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                                    </svg>
+                                    <svg class="w-5 h-5 text-yellow-400" fill="currentColor" viewBox="0 0 20 20">
+                                        <path
+                                            d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                                    </svg>
+                                </div>
+
+                                <p class="text-lg text-gray-200 mb-6 leading-relaxed">
+                                    "ScalePlus revolutionized our entire workflow. What used to take days now happens in
+                                    hours. The intuitive interface and powerful features helped us scale beyond our
+                                    expectations."
+                                </p>
+
+                                <div class="flex items-center gap-4">
+                                    <div
+                                        class="w-12 h-12 bg-gradient-to-br from-ztore-purple to-ztore-pink rounded-full flex items-center justify-center text-white font-bold">
+                                        SJ
+                                    </div>
+                                    <div>
+                                        <h4 class="font-semibold text-white">Sarah Johnson</h4>
+                                        <p class="text-gray-400 text-sm">CTO, TechFlow Solutions</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Smaller Testimonials Grid -->
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                        <!-- Testimonial 1 -->
+                        <div class="testimonial-card opacity-0 animate-slide-in-left" style="animation-delay: 0.2s">
+                            <div
+                                class="bg-white/5 rounded-2xl p-6 h-full border border-white/5 backdrop-blur-xl hover:border-white/10 transition-all duration-300 group hover:scale-105">
+                                <div class="flex gap-1 mb-3">
+                                    <svg class="w-4 h-4 text-yellow-400" fill="currentColor" viewBox="0 0 20 20">
+                                        <path
+                                            d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                                    </svg>
+                                    <svg class="w-4 h-4 text-yellow-400" fill="currentColor" viewBox="0 0 20 20">
+                                        <path
+                                            d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                                    </svg>
+                                    <svg class="w-4 h-4 text-yellow-400" fill="currentColor" viewBox="0 0 20 20">
+                                        <path
+                                            d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                                    </svg>
+                                    <svg class="w-4 h-4 text-yellow-400" fill="currentColor" viewBox="0 0 20 20">
+                                        <path
+                                            d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                                    </svg>
+                                    <svg class="w-4 h-4 text-yellow-400" fill="currentColor" viewBox="0 0 20 20">
+                                        <path
+                                            d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                                    </svg>
+                                </div>
+                                <p class="text-gray-300 text-sm mb-4 leading-relaxed">
+                                    "The automation features saved us 20+ hours per week. Incredible ROI!"
+                                </p>
+                                <div class="flex items-center gap-3">
+                                    <div
+                                        class="w-8 h-8 bg-blue-500 rounded-full flex items-center justify-center text-white text-xs font-bold">
+                                        MK
+                                    </div>
+                                    <div>
+                                        <h4 class="font-semibold text-white text-sm">Mike Chen</h4>
+                                        <p class="text-gray-400 text-xs">Growth Lead</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Testimonial 2 -->
+                        <div class="testimonial-card opacity-0 animate-slide-in-left" style="animation-delay: 0.3s">
+                            <div
+                                class="bg-white/5 rounded-2xl p-6 h-full border border-white/5 backdrop-blur-xl hover:border-white/10 transition-all duration-300 group hover:scale-105">
+                                <div class="flex gap-1 mb-3">
+                                    <svg class="w-4 h-4 text-yellow-400" fill="currentColor" viewBox="0 0 20 20">
+                                        <path
+                                            d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                                    </svg>
+                                    <svg class="w-4 h-4 text-yellow-400" fill="currentColor" viewBox="0 0 20 20">
+                                        <path
+                                            d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                                    </svg>
+                                    <svg class="w-4 h-4 text-yellow-400" fill="currentColor" viewBox="0 0 20 20">
+                                        <path
+                                            d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                                    </svg>
+                                    <svg class="w-4 h-4 text-yellow-400" fill="currentColor" viewBox="0 0 20 20">
+                                        <path
+                                            d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                                    </svg>
+                                    <svg class="w-4 h-4 text-yellow-400" fill="currentColor" viewBox="0 0 20 20">
+                                        <path
+                                            d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                                    </svg>
+                                </div>
+                                <p class="text-gray-300 text-sm mb-4 leading-relaxed">
+                                    "Setup was incredibly smooth. Our team was productive from day one."
+                                </p>
+                                <div class="flex items-center gap-3">
+                                    <div
+                                        class="w-8 h-8 bg-green-500 rounded-full flex items-center justify-center text-white text-xs font-bold">
+                                        AR
+                                    </div>
+                                    <div>
+                                        <h4 class="font-semibold text-white text-sm">Alex Rivera</h4>
+                                        <p class="text-gray-400 text-xs">Product Manager</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Testimonial 3 -->
+                        <div class="testimonial-card opacity-0 animate-slide-in-left" style="animation-delay: 0.4s">
+                            <div
+                                class="bg-white/5 rounded-2xl p-6 h-full border border-white/5 backdrop-blur-xl hover:border-white/10 transition-all duration-300 group hover:scale-105">
+                                <div class="flex gap-1 mb-3">
+                                    <svg class="w-4 h-4 text-yellow-400" fill="currentColor" viewBox="0 0 20 20">
+                                        <path
+                                            d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                                    </svg>
+                                    <svg class="w-4 h-4 text-yellow-400" fill="currentColor" viewBox="0 0 20 20">
+                                        <path
+                                            d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                                    </svg>
+                                    <svg class="w-4 h-4 text-yellow-400" fill="currentColor" viewBox="0 0 20 20">
+                                        <path
+                                            d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                                    </svg>
+                                    <svg class="w-4 h-4 text-yellow-400" fill="currentColor" viewBox="0 0 20 20">
+                                        <path
+                                            d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                                    </svg>
+                                    <svg class="w-4 h-4 text-yellow-400" fill="currentColor" viewBox="0 0 20 20">
+                                        <path
+                                            d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                                    </svg>
+                                </div>
+                                <p class="text-gray-300 text-sm mb-4 leading-relaxed">
+                                    "The support team is exceptional. They actually understand our business needs."
+                                </p>
+                                <div class="flex items-center gap-3">
+                                    <div
+                                        class="w-8 h-8 bg-purple-500 rounded-full flex items-center justify-center text-white text-xs font-bold">
+                                        ED
+                                    </div>
+                                    <div>
+                                        <h4 class="font-semibold text-white text-sm">Emma Davis</h4>
+                                        <p class="text-gray-400 text-xs">Operations Director</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Testimonial 4 -->
+                        <div class="testimonial-card opacity-0 animate-slide-in-left" style="animation-delay: 0.5s">
+                            <div
+                                class="bg-white/5 rounded-2xl p-6 h-full border border-white/5 backdrop-blur-xl hover:border-white/10 transition-all duration-300 group hover:scale-105">
+                                <div class="flex gap-1 mb-3">
+                                    <svg class="w-4 h-4 text-yellow-400" fill="currentColor" viewBox="0 0 20 20">
+                                        <path
+                                            d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                                    </svg>
+                                    <svg class="w-4 h-4 text-yellow-400" fill="currentColor" viewBox="0 0 20 20">
+                                        <path
+                                            d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                                    </svg>
+                                    <svg class="w-4 h-4 text-yellow-400" fill="currentColor" viewBox="0 0 20 20">
+                                        <path
+                                            d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                                    </svg>
+                                    <svg class="w-4 h-4 text-yellow-400" fill="currentColor" viewBox="0 0 20 20">
+                                        <path
+                                            d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                                    </svg>
+                                    <svg class="w-4 h-4 text-yellow-400" fill="currentColor" viewBox="0 0 20 20">
+                                        <path
+                                            d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                                    </svg>
+                                </div>
+                                <p class="text-gray-300 text-sm mb-4 leading-relaxed">
+                                    "Scaled from 10 to 100+ users without any performance issues. Rock solid!"
+                                </p>
+                                <div class="flex items-center gap-3">
+                                    <div
+                                        class="w-8 h-8 bg-orange-500 rounded-full flex items-center justify-center text-white text-xs font-bold">
+                                        TJ
+                                    </div>
+                                    <div>
+                                        <h4 class="font-semibold text-white text-sm">Tom Johnson</h4>
+                                        <p class="text-gray-400 text-xs">Tech Lead</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Stats Bar -->
+                <div class="stats-bar opacity-0 animate-fade-in-up" style="animation-delay: 0.6s">
+                    <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
+                        <div
+                            class="text-center p-6 bg-white/5 rounded-2xl backdrop-blur-xl border border-white/5 hover:border-white/10 transition-all duration-300">
+                            <div class="text-3xl font-bold text-gradient mb-2">98%</div>
+                            <div class="text-gray-400 text-sm">Customer Satisfaction</div>
+                        </div>
+                        <div
+                            class="text-center p-6 bg-white/5 rounded-2xl backdrop-blur-xl border border-white/5 hover:border-white/10 transition-all duration-300">
+                            <div class="text-3xl font-bold text-gradient mb-2">4.9/5</div>
+                            <div class="text-gray-400 text-sm">Average Rating</div>
+                        </div>
+                        <div
+                            class="text-center p-6 bg-white/5 rounded-2xl backdrop-blur-xl border border-white/5 hover:border-white/10 transition-all duration-300">
+                            <div class="text-3xl font-bold text-gradient mb-2">2K+</div>
+                            <div class="text-gray-400 text-sm">Happy Customers</div>
+                        </div>
+                        <div
+                            class="text-center p-6 bg-white/5 rounded-2xl backdrop-blur-xl border border-white/5 hover:border-white/10 transition-all duration-300">
+                            <div class="text-3xl font-bold text-gradient mb-2">24/7</div>
+                            <div class="text-gray-400 text-sm">Support Response</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- A/B Testing Section -->
+        <section class="ab-testing py-20 px-4 sm:px-6 relative overflow-hidden">
+            <!-- Background Elements -->
+            <div class="absolute top-10 left-5% w-40 h-40 bg-ztore-purple/10 rounded-full blur-3xl"></div>
+            <div class="absolute bottom-10 right-5% w-48 h-48 bg-ztore-pink/10 rounded-full blur-3xl"></div>
+
+            <div class="max-w-7xl mx-auto">
+                <!-- Section Header -->
+                <div class="text-center mb-16 opacity-0 animate-fade-in-up">
+                    <h2 class="text-3xl sm:text-4xl md:text-5xl font-bold mb-4">
+                        Data-Driven <span class="text-gradient">Results</span>
+                    </h2>
+                    <p class="text-xl text-gray-300 max-w-3xl mx-auto">
+                        See how A/B testing transforms user experience and drives conversions
+                    </p>
+                </div>
+
+                <!-- A/B Test 1 - Variant B -->
+                <div class="ab-test-1 mb-20 opacity-0 animate-slide-in-left">
+                    <div class="grid lg:grid-cols-2 gap-12 items-center">
+                        <!-- Mobile: Image Top, Content Bottom -->
+                        <!-- Desktop: Image Left, Content Right -->
+                        <div class="relative order-1">
+                            <div class="relative z-10 transform hover:scale-[1.02] transition-transform duration-500">
+                                <!-- Main Image Container -->
+                                <div
+                                    class="bg-gradient-to-br from-orange-500/20 to-red-600/20 rounded-3xl p-6 backdrop-blur-xl border border-white/10">
+                                    <div class="relative">
+                                        <!-- Image -->
+                                        <div
+                                            class="w-full h-80 bg-gradient-to-br from-orange-400 to-red-500 rounded-2xl flex items-center justify-center overflow-hidden">
+                                            <img src="./images/hero.jpg" alt="Variant B - Optimized Workflow"
+                                                class="w-full h-full object-cover rounded-2xl">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Decorative Elements -->
+                                <div class="absolute -bottom-4 -left-4 w-20 h-20 bg-orange-400/30 rounded-full blur-xl">
+                                </div>
+                                <div class="absolute -top-4 -right-4 w-16 h-16 bg-red-400/30 rounded-full blur-xl">
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Mobile: Content Bottom, Image Top -->
+                        <!-- Desktop: Content Right, Image Left -->
+                        <div class="lg:pl-8 order-2">
+                            <div class="bg-white/5 rounded-2xl p-8 backdrop-blur-xl border border-white/10">
+                                <div class="flex items-center gap-3 mb-6">
+                                    <div class="w-12 h-12 bg-orange-500/20 rounded-xl flex items-center justify-center">
+                                        <svg class="w-6 h-6 text-orange-400" fill="none" stroke="currentColor"
+                                            viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                        </svg>
+                                    </div>
+                                    <h3 class="text-2xl font-bold text-white">Variant B Performance</h3>
+                                </div>
+
+                                <div class="space-y-4 mb-6">
+                                    <div class="flex justify-between items-center p-4 bg-white/5 rounded-xl">
+                                        <span class="text-gray-300">Time to Complete</span>
+                                        <span class="text-red-400 font-bold text-lg">-58%</span>
+                                    </div>
+                                    <div class="flex justify-between items-center p-4 bg-white/5 rounded-xl">
+                                        <span class="text-gray-300">Error Rate</span>
+                                        <span class="text-green-400 font-bold text-lg">-76%</span>
+                                    </div>
+                                    <div class="flex justify-between items-center p-4 bg-white/5 rounded-xl">
+                                        <span class="text-gray-300">User Satisfaction</span>
+                                        <span class="text-green-400 font-bold text-lg">+94%</span>
+                                    </div>
+                                </div>
+
+                                <p class="text-gray-300 leading-relaxed">
+                                    Variant B's optimized workflow reduced cognitive load and eliminated unnecessary
+                                    steps. Users reported higher satisfaction and were able to accomplish their goals
+                                    with minimal friction.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- A/B Test 2 - Variant A -->
+                <div class="ab-test-2 opacity-0 animate-slide-in-left" style="animation-delay: 0.3s">
+                    <div class="grid lg:grid-cols-2 gap-12 items-center">
+                        <!-- Mobile: Image Top, Content Bottom -->
+                        <!-- Desktop: Image Right, Content Left -->
+                        <div class="relative order-1 lg:order-2">
+                            <div class="relative z-10 transform hover:scale-[1.02] transition-transform duration-500">
+                                <!-- Main Image Container -->
+                                <div
+                                    class="bg-gradient-to-br from-blue-500/20 to-purple-600/20 rounded-3xl p-6 backdrop-blur-xl border border-white/10">
+                                    <div class="relative">
+                                        <!-- Image -->
+                                        <div
+                                            class="w-full h-80 bg-gradient-to-br from-blue-400 to-purple-500 rounded-2xl flex items-center justify-center overflow-hidden">
+                                            <img src="./images/hero.jpg" alt="Variant A - A/B Test Dashboard"
+                                                class="w-full h-full object-cover rounded-2xl">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Decorative Elements -->
+                                <div class="absolute -bottom-4 -right-4 w-20 h-20 bg-blue-400/30 rounded-full blur-xl">
+                                </div>
+                                <div class="absolute -top-4 -left-4 w-16 h-16 bg-purple-400/30 rounded-full blur-xl">
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Mobile: Content Bottom, Image Top -->
+                        <!-- Desktop: Content Left, Image Right -->
+                        <div class="lg:pr-8 order-2 lg:order-1">
+                            <div class="bg-white/5 rounded-2xl p-8 backdrop-blur-xl border border-white/10">
+                                <div class="flex items-center gap-3 mb-6">
+                                    <div class="w-12 h-12 bg-blue-500/20 rounded-xl flex items-center justify-center">
+                                        <svg class="w-6 h-6 text-blue-400" fill="none" stroke="currentColor"
+                                            viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+                                        </svg>
+                                    </div>
+                                    <h3 class="text-2xl font-bold text-white">Variant A Insights</h3>
+                                </div>
+
+                                <div class="space-y-4 mb-6">
+                                    <div class="flex justify-between items-center p-4 bg-white/5 rounded-xl">
+                                        <span class="text-gray-300">Conversion Rate</span>
+                                        <span class="text-green-400 font-bold text-lg">+42%</span>
+                                    </div>
+                                    <div class="flex justify-between items-center p-4 bg-white/5 rounded-xl">
+                                        <span class="text-gray-300">User Engagement</span>
+                                        <span class="text-green-400 font-bold text-lg">+67%</span>
+                                    </div>
+                                    <div class="flex justify-between items-center p-4 bg-white/5 rounded-xl">
+                                        <span class="text-gray-300">Revenue Impact</span>
+                                        <span class="text-green-400 font-bold text-lg">+89%</span>
+                                    </div>
+                                </div>
+
+                                <p class="text-gray-300 leading-relaxed">
+                                    Variant A's simplified interface and clear CTAs resulted in significantly higher
+                                    conversion rates. Users found the workflow intuitive and completed tasks 3x faster
+                                    than the control group.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+<!-- Use Case Section -->
+<section class="relative py-12 overflow-hidden">
+    <div class="max-w-6xl mx-auto text-center mb-8 px-6">
+        <h2 class="text-3xl sm:text-4xl font-bold mb-3 text-white">
+            <span class="text-gradient">Niches</span> that Boost Revenue
+        </h2>
+        <p class="text-gray-300 max-w-2xl mx-auto text-sm">
+            Proven results across industries — optimized for faster growth and higher conversions.
         </p>
+    </div>
 
+    <!-- 3D Circle Carousel Container -->
+    <div class="carousel-3d-circle-container relative h-[500px] md:h-[550px] flex items-center justify-center">
+
+        <div class="carousel-3d-circle relative w-full h-full">
+
+            <!-- Card 1 -->
+            <div class="circle-3d-card active" data-position="0">
+                <div class="card-inner bg-gradient-to-br from-blue-600 to-blue-800">
+                    <div class="image-wrapper">
+                        <img src="https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?auto=format&fit=crop&w=900&q=80"
+                            class="card-img">
+                    </div>
+                    <div class="card-content">
+                        <h3 class="text-lg md:text-xl font-bold text-white mb-1">Electronics</h3>
+                        <p class="text-gray-100 text-xs">Gadgets & accessories</p>
+                        <div class="mt-1 p-1 bg-black/20 rounded border border-white/20">
+                            <p class="text-green-300 text-xs">"Revenue +40%"</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Card 2 -->
+            <div class="circle-3d-card" data-position="1">
+                <div class="card-inner bg-gradient-to-br from-pink-600 to-pink-800">
+                    <div class="image-wrapper">
+                        <img src="https://images.unsplash.com/photo-1520975918318-3e7a4ab5a8eb?auto=format&fit=crop&w=900&q=80"
+                            class="card-img">
+                    </div>
+                    <div class="card-content">
+                        <h3 class="text-lg md:text-xl font-bold text-white mb-1">Fashion</h3>
+                        <p class="text-gray-100 text-xs">Personalized collections</p>
+                        <div class="mt-1 p-1 bg-black/20 rounded border border-white/20">
+                            <p class="text-green-300 text-xs">"Upsell +30%"</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Card 3 -->
+            <div class="circle-3d-card" data-position="2">
+                <div class="card-inner bg-gradient-to-br from-amber-600 to-amber-800">
+                    <div class="image-wrapper">
+                        <img src="https://images.unsplash.com/photo-1578898881192-c9d6f82e0f1f?auto=format&fit=crop&w=900&q=80"
+                            class="card-img">
+                    </div>
+                    <div class="card-content">
+                        <h3 class="text-lg md:text-xl font-bold text-white mb-1">Toys & Games</h3>
+                        <p class="text-gray-100 text-xs">Trending for all ages</p>
+                        <div class="mt-1 p-1 bg-black/20 rounded border border-white/20">
+                            <p class="text-green-300 text-xs">"Sales +35%"</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Card 4 -->
+            <div class="circle-3d-card" data-position="3">
+                <div class="card-inner bg-gradient-to-br from-emerald-600 to-emerald-800">
+                    <div class="image-wrapper">
+                        <img src="https://images.unsplash.com/photo-1586201375761-83865001b3c1?auto=format&fit=crop&w=900&q=80"
+                            class="card-img">
+                    </div>
+                    <div class="card-content">
+                        <h3 class="text-lg md:text-xl font-bold text-white mb-1">Groceries</h3>
+                        <p class="text-gray-100 text-xs">Fresh essentials</p>
+                        <div class="mt-1 p-1 bg-black/20 rounded border border-white/20">
+                            <p class="text-green-300 text-xs">"Orders +20%"</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Card 5 -->
+            <div class="circle-3d-card" data-position="4">
+                <div class="card-inner bg-gradient-to-br from-purple-600 to-purple-800">
+                    <div class="image-wrapper">
+                        <img src="https://images.unsplash.com/photo-1587019157575-9d6d80d528b5?auto=format&fit=crop&w=900&q=80"
+                            class="card-img">
+                    </div>
+                    <div class="card-content">
+                        <h3 class="text-lg md:text-xl font-bold text-white mb-1">Home Decor</h3>
+                        <p class="text-gray-100 text-xs">Stylish & functional</p>
+                        <div class="mt-1 p-1 bg-black/20 rounded border border-white/20">
+                            <p class="text-green-300 text-xs">"Repeat +25%"</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Card 6 -->
+            <div class="circle-3d-card" data-position="5">
+                <div class="card-inner bg-gradient-to-br from-cyan-600 to-cyan-800">
+                    <div class="image-wrapper">
+                        <img src="https://images.unsplash.com/photo-1607746882042-944635dfe10e?auto=format&fit=crop&w=900&q=80"
+                            class="card-img">
+                    </div>
+                    <div class="card-content">
+                        <h3 class="text-lg md:text-xl font-bold text-white mb-1">Dropshipping</h3>
+                        <p class="text-gray-100 text-xs">Global fulfillment</p>
+                        <div class="mt-1 p-1 bg-black/20 rounded border border-white/20">
+                            <p class="text-green-300 text-xs">"Costs -30%"</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Navigation Arrows -->
         <button
-            class="cta bg-white text-black rounded-xl py-3 px-6 sm:py-3.5 sm:px-7 font-semibold cursor-pointer transition-all duration-300 inline-flex items-center gap-2 border-none opacity-0 animate-fade-in-up btn-hover relative overflow-hidden hover:bg-gradient-to-br hover:from-ztore-purple hover:to-ztore-pink hover:text-white hover:-translate-y-1 hover:shadow-[0_8px_25px_rgba(138,0,255,0.4)] text-sm sm:text-base"
-            style="animation-delay: 1s">
-            Book A Free Demo →
+            class="carousel-prev absolute left-4 md:left-8 bg-white/10 hover:bg-white/20 text-white p-2 rounded-full backdrop-blur-xl border border-white/10 transition-all duration-300 z-20 hover:scale-110">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+            </svg>
+        </button>
+        <button
+            class="carousel-next absolute right-4 md:right-8 bg-white/10 hover:bg-white/20 text-white p-2 rounded-full backdrop-blur-xl border border-white/10 transition-all duration-300 z-20 hover:scale-110">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+            </svg>
         </button>
 
-<!-- RESPONSIVE DASHBOARD SECTION WITH VIDEO -->
-<section
-    class="dashboard mt-12 sm:mt-16 mx-auto w-full max-w-4xl xl:max-w-5xl bg-[#121019]/80 rounded-2xl p-4 sm:p-6 backdrop-blur-xl shadow-[0_0_40px_rgba(0,0,0,0.4)] relative z-[30] overflow-hidden mb-9 transform-gpu transition-transform duration-700 will-change-transform">
-    <div class="glow-border"></div>
-
-    <div class="flex items-center justify-center relative z-10 w-full">
-        <!-- Video container that adapts to video aspect ratio -->
-        <div class="w-full max-w-5xl aspect-video rounded-xl bg-[#1a1722] overflow-hidden">
-            <!-- Video with full view - no cropping -->
-            <video 
-                class="w-full h-full object-contain rounded-xl" 
-                autoplay 
-                muted 
-                loop 
-                playsinline 
-                preload="auto"
-                poster="./images/hero.jpg">
-                <source src="./images/Hero.webm" type="video/webm">
-                <source src="./images/Hero.mp4" type="video/mp4">
-                <!-- Fallback to image if video not supported -->
-                <img src="./images/hero.jpg" alt="Dashboard Preview" class="w-full h-full object-contain rounded-xl">
-            </video>
-        </div>
     </div>
 </section>
 
+<style>
+.carousel-3d-circle-container {
+  perspective: 1200px;
+}
+
+.carousel-3d-circle {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  transform-style: preserve-3d;
+  transition: transform 1s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.circle-3d-card {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 220px;
+  height: 260px;
+  transform-style: preserve-3d;
+  transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+  transform-origin: center;
+}
+
+.card-inner {
+  width: 100%;
+  height: 100%;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.4);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  display: flex;
+  flex-direction: column;
+  backdrop-filter: blur(20px);
+  transform-style: preserve-3d;
+  transition: all 0.4s ease;
+}
+
+.image-wrapper {
+  height: 140px;
+  overflow: hidden;
+  position: relative;
+}
+
+.card-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.5s ease;
+}
+
+.card-content {
+  padding: 1rem;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+/* Correct 3D Positioning - No mirror effect */
+.circle-3d-card[data-position="0"] { 
+  transform: translate(-50%, -50%) rotateY(0deg) translateZ(220px); 
+}
+.circle-3d-card[data-position="1"] { 
+  transform: translate(-50%, -50%) rotateY(60deg) translateZ(220px); 
+}
+.circle-3d-card[data-position="2"] { 
+  transform: translate(-50%, -50%) rotateY(120deg) translateZ(220px); 
+}
+.circle-3d-card[data-position="3"] { 
+  transform: translate(-50%, -50%) rotateY(180deg) translateZ(220px); 
+}
+.circle-3d-card[data-position="4"] { 
+  transform: translate(-50%, -50%) rotateY(240deg) translateZ(220px); 
+}
+.circle-3d-card[data-position="5"] { 
+  transform: translate(-50%, -50%) rotateY(300deg) translateZ(220px); 
+}
+
+/* Active state - only center card is fully visible and interactive */
+.circle-3d-card.active .card-inner {
+  transform: translateZ(40px) scale(1.1);
+  filter: brightness(1.2);
+  border-color: rgba(255, 255, 255, 0.5);
+  opacity: 1;
+}
+
+/* Side cards styling - reduced visibility */
+.circle-3d-card:not(.active) .card-inner {
+  filter: brightness(0.6) blur(1px);
+  opacity: 0.6;
+  transform: translateZ(15px) scale(0.9);
+}
+
+/* Hover effects only on active card */
+.circle-3d-card.active:hover .card-inner {
+  transform: translateZ(50px) scale(1.15);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6);
+}
+
+.circle-3d-card.active:hover .card-img {
+  transform: scale(1.1);
+}
+
+/* Disable hover on non-active cards */
+.circle-3d-card:not(.active):hover .card-inner {
+  transform: translateZ(15px) scale(0.9);
+  cursor: default;
+}
+
+/* Responsive */
+@media (max-width: 1024px) {
+  .circle-3d-card[data-position="0"],
+  .circle-3d-card[data-position="1"],
+  .circle-3d-card[data-position="2"],
+  .circle-3d-card[data-position="3"],
+  .circle-3d-card[data-position="4"],
+  .circle-3d-card[data-position="5"] {
+    transform: translate(-50%, -50%) rotateY(var(--rotate)) translateZ(180px);
+  }
+  
+  .circle-3d-card {
+    width: 200px;
+    height: 240px;
+  }
+}
+
+@media (max-width: 768px) {
+  .circle-3d-card[data-position="0"],
+  .circle-3d-card[data-position="1"],
+  .circle-3d-card[data-position="2"],
+  .circle-3d-card[data-position="3"],
+  .circle-3d-card[data-position="4"],
+  .circle-3d-card[data-position="5"] {
+    transform: translate(-50%, -50%) rotateY(var(--rotate)) translateZ(140px);
+  }
+  
+  .circle-3d-card {
+    width: 180px;
+    height: 220px;
+  }
+  
+  .image-wrapper {
+    height: 120px;
+  }
+  
+  .card-content {
+    padding: 0.75rem;
+  }
+}
+</style>
+
+<script>
+class CircleCarousel3D {
+  constructor() {
+    this.carousel = document.querySelector('.carousel-3d-circle');
+    this.cards = document.querySelectorAll('.circle-3d-card');
+    this.prevBtn = document.querySelector('.carousel-prev');
+    this.nextBtn = document.querySelector('.carousel-next');
+    
+    this.currentRotation = 0;
+    this.angle = 60; // 360 / 6 cards
+    this.isAnimating = false;
+    
+    this.init();
+  }
+  
+  init() {
+    this.setCardPositions();
+    
+    this.prevBtn.addEventListener('click', () => this.rotate(this.angle));
+    this.nextBtn.addEventListener('click', () => this.rotate(-this.angle));
+    
+    // Add touch/mouse drag support
+    this.addDragSupport();
+    
+    // Auto-rotate clockwise
+    setInterval(() => this.rotate(this.angle), 4000);
+  }
+  
+  setCardPositions() {
+    this.cards.forEach((card, index) => {
+      const rotate = index * this.angle;
+      card.style.setProperty('--rotate', `${rotate}deg`);
+      card.classList.remove('active');
+    });
+    
+    // Set front card as active
+    const activeIndex = this.getActiveIndex();
+    this.cards[activeIndex].classList.add('active');
+  }
+  
+  getActiveIndex() {
+    const normalizedRotation = (360 - this.currentRotation) % 360;
+    const activeIndex = Math.round(normalizedRotation / this.angle) % this.cards.length;
+    return activeIndex;
+  }
+  
+  rotate(angle) {
+    if (this.isAnimating) return;
+    this.isAnimating = true;
+    
+    this.currentRotation = (this.currentRotation + angle) % 360;
+    this.carousel.style.transform = `rotateY(${this.currentRotation}deg)`;
+    
+    setTimeout(() => {
+      this.setCardPositions();
+      this.isAnimating = false;
+    }, 800);
+  }
+  
+  addDragSupport() {
+    let startX = 0;
+    let currentX = 0;
+    let isDragging = false;
+    
+    const container = this.carousel;
+    
+    container.addEventListener('mousedown', (e) => {
+      startX = e.clientX;
+      isDragging = true;
+      container.style.cursor = 'grabbing';
+    });
+    
+    container.addEventListener('mousemove', (e) => {
+      if (!isDragging) return;
+      currentX = e.clientX;
+      const diff = currentX - startX;
+      
+      if (Math.abs(diff) > 50) {
+        const dragRotation = this.currentRotation + (diff * 0.5);
+        container.style.transform = `rotateY(${dragRotation}deg)`;
+      }
+    });
+    
+    container.addEventListener('mouseup', (e) => {
+      if (!isDragging) return;
+      isDragging = false;
+      container.style.cursor = 'grab';
+      
+      const diff = e.clientX - startX;
+      
+      if (Math.abs(diff) > 50) {
+        const direction = diff > 0 ? this.angle : -this.angle;
+        this.rotate(direction);
+      } else {
+        container.style.transform = `rotateY(${this.currentRotation}deg)`;
+      }
+    });
+    
+    container.addEventListener('mouseleave', () => {
+      if (isDragging) {
+        isDragging = false;
+        container.style.cursor = 'grab';
+        container.style.transform = `rotateY(${this.currentRotation}deg)`;
+      }
+    });
+    
+    // Touch support
+    container.addEventListener('touchstart', (e) => {
+      startX = e.touches[0].clientX;
+      isDragging = true;
+    });
+    
+    container.addEventListener('touchmove', (e) => {
+      if (!isDragging) return;
+      currentX = e.touches[0].clientX;
+      const diff = currentX - startX;
+      
+      if (Math.abs(diff) > 30) {
+        const dragRotation = this.currentRotation + (diff * 0.5);
+        container.style.transform = `rotateY(${dragRotation}deg)`;
+      }
+    });
+    
+    container.addEventListener('touchend', (e) => {
+      if (!isDragging) return;
+      isDragging = false;
+      
+      const diff = e.changedTouches[0].clientX - startX;
+      
+      if (Math.abs(diff) > 50) {
+        const direction = diff > 0 ? this.angle : -this.angle;
+        this.rotate(direction);
+      } else {
+        container.style.transform = `rotateY(${this.currentRotation}deg)`;
+      }
+    });
+    
+    container.style.cursor = 'grab';
+  }
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  new CircleCarousel3D();
+});
+</script>
+
+
+
+
+
+        <!-- Pricing Plans Section -->
+        <section class="pricing py-20 px-4 sm:px-6 relative overflow-hidden">
+            <!-- Background Elements -->
+            <div class="absolute top-20 left-10% w-48 h-48 bg-ztore-purple/10 rounded-full blur-3xl"></div>
+            <div class="absolute bottom-20 right-10% w-56 h-56 bg-ztore-pink/10 rounded-full blur-3xl"></div>
+
+            <div class="max-w-7xl mx-auto">
+                <!-- Section Header -->
+                <div class="text-center mb-16 opacity-0 animate-fade-in-up">
+                    <h2 class="text-3xl sm:text-4xl md:text-5xl font-bold mb-4">
+                        Simple, <span class="text-gradient">Transparent</span> Pricing
+                    </h2>
+                    <p class="text-xl text-gray-300 max-w-3xl mx-auto">
+                        Choose the perfect plan for your business. No hidden fees, no surprises.
+                    </p>
+                </div>
+
+                <!-- Billing Toggle -->
+                <!-- Billing Toggle -->
+                <div class="flex justify-center mb-12 lg:mb-16 opacity-0 animate-fade-in-up"
+                    style="animation-delay: 0.2s">
+                    <div class="bg-white/5 rounded-2xl p-2 backdrop-blur-xl border border-white/10 relative">
+                        <!-- Save 20% Message Style Bubble -->
+                        <div class="absolute -top-12 -right-4">
+                            <div
+                                class="bg-green-500 text-white px-4 py-2 rounded-2xl font-semibold text-sm shadow-lg relative">
+                                Save 20% yearly!
+                                <!-- Message tail -->
+                                <div class="absolute -bottom-2 right-6 w-4 h-4 bg-green-500 transform rotate-45"></div>
+                            </div>
+                        </div>
+
+                        <div class="flex items-center gap-2">
+                            <button
+                                class="billing-toggle monthly-toggle px-6 py-3 rounded-xl font-semibold transition-all duration-500 bg-gradient-to-br from-ztore-purple to-ztore-pink text-white">
+                                Monthly
+                            </button>
+                            <button
+                                class="billing-toggle yearly-toggle px-6 py-3 rounded-xl font-semibold text-gray-300 transition-all duration-500 hover:text-white">
+                                Yearly
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Pricing Cards Container -->
+                <div class="pricing-cards flex flex-col lg:flex-row items-center justify-center gap-8 max-w-7xl mx-auto opacity-0 animate-fade-in-up"
+                    style="animation-delay: 0.4s">
+
+                    <!-- Starter Plan -->
+                    <div class="pricing-card group relative w-full lg:w-80">
+                        <div
+                            class="bg-white/5 rounded-3xl p-8 h-full border border-white/10 backdrop-blur-xl transition-all duration-500 group-hover:border-ztore-purple/50 group-hover:scale-105">
+                            <!-- Plan Header -->
+                            <div class="text-center mb-8">
+                                <h3 class="text-2xl font-bold text-white mb-2">Starter</h3>
+                                <!-- In Starter Plan -->
+                                <div class="price-display">
+                                    <div class="monthly-price">
+                                        <span class="text-4xl font-bold text-white">$29</span>
+                                        <span class="text-gray-400">/month</span>
+                                    </div>
+                                    <div class="yearly-price hidden"> <!-- Add 'hidden' here -->
+                                        <span class="text-4xl font-bold text-white">$23</span>
+                                        <span class="text-gray-400">/month</span>
+                                    </div>
+                                </div>
+                                <p class="text-gray-400 text-sm mt-2">Perfect for small businesses</p>
+                            </div>
+
+                            <!-- Features -->
+                            <ul class="space-y-4 mb-8">
+                                <li class="flex items-center gap-3">
+                                    <svg class="w-5 h-5 text-green-400 flex-shrink-0" fill="none" stroke="currentColor"
+                                        viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M5 13l4 4L19 7" />
+                                    </svg>
+                                    <span class="text-gray-300">Up to 5 team members</span>
+                                </li>
+                                <li class="flex items-center gap-3">
+                                    <svg class="w-5 h-5 text-green-400 flex-shrink-0" fill="none" stroke="currentColor"
+                                        viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M5 13l4 4L19 7" />
+                                    </svg>
+                                    <span class="text-gray-300">Basic A/B testing</span>
+                                </li>
+                                <li class="flex items-center gap-3">
+                                    <svg class="w-5 h-5 text-green-400 flex-shrink-0" fill="none" stroke="currentColor"
+                                        viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M5 13l4 4L19 7" />
+                                    </svg>
+                                    <span class="text-gray-300">Email support</span>
+                                </li>
+                                <li class="flex items-center gap-3">
+                                    <svg class="w-5 h-5 text-gray-500 flex-shrink-0" fill="none" stroke="currentColor"
+                                        viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M6 18L18 6M6 6l12 12" />
+                                    </svg>
+                                    <span class="text-gray-500">Advanced analytics</span>
+                                </li>
+                            </ul>
+
+                            <!-- CTA Button -->
+                            <button
+                                class="w-full bg-white/10 hover:bg-white/20 text-white py-3 rounded-xl font-semibold transition-all duration-300 border border-white/10 hover:border-white/30">
+                                Get Started
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Pro Plan (Recommended - Zoom Out) -->
+                    <div
+                        class="pricing-card pro-plan group relative w-full lg:w-96 transform lg:scale-110 lg:-mt-4 order-first lg:order-none">
+                        <!-- Recommended Badge -->
+                        <div class="absolute -top-4 left-1/2 transform -translate-x-1/2 z-10">
+                            <div
+                                class="bg-gradient-to-r from-ztore-purple to-ztore-pink text-white px-6 py-2 rounded-full text-sm font-bold shadow-lg">
+                                MOST POPULAR
+                            </div>
+                        </div>
+
+                        <div
+                            class="bg-gradient-to-br from-ztore-purple/20 to-ztore-pink/20 rounded-3xl p-8 h-full border border-ztore-purple/50 backdrop-blur-xl transition-all duration-500 group-hover:scale-105 group-hover:shadow-2xl group-hover:shadow-ztore-purple/30">
+                            <!-- Plan Header -->
+                            <div class="text-center mb-8">
+                                <h3 class="text-2xl font-bold text-white mb-2">Professional</h3>
+                                <!-- In Pro Plan -->
+                                <div class="price-display">
+                                    <div class="monthly-price">
+                                        <span class="text-4xl font-bold text-white">$79</span>
+                                        <span class="text-gray-400">/month</span>
+                                    </div>
+                                    <div class="yearly-price hidden"> <!-- Add 'hidden' here -->
+                                        <span class="text-4xl font-bold text-white">$63</span>
+                                        <span class="text-gray-400">/month</span>
+                                    </div>
+                                </div>
+                                <p class="text-gray-300 text-sm mt-2">Perfect for growing teams</p>
+                            </div>
+
+                            <!-- Features -->
+                            <ul class="space-y-4 mb-8">
+                                <li class="flex items-center gap-3">
+                                    <svg class="w-5 h-5 text-green-400 flex-shrink-0" fill="none" stroke="currentColor"
+                                        viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M5 13l4 4L19 7" />
+                                    </svg>
+                                    <span class="text-gray-300">Up to 20 team members</span>
+                                </li>
+                                <li class="flex items-center gap-3">
+                                    <svg class="w-5 h-5 text-green-400 flex-shrink-0" fill="none" stroke="currentColor"
+                                        viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M5 13l4 4L19 7" />
+                                    </svg>
+                                    <span class="text-gray-300">Advanced A/B testing</span>
+                                </li>
+                                <li class="flex items-center gap-3">
+                                    <svg class="w-5 h-5 text-green-400 flex-shrink-0" fill="none" stroke="currentColor"
+                                        viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M5 13l4 4L19 7" />
+                                    </svg>
+                                    <span class="text-gray-300">Priority support</span>
+                                </li>
+                                <li class="flex items-center gap-3">
+                                    <svg class="w-5 h-5 text-green-400 flex-shrink-0" fill="none" stroke="currentColor"
+                                        viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M5 13l4 4L19 7" />
+                                    </svg>
+                                    <span class="text-gray-300">Advanced analytics</span>
+                                </li>
+                            </ul>
+
+                            <!-- CTA Button -->
+                            <button
+                                class="w-full bg-gradient-to-br from-ztore-purple to-ztore-pink hover:from-ztore-purple/90 hover:to-ztore-pink/90 text-white py-3 rounded-xl font-semibold transition-all duration-300 shadow-lg hover:shadow-ztore-purple/30 hover:scale-105">
+                                Start Free Trial
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Enterprise Plan -->
+                    <div class="pricing-card group relative w-full lg:w-80">
+                        <div
+                            class="bg-white/5 rounded-3xl p-8 h-full border border-white/10 backdrop-blur-xl transition-all duration-500 group-hover:border-ztore-pink/50 group-hover:scale-105">
+                            <!-- Plan Header -->
+                            <div class="text-center mb-8">
+                                <h3 class="text-2xl font-bold text-white mb-2">Enterprise</h3>
+                                <!-- In Enterprise Plan -->
+                                <div class="price-display">
+                                    <div class="monthly-price">
+                                        <span class="text-4xl font-bold text-white">$199</span>
+                                        <span class="text-gray-400">/month</span>
+                                    </div>
+                                    <div class="yearly-price hidden"> <!-- Add 'hidden' here -->
+                                        <span class="text-4xl font-bold text-white">$159</span>
+                                        <span class="text-gray-400">/month</span>
+                                    </div>
+                                </div>
+                                <p class="text-gray-400 text-sm mt-2">For large organizations</p>
+                            </div>
+
+                            <!-- Features -->
+                            <ul class="space-y-4 mb-8">
+                                <li class="flex items-center gap-3">
+                                    <svg class="w-5 h-5 text-green-400 flex-shrink-0" fill="none" stroke="currentColor"
+                                        viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M5 13l4 4L19 7" />
+                                    </svg>
+                                    <span class="text-gray-300">Unlimited team members</span>
+                                </li>
+                                <li class="flex items-center gap-3">
+                                    <svg class="w-5 h-5 text-green-400 flex-shrink-0" fill="none" stroke="currentColor"
+                                        viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M5 13l4 4L19 7" />
+                                    </svg>
+                                    <span class="text-gray-300">Enterprise A/B testing</span>
+                                </li>
+                                <li class="flex items-center gap-3">
+                                    <svg class="w-5 h-5 text-green-400 flex-shrink-0" fill="none" stroke="currentColor"
+                                        viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M5 13l4 4L19 7" />
+                                    </svg>
+                                    <span class="text-gray-300">24/7 dedicated support</span>
+                                </li>
+                                <li class="flex items-center gap-3">
+                                    <svg class="w-5 h-5 text-green-400 flex-shrink-0" fill="none" stroke="currentColor"
+                                        viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M5 13l4 4L19 7" />
+                                    </svg>
+                                    <span class="text-gray-300">Custom integrations</span>
+                                </li>
+                            </ul>
+
+                            <!-- CTA Button -->
+                            <button
+                                class="w-full bg-white/10 hover:bg-white/20 text-white py-3 rounded-xl font-semibold transition-all duration-300 border border-white/10 hover:border-white/30">
+                                Contact Sales
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Trust Badge -->
+                <div class="text-center mt-12 opacity-0 animate-fade-in-up" style="animation-delay: 0.6s">
+                    <div class="inline-flex items-center gap-4 text-gray-400 text-sm">
+                        <svg class="w-5 h-5 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                        </svg>
+                        <span>30-day money-back guarantee • No credit card required • Cancel anytime</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
         <script>
-            const section = document.querySelector(".dashboard");
-            const video = document.querySelector("video");
+            // Billing Toggle Animation
+            document.addEventListener('DOMContentLoaded', function () {
+                const monthlyToggle = document.querySelector('.monthly-toggle');
+                const yearlyToggle = document.querySelector('.yearly-toggle');
+                const monthlyPrices = document.querySelectorAll('.monthly-price');
+                const yearlyPrices = document.querySelectorAll('.yearly-price');
 
-            // Video autoplay when section is straight to viewer
-            const observer = new IntersectionObserver((entries) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        // Section is visible and straight to viewer
-                        video.play().catch(e => console.log("Video autoplay failed:", e));
-                    } else {
-                        // Section is not visible
-                        video.pause();
-                    }
+                // Initialize with monthly active (default)
+                yearlyToggle.classList.remove('bg-gradient-to-br', 'from-ztore-purple', 'to-ztore-pink', 'text-white');
+                yearlyToggle.classList.add('text-gray-300');
+
+                monthlyToggle.addEventListener('click', function () {
+                    // Update toggle buttons
+                    monthlyToggle.classList.add('bg-gradient-to-br', 'from-ztore-purple', 'to-ztore-pink', 'text-white');
+                    monthlyToggle.classList.remove('text-gray-300');
+                    yearlyToggle.classList.remove('bg-gradient-to-br', 'from-ztore-purple', 'to-ztore-pink', 'text-white');
+                    yearlyToggle.classList.add('text-gray-300');
+
+                    // Animate price changes
+                    monthlyPrices.forEach(price => {
+                        price.classList.remove('hidden');
+                        price.style.animation = 'fadeInUp 0.5s ease';
+                    });
+                    yearlyPrices.forEach(price => {
+                        price.classList.add('hidden');
+                    });
                 });
-            }, {
-                threshold: 0.7 // Trigger when 70% of section is visible
+
+                yearlyToggle.addEventListener('click', function () {
+                    // Update toggle buttons
+                    yearlyToggle.classList.add('bg-gradient-to-br', 'from-ztore-purple', 'to-ztore-pink', 'text-white');
+                    yearlyToggle.classList.remove('text-gray-300');
+                    monthlyToggle.classList.remove('bg-gradient-to-br', 'from-ztore-purple', 'to-ztore-pink', 'text-white');
+                    monthlyToggle.classList.add('text-gray-300');
+
+                    // Animate price changes
+                    yearlyPrices.forEach(price => {
+                        price.classList.remove('hidden');
+                        price.style.animation = 'fadeInUp 0.5s ease';
+                    });
+                    monthlyPrices.forEach(price => {
+                        price.classList.add('hidden');
+                    });
+                });
+
+                // Animation trigger for pricing section
+                const observerOptions = {
+                    threshold: 0.2,
+                    rootMargin: '0px 0px -50px 0px'
+                };
+
+                const observer = new IntersectionObserver(function (entries) {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            const elements = entry.target.querySelectorAll('.opacity-0');
+                            elements.forEach((el, index) => {
+                                el.style.animation = `fadeInUp 0.8s ease ${0.2 + (index * 0.2)}s forwards`;
+                            });
+                            observer.unobserve(entry.target);
+                        }
+                    });
+                }, observerOptions);
+
+                const pricingSection = document.querySelector('.pricing');
+                if (pricingSection) {
+                    observer.observe(pricingSection);
+                }
             });
-
-            if (section) {
-                observer.observe(section);
-            }
-
-            window.addEventListener("scroll", () => {
-                if (!section) return;
-
-                const rect = section.getBoundingClientRect();
-                const windowHeight = window.innerHeight;
-                const sectionCenter = rect.top + rect.height / 2;
-
-                // Calculate how far the section is from the center of the viewport
-                const distanceFromCenter = sectionCenter - windowHeight / 2;
-
-                // Clamp the tilt so it doesn't go too extreme
-                const maxTilt = 10; // degrees
-                const tilt = Math.max(-maxTilt, Math.min(maxTilt, distanceFromCenter * 0.05));
-
-                // When section is centered, rotateX = 0 (flat)
-                // Above center → tilts back (positive), below → slightly forward (negative)
-                section.style.transform = `perspective(1000px) rotateX(${tilt}deg) translateY(${distanceFromCenter * 0.05}px)`;
-            });
-
-            // Set initial state (lying back when page loads)
-            if (section) {
-                section.style.transform = `perspective(1000px) rotateX(8deg) translateY(20px)`;
-            }
         </script>
+
+
+        <!-- Theme Portfolio Section -->
+        <section class="theme-portfolio py-16 px-4 sm:px-6 relative overflow-hidden">
+            <!-- Background Glows -->
+            <div class="absolute top-10 left-[5%] w-40 h-40 bg-ztore-purple/10 rounded-full blur-3xl"></div>
+            <div class="absolute bottom-10 right-[5%] w-48 h-48 bg-ztore-pink/10 rounded-full blur-3xl"></div>
+
+            <div class="max-w-7xl mx-auto">
+                <!-- Header -->
+                <div class="text-center mb-12">
+                    <h2 class="text-3xl sm:text-4xl md:text-5xl font-bold mb-4">
+                        Stunning <span class="text-gradient">Store Themes</span>
+                    </h2>
+                </div>
+
+                <!-- Carousel Section -->
+                <div class="relative mb-8 flex flex-col items-center justify-center">
+                    <!-- Fog Layers -->
+                    <div class="fog-bottom"></div>
+                    <div class="fog-top"></div>
+
+                    <!-- Carousel -->
+                    <div
+                        class="carousel-container relative w-full max-w-6xl h-[420px] sm:h-[440px] flex items-center justify-center perspective-1000">
+                        <div class="carousel-track relative flex items-center justify-center h-full w-full">
+
+                            <!-- Theme 1 -->
+                            <div class="carousel-item absolute w-[260px] sm:w-[300px] md:w-[340px] transition-all duration-700 transform cursor-pointer flex flex-col items-center"
+                                data-position="left">
+                                <div
+                                    class="bg-white/5 rounded-2xl p-3 backdrop-blur-xl border border-white/10 shadow-2xl flex flex-col h-[340px] sm:h-[360px]">
+                                    <div class="flex-grow flex items-center justify-center">
+                                        <div
+                                            class="w-full h-[260px] flex items-center justify-center bg-gradient-to-br from-blue-400 to-purple-500 rounded-xl overflow-hidden">
+                                            <img src="./images/hero.jpg" alt="Modern Store Theme"
+                                                class="w-full h-full object-contain bg-black/20 rounded-xl">
+                                        </div>
+                                    </div>
+                                    <div class="mt-3 text-center">
+                                        <h4 class="font-semibold text-white text-base">Modern Store</h4>
+                                    </div>
+                                </div>
+                                <button
+                                    class="mt-3 w-[80%] bg-white text-black py-2 rounded-lg font-semibold text-sm transition-all duration-300 hover:bg-gray-200">
+                                    Preview Theme
+                                </button>
+                            </div>
+
+                            <!-- Theme 2 (Center) -->
+                            <div class="carousel-item absolute w-[300px] sm:w-[360px] md:w-[400px] transition-all duration-700 transform cursor-pointer z-10 flex flex-col items-center"
+                                data-position="center">
+                                <div
+                                    class="bg-gradient-to-br from-ztore-purple/20 to-ztore-pink/20 rounded-2xl p-3 backdrop-blur-xl border border-ztore-purple/40 shadow-2xl flex flex-col h-[340px] sm:h-[360px] relative">
+                                    <div class="flex-grow flex items-center justify-center">
+                                        <div
+                                            class="w-full h-[260px] flex items-center justify-center bg-gradient-to-br from-ztore-purple to-ztore-pink rounded-xl overflow-hidden">
+                                            <img src="./images/hero.jpg" alt="Sales Pro Theme"
+                                                class="w-full h-full object-contain bg-black/20 rounded-xl">
+                                        </div>
+                                        <div
+                                            class="absolute -top-2 -right-2 bg-green-500 text-white px-2 py-0.5 rounded-full text-[10px] font-bold">
+                                            Popular
+                                        </div>
+                                    </div>
+                                    <div class="mt-3 text-center">
+                                        <h4 class="font-semibold text-white text-base">Sales Pro</h4>
+                                    </div>
+                                </div>
+                                <button
+                                    class="mt-3 w-[80%] bg-gradient-to-br from-ztore-purple to-ztore-pink text-white py-2 rounded-lg font-semibold text-sm transition-all duration-300 hover:scale-[1.03]">
+                                    Use This Theme
+                                </button>
+                            </div>
+
+                            <!-- Theme 3 -->
+                            <div class="carousel-item absolute w-[260px] sm:w-[300px] md:w-[340px] transition-all duration-700 transform cursor-pointer flex flex-col items-center"
+                                data-position="right">
+                                <div
+                                    class="bg-white/5 rounded-2xl p-3 backdrop-blur-xl border border-white/10 shadow-2xl flex flex-col h-[340px] sm:h-[360px]">
+                                    <div class="flex-grow flex items-center justify-center">
+                                        <div
+                                            class="w-full h-[260px] flex items-center justify-center bg-gradient-to-br from-green-400 to-teal-500 rounded-xl overflow-hidden">
+                                            <img src="./images/hero.jpg" alt="Minimalist Theme"
+                                                class="w-full h-full object-contain bg-black/20 rounded-xl">
+                                        </div>
+                                    </div>
+                                    <div class="mt-3 text-center">
+                                        <h4 class="font-semibold text-white text-base">Minimalist</h4>
+                                    </div>
+                                </div>
+                                <button
+                                    class="mt-3 w-[80%] bg-white text-black py-2 rounded-lg font-semibold text-sm transition-all duration-300 hover:bg-gray-200">
+                                    Preview Theme
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Carousel Controls -->
+                    <div class="flex justify-center items-center gap-6 mt-6 z-20 relative">
+                        <button
+                            class="carousel-prev bg-white/10 hover:bg-white/20 text-white p-3 rounded-full backdrop-blur-xl border border-white/10 transition-all duration-300">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M15 19l-7-7 7-7" />
+                            </svg>
+                        </button>
+                        <button
+                            class="carousel-next bg-white/10 hover:bg-white/20 text-white p-3 rounded-full backdrop-blur-xl border border-white/10 transition-all duration-300">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M9 5l7 7-7 7" />
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- FAQ Section -->
+        <section class="faq py-16 px-4 sm:px-6 relative overflow-hidden">
+            <!-- Background Elements -->
+            <div class="absolute top-20 left-5% w-48 h-48 bg-ztore-purple/10 rounded-full blur-3xl"></div>
+            <div class="absolute bottom-20 right-5% w-56 h-56 bg-ztore-pink/10 rounded-full blur-3xl"></div>
+
+            <div class="max-w-4xl mx-auto">
+                <!-- Section Header -->
+                <div class="text-center mb-12">
+                    <h2 class="text-3xl sm:text-4xl md:text-5xl font-bold mb-4">
+                        Frequently Asked <span class="text-gradient">Questions</span>
+                    </h2>
+                    <p class="text-xl text-gray-300 max-w-3xl mx-auto">
+                        Get all the answers to the most common questions about ScalePlus
+                    </p>
+                </div>
+
+                <!-- Interactive FAQ Grid -->
+                <div class="faq-grid grid md:grid-cols-2 gap-6 mb-8">
+                    <!-- Column 1 -->
+                    <div class="space-y-6">
+                        <!-- FAQ Item 1 -->
+                        <div
+                            class="faq-item bg-white/5 rounded-2xl backdrop-blur-xl border border-white/10 overflow-hidden group hover:border-ztore-purple/30 transition-all duration-500">
+                            <button
+                                class="faq-question w-full text-left p-6 flex justify-between items-center hover:bg-white/5 transition-all duration-300">
+                                <span class="font-semibold text-white text-lg pr-4">How quickly can I set up my
+                                    store?</span>
+                                <svg class="w-6 h-6 text-ztore-purple transform group-hover:scale-110 transition-transform duration-300 flex-shrink-0"
+                                    fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M19 9l-7 7-7-7" />
+                                </svg>
+                            </button>
+                            <div class="faq-answer px-6 pb-6 hidden">
+                                <p class="text-gray-300 leading-relaxed">
+                                    Most stores are set up and ready to go in under 15 minutes. Our one-click setup and
+                                    intuitive interface get you from signup to sales in record time. No technical skills
+                                    required!
+                                </p>
+                            </div>
+                        </div>
+
+                        <!-- FAQ Item 2 -->
+                        <div
+                            class="faq-item bg-white/5 rounded-2xl backdrop-blur-xl border border-white/10 overflow-hidden group hover:border-ztore-purple/30 transition-all duration-500">
+                            <button
+                                class="faq-question w-full text-left p-6 flex justify-between items-center hover:bg-white/5 transition-all duration-300">
+                                <span class="font-semibold text-white text-lg pr-4">What kind of support do you
+                                    offer?</span>
+                                <svg class="w-6 h-6 text-ztore-purple transform group-hover:scale-110 transition-transform duration-300 flex-shrink-0"
+                                    fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M19 9l-7 7-7-7" />
+                                </svg>
+                            </button>
+                            <div class="faq-answer px-6 pb-6 hidden">
+                                <p class="text-gray-300 leading-relaxed">
+                                    We provide 24/7 customer support via live chat, email, and phone. All plans include
+                                    dedicated support, with priority response times for Professional and Enterprise
+                                    plans.
+                                </p>
+                            </div>
+                        </div>
+
+                        <!-- FAQ Item 3 -->
+                        <div
+                            class="faq-item bg-white/5 rounded-2xl backdrop-blur-xl border border-white/10 overflow-hidden group hover:border-ztore-purple/30 transition-all duration-500">
+                            <button
+                                class="faq-question w-full text-left p-6 flex justify-between items-center hover:bg-white/5 transition-all duration-300">
+                                <span class="font-semibold text-white text-lg pr-4">Can I migrate from another
+                                    platform?</span>
+                                <svg class="w-6 h-6 text-ztore-purple transform group-hover:scale-110 transition-transform duration-300 flex-shrink-0"
+                                    fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M19 9l-7 7-7-7" />
+                                </svg>
+                            </button>
+                            <div class="faq-answer px-6 pb-6 hidden">
+                                <p class="text-gray-300 leading-relaxed">
+                                    Absolutely! We offer free migration services from most popular platforms. Our team
+                                    handles the entire process for you, ensuring zero downtime during the transition.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Column 2 -->
+                    <div class="space-y-6">
+                        <!-- FAQ Item 4 -->
+                        <div
+                            class="faq-item bg-white/5 rounded-2xl backdrop-blur-xl border border-white/10 overflow-hidden group hover:border-ztore-purple/30 transition-all duration-500">
+                            <button
+                                class="faq-question w-full text-left p-6 flex justify-between items-center hover:bg-white/5 transition-all duration-300">
+                                <span class="font-semibold text-white text-lg pr-4">Is there a free trial
+                                    available?</span>
+                                <svg class="w-6 h-6 text-ztore-purple transform group-hover:scale-110 transition-transform duration-300 flex-shrink-0"
+                                    fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M19 9l-7 7-7-7" />
+                                </svg>
+                            </button>
+                            <div class="faq-answer px-6 pb-6 hidden">
+                                <p class="text-gray-300 leading-relaxed">
+                                    Yes! We offer a 14-day free trial on all plans. No credit card required. Experience
+                                    all features risk-free and see how ScalePlus can transform your business.
+                                </p>
+                            </div>
+                        </div>
+
+                        <!-- FAQ Item 5 -->
+                        <div
+                            class="faq-item bg-white/5 rounded-2xl backdrop-blur-xl border border-white/10 overflow-hidden group hover:border-ztore-purple/30 transition-all duration-500">
+                            <button
+                                class="faq-question w-full text-left p-6 flex justify-between items-center hover:bg-white/5 transition-all duration-300">
+                                <span class="font-semibold text-white text-lg pr-4">How secure is my data?</span>
+                                <svg class="w-6 h-6 text-ztore-purple transform group-hover:scale-110 transition-transform duration-300 flex-shrink-0"
+                                    fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M19 9l-7 7-7-7" />
+                                </svg>
+                            </button>
+                            <div class="faq-answer px-6 pb-6 hidden">
+                                <p class="text-gray-300 leading-relaxed">
+                                    We use enterprise-grade security with 256-bit encryption, regular backups, and SOC 2
+                                    compliance. Your data is protected with the highest security standards in the
+                                    industry.
+                                </p>
+                            </div>
+                        </div>
+
+                        <!-- FAQ Item 6 -->
+                        <div
+                            class="faq-item bg-white/5 rounded-2xl backdrop-blur-xl border border-white/10 overflow-hidden group hover:border-ztore-purple/30 transition-all duration-500">
+                            <button
+                                class="faq-question w-full text-left p-6 flex justify-between items-center hover:bg-white/5 transition-all duration-300">
+                                <span class="font-semibold text-white text-lg pr-4">Can I cancel anytime?</span>
+                                <svg class="w-6 h-6 text-ztore-purple transform group-hover:scale-110 transition-transform duration-300 flex-shrink-0"
+                                    fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M19 9l-7 7-7-7" />
+                                </svg>
+                            </button>
+                            <div class="faq-answer px-6 pb-6 hidden">
+                                <p class="text-gray-300 leading-relaxed">
+                                    Yes, you can cancel your subscription at any time with no cancellation fees. We also
+                                    offer a 30-day money-back guarantee if you're not completely satisfied.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Final CTA Section -->
+                <div class="final-cta text-center">
+                    <div
+                        class="bg-gradient-to-br from-ztore-purple/20 to-ztore-pink/20 rounded-2xl p-8 backdrop-blur-xl border border-white/10">
+                        <!-- Icon -->
+                        <div
+                            class="w-16 h-16 bg-gradient-to-br from-ztore-purple to-ztore-pink rounded-2xl flex items-center justify-center mx-auto mb-6">
+                            <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                            </svg>
+                        </div>
+
+                        <h3 class="text-2xl font-bold text-white mb-4">Still have questions?</h3>
+                        <p class="text-gray-300 mb-6 max-w-md mx-auto">
+                            Our team is here to help you get started and answer any questions you might have.
+                        </p>
+
+                        <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                            <button
+                                class="bg-gradient-to-br from-ztore-purple to-ztore-pink hover:from-ztore-purple/90 hover:to-ztore-pink/90 text-white px-8 py-3 rounded-xl font-semibold transition-all duration-300 shadow-lg hover:shadow-ztore-purple/30 hover:scale-105">
+                                Contact Support
+                            </button>
+                            <button
+                                class="bg-white/10 hover:bg-white/20 text-white px-8 py-3 rounded-xl font-semibold transition-all duration-300 border border-white/10 hover:border-white/30">
+                                Schedule a Demo
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
 
     </main>
 
+    <!-- Footer -->
+    <footer class="relative bg-[#0a0a1e] border-t border-white/10 overflow-hidden">
+        <!-- Background Glow -->
+        <div class="absolute inset-0">
+            <div class="absolute top-10 left-[15%] w-40 h-40 bg-ztore-purple/10 rounded-full blur-3xl"></div>
+            <div class="absolute bottom-10 right-[15%] w-48 h-48 bg-ztore-pink/10 rounded-full blur-3xl"></div>
+        </div>
+
+        <!-- Footer Content -->
+        <div class="relative z-10 max-w-7xl mx-auto px-6 sm:px-8 py-14">
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10">
+
+                <!-- Brand Section -->
+                <div>
+                    <div class="flex items-center gap-3 mb-5">
+                        <img src="./images/logo.png" alt="ScalePlus Logo" class="h-10 w-auto">
+                        <span class="text-gradient font-bold text-xl">ScalePlus</span>
+                    </div>
+                    <p class="text-gray-400 leading-relaxed mb-6">
+                        Empowering your growth journey with high-converting sales funnels.
+                    </p>
+                    <div class="flex gap-3">
+                        <!-- YouTube -->
+                        <a href="#" class="footer-icon">
+                            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                                <path
+                                    d="M10 15l5.19-3L10 9v6zm12-3c0 1.73-.21 3.45-.21 3.45s-.2 1.44-.82 2.07c-.79.83-1.68.84-2.1.88C16.68 18.5 12 18.5 12 18.5s-4.68 0-6.87-.1c-.42-.04-1.31-.05-2.1-.88-.62-.63-.82-2.07-.82-2.07S2 13.73 2 12s.21-3.45.21-3.45S2.41 7.11 3.03 6.48c.79-.83 1.68-.84 2.1-.88C7.32 5.5 12 5.5 12 5.5s4.68 0 6.87.1c.42.04 1.31.05 2.1.88.62.63.82 2.07.82 2.07S22 10.27 22 12z" />
+                            </svg>
+                        </a>
+                        <!-- Twitter / X -->
+                        <a href="#" class="footer-icon">
+                            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                                <path
+                                    d="M18.244 2.25h3.308l-7.227 8.26 8.5 11.24H16.48l-5.215-6.817L5.29 21.75H1.98l7.73-8.834L1.5 2.25h6.958l4.713 6.283L18.244 2.25zm-1.16 17.52h1.832L7.084 4.126H5.117l11.967 15.644z" />
+                            </svg>
+                        </a>
+                        <!-- LinkedIn -->
+                        <a href="#" class="footer-icon">
+                            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                                <path
+                                    d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065S4.193 3.305 5.337 3.305c1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zM6.91 20.452H3.764V9h3.146v11.452z" />
+                            </svg>
+                        </a>
+                        <!-- Instagram -->
+                        <a href="#" class="footer-icon">
+                            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                                <path
+                                    d="M12 2.163c3.204 0 3.584.012 4.85.07 1.366.062 2.633.348 3.608 1.323.975.975 1.261 2.242 1.323 3.608.058 1.266.07 1.646.07 4.85s-.012 3.584-.07 4.85c-.062 1.366-.348 2.633-1.323 3.608-.975.975-2.242 1.261-3.608 1.323-1.266.058-1.646.07-4.85.07s-3.584-.012-4.85-.07c-1.366-.062-2.633-.348-3.608-1.323-.975-.975-1.261-2.242-1.323-3.608C2.175 15.584 2.163 15.204 2.163 12s.012-3.584.07-4.85c.062-1.366.348-2.633 1.323-3.608C4.531 2.581 5.798 2.295 7.164 2.233 8.43 2.175 8.81 2.163 12 2.163zM12 5.838a6.162 6.162 0 1 0 0 12.324A6.162 6.162 0 0 0 12 5.838zm6.406-1.313a1.44 1.44 0 1 0 0 2.88 1.44 1.44 0 0 0 0-2.88zM12 8.838a3.162 3.162 0 1 1 0 6.324 3.162 3.162 0 0 1 0-6.324z" />
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Quick Links -->
+                <div>
+                    <h3 class="text-white font-semibold mb-5 text-lg">Quick Links</h3>
+                    <ul class="space-y-3">
+                        <li><a href="#" class="footer-link">Features</a></li>
+                        <li><a href="#" class="footer-link">Pricing</a></li>
+                        <li><a href="#" class="footer-link">Templates</a></li>
+                        <li><a href="#" class="footer-link">Integrations</a></li>
+                    </ul>
+                </div>
+
+                <!-- Resources -->
+                <div>
+                    <h3 class="text-white font-semibold mb-5 text-lg">Resources</h3>
+                    <ul class="space-y-3">
+                        <li><a href="#" class="footer-link">Help Center</a></li>
+                        <li><a href="#" class="footer-link">Documentation</a></li>
+                        <li><a href="#" class="footer-link">Community</a></li>
+                        <li><a href="#" class="footer-link">Contact</a></li>
+                    </ul>
+                </div>
+
+                <!-- Newsletter -->
+                <div>
+                    <h3 class="text-white font-semibold mb-5 text-lg">Stay Updated</h3>
+                    <p class="text-gray-400 mb-4 text-sm">Get updates and insights delivered to your inbox.</p>
+                    <div class="flex flex-col sm:flex-row gap-3">
+                        <input type="email" placeholder="Enter your email"
+                            class="flex-1 bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white placeholder-gray-400 focus:outline-none focus:border-ztore-purple transition-colors duration-300">
+                        <button
+                            class="bg-gradient-to-br from-ztore-purple to-ztore-pink hover:from-ztore-purple/90 hover:to-ztore-pink/90 text-white px-5 py-3 rounded-xl font-semibold transition-all duration-300 hover:scale-105 whitespace-nowrap">
+                            Subscribe
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Bottom Bar -->
+            <div
+                class="border-t border-white/10 mt-12 pt-6 flex flex-col sm:flex-row justify-between items-center text-gray-400 text-sm gap-4">
+                <p>© 2025 ScalePlus. All rights reserved.</p>
+                <div class="flex gap-6">
+                    <a href="#" class="footer-link">Privacy Policy</a>
+                    <a href="#" class="footer-link">Terms</a>
+                    <a href="#" class="footer-link">Cookies</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+
+
     <script>
+        // Your existing JavaScript remains the same...
         const mobileToggle = document.querySelector('.mobile-toggle');
         const mobileIcon = document.querySelector('.mobile-icon');
         const mobileNavMenu = document.querySelector('.mobile-nav-menu');
@@ -452,6 +2549,239 @@
             setTimeout(() => { document.body.style.opacity = '1'; }, 100);
         });
 
+
+        //Style For Hro Vide Line animation
+        const section = document.querySelector(".dashboard");
+        const video = document.querySelector("video");
+
+        // Video autoplay when section is straight to viewer
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    // Section is visible and straight to viewer
+                    video.play().catch(e => console.log("Video autoplay failed:", e));
+                } else {
+                    // Section is not visible
+                    video.pause();
+                }
+            });
+        }, {
+            threshold: 0.7 // Trigger when 70% of section is visible
+        });
+
+        if (section) {
+            observer.observe(section);
+        }
+
+        window.addEventListener("scroll", () => {
+            if (!section) return;
+
+            const rect = section.getBoundingClientRect();
+            const windowHeight = window.innerHeight;
+            const sectionCenter = rect.top + rect.height / 2;
+
+            // Calculate how far the section is from the center of the viewport
+            const distanceFromCenter = sectionCenter - windowHeight / 2;
+
+            // Clamp the tilt so it doesn't go too extreme
+            const maxTilt = 10; // degrees
+            const tilt = Math.max(-maxTilt, Math.min(maxTilt, distanceFromCenter * 0.05));
+
+            // When section is centered, rotateX = 0 (flat)
+            // Above center → tilts back (positive), below → slightly forward (negative)
+            section.style.transform = `perspective(1000px) rotateX(${tilt}deg) translateY(${distanceFromCenter * 0.05}px)`;
+        });
+
+        // Set initial state (lying back when page loads)
+        section.style.transform = `perspective(1000px) rotateX(8deg) translateY(20px)`;
+
+        // -------------- js for Testimonial --------------
+        // Animation trigger for testimonials section
+        document.addEventListener('DOMContentLoaded', function () {
+            const observerOptions = {
+                threshold: 0.2,
+                rootMargin: '0px 0px -50px 0px'
+            };
+
+            const observer = new IntersectionObserver(function (entries) {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        // Animate section header
+                        const header = entry.target.querySelector('.text-center');
+                        header.style.animation = 'fadeInUp 0.8s ease forwards';
+
+                        // Animate featured testimonial
+                        const featured = entry.target.querySelector('.featured-testimonial');
+                        featured.style.animation = 'slideInLeft 0.8s ease 0.2s forwards';
+
+                        // Animate testimonial cards with stagger
+                        const cards = entry.target.querySelectorAll('.testimonial-card');
+                        cards.forEach((card, index) => {
+                            card.style.animation = `slideInLeft 0.8s ease ${0.3 + (index * 0.1)}s forwards`;
+                        });
+
+                        // Animate stats bar
+                        const stats = entry.target.querySelector('.stats-bar');
+                        stats.style.animation = 'fadeInUp 0.8s ease 0.7s forwards';
+
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, observerOptions);
+
+            const testimonialsSection = document.querySelector('.testimonials');
+            if (testimonialsSection) {
+                observer.observe(testimonialsSection);
+            }
+        });
+
+        // -------------- js for A/B testing --------------
+
+        // Animation trigger for A/B testing section
+        document.addEventListener('DOMContentLoaded', function () {
+            const observerOptions = {
+                threshold: 0.2,
+                rootMargin: '0px 0px -50px 0px'
+            };
+
+            const observer = new IntersectionObserver(function (entries) {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        // Animate section header
+                        const header = entry.target.querySelector('.text-center');
+                        header.style.animation = 'fadeInUp 0.8s ease forwards';
+
+                        // Animate first A/B test
+                        const test1 = entry.target.querySelector('.ab-test-1');
+                        test1.style.animation = 'slideInLeft 0.8s ease 0.2s forwards';
+
+                        // Animate second A/B test
+                        const test2 = entry.target.querySelector('.ab-test-2');
+                        test2.style.animation = 'slideInLeft 0.8s ease 0.4s forwards';
+
+                        // Animate results summary
+                        const results = entry.target.querySelector('.results-summary');
+                        results.style.animation = 'fadeInUp 0.8s ease 0.6s forwards';
+
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, observerOptions);
+
+            const abTestingSection = document.querySelector('.ab-testing');
+            if (abTestingSection) {
+                observer.observe(abTestingSection);
+            }
+        });
+
+        // -------------- js for  3D Carousel Functionality --------------
+        // 3D Carousel Functionality
+        document.addEventListener('DOMContentLoaded', function () {
+            const carouselItems = document.querySelectorAll('.carousel-item');
+            const prevButton = document.querySelector('.carousel-prev');
+            const nextButton = document.querySelector('.carousel-next');
+
+            let currentIndex = 1; // Start with center item
+
+            function updateCarousel() {
+                carouselItems.forEach((item, index) => {
+                    const positions = ['left', 'center', 'right'];
+                    const positionIndex = (index - currentIndex + carouselItems.length) % carouselItems.length;
+                    item.setAttribute('data-position', positions[positionIndex]);
+                });
+            }
+
+            function nextSlide() {
+                currentIndex = (currentIndex + 1) % carouselItems.length;
+                updateCarousel();
+            }
+
+            function prevSlide() {
+                currentIndex = (currentIndex - 1 + carouselItems.length) % carouselItems.length;
+                updateCarousel();
+            }
+
+            // Event Listeners
+            prevButton.addEventListener('click', prevSlide);
+            nextButton.addEventListener('click', nextSlide);
+
+            // Initialize carousel
+            updateCarousel();
+
+            // Auto-rotate every 5 seconds
+            setInterval(nextSlide, 5000);
+
+            // Animation trigger for portfolio section
+            const observerOptions = {
+                threshold: 0.2,
+                rootMargin: '0px 0px -50px 0px'
+            };
+
+            const observer = new IntersectionObserver(function (entries) {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        const elements = entry.target.querySelectorAll('.opacity-0');
+                        elements.forEach((el, index) => {
+                            el.style.animation = `fadeInUp 0.8s ease ${0.2 + (index * 0.2)}s forwards`;
+                        });
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, observerOptions);
+
+            const portfolioSection = document.querySelector('.theme-portfolio');
+            if (portfolioSection) {
+                observer.observe(portfolioSection);
+            }
+        });
+
+        // -------------- js for  3D FAQ Functionality --------------
+        // FAQ Accordion Functionality
+        document.addEventListener('DOMContentLoaded', function () {
+            const faqItems = document.querySelectorAll('.faq-item');
+
+            faqItems.forEach(item => {
+                const question = item.querySelector('.faq-question');
+                const answer = item.querySelector('.faq-answer');
+
+                question.addEventListener('click', () => {
+                    // Close all other items
+                    faqItems.forEach(otherItem => {
+                        if (otherItem !== item) {
+                            otherItem.classList.remove('active');
+                            otherItem.querySelector('.faq-answer').classList.add('hidden');
+                        }
+                    });
+
+                    // Toggle current item
+                    item.classList.toggle('active');
+                    answer.classList.toggle('hidden');
+                });
+            });
+
+            // Animation trigger for FAQ section
+            const observerOptions = {
+                threshold: 0.2,
+                rootMargin: '0px 0px -50px 0px'
+            };
+
+            const observer = new IntersectionObserver(function (entries) {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        const elements = entry.target.querySelectorAll('.opacity-0');
+                        elements.forEach((el, index) => {
+                            el.style.animation = `fadeInUp 0.8s ease ${0.2 + (index * 0.2)}s forwards`;
+                        });
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, observerOptions);
+
+            const faqSection = document.querySelector('.faq');
+            if (faqSection) {
+                observer.observe(faqSection);
+            }
+        });
     </script>
 </body>
 

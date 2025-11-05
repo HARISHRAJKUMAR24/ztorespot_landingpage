@@ -199,15 +199,15 @@
     /* Marquee Animation */
     @keyframes marquee {
         0% {
-            transform: translateX(0);
+            transform: translateX(-50%);
         }
         100% {
-            transform: translateX(-50%);
+            transform: translateX(0%);
         }
     }
 
     .animate-marquee {
-        animation: marquee 30s linear infinite;
+        animation: marquee 10s linear infinite;
     }
 
     /* Smooth fade and shake for arrow */
@@ -244,48 +244,171 @@
         }
     }
 
+ /* Style For Who Use ztorespot */
+.carousel-3d-circle-container {
+  perspective: 1500px;
+}
 
- /* Style For use cases */
-            .category-card {
-                transition: all 0.3s ease;
-            }
+.carousel-3d-circle {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  transform-style: preserve-3d;
+  transition: transform 1s cubic-bezier(0.4, 0, 0.2, 1);
+}
 
-            .category-card:hover {
-                transform: translateY(-5px);
-            }
+.circle-3d-card {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 280px;
+  height: 320px;
+  transform-style: preserve-3d;
+  transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+  transform-origin: center;
+}
 
+.card-inner {
+  width: 100%;
+  height: 100%;
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  display: flex;
+  flex-direction: column;
+  backdrop-filter: blur(20px);
+  transform-style: preserve-3d;
+  transition: all 0.4s ease;
+}
 
-            /* Mobile responsiveness */
-            @media (max-width: 768px) {
-                .use-cases {
-                    padding-top: 3rem;
-                    padding-bottom: 3rem;
-                }
+.image-wrapper {
+  height: 180px;
+  overflow: hidden;
+  position: relative;
+}
 
-                .category-card {
-                    padding: 1.5rem;
-                }
+.card-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.5s ease;
+}
 
-                .customer-logos-proof .grid {
-                    grid-template-columns: repeat(3, 1fr);
-                    gap: 1rem;
-                }
+.card-content {
+  padding: 1.2rem;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
 
-                .logo-container {
-                    padding: 1rem;
-                }
+/* Correct 3D Positioning - No mirror effect */
+.circle-3d-card[data-position="0"] { 
+  transform: translate(-50%, -50%) rotateY(0deg) translateZ(300px); 
+}
+.circle-3d-card[data-position="1"] { 
+  transform: translate(-50%, -50%) rotateY(60deg) translateZ(300px); 
+}
+.circle-3d-card[data-position="2"] { 
+  transform: translate(-50%, -50%) rotateY(120deg) translateZ(300px); 
+}
+.circle-3d-card[data-position="3"] { 
+  transform: translate(-50%, -50%) rotateY(180deg) translateZ(300px); 
+}
+.circle-3d-card[data-position="4"] { 
+  transform: translate(-50%, -50%) rotateY(240deg) translateZ(300px); 
+}
+.circle-3d-card[data-position="5"] { 
+  transform: translate(-50%, -50%) rotateY(300deg) translateZ(300px); 
+}
 
-                .social-proof-stats .grid {
-                    grid-template-columns: repeat(2, 1fr);
-                    gap: 1.5rem;
-                }
-            }
+/* Active state - only center card is fully visible and interactive */
+.circle-3d-card.active .card-inner {
+  transform: translateZ(50px) scale(1.1);
+  filter: brightness(1.2);
+  border-color: rgba(255, 255, 255, 0.5);
+  opacity: 1;
+}
 
-            @media (max-width: 480px) {
-                .customer-logos-proof .grid {
-                    grid-template-columns: repeat(2, 1fr);
-                }
-            }
+/* Side cards styling - reduced visibility */
+.circle-3d-card:not(.active) .card-inner {
+  filter: brightness(0.6) blur(1px);
+  opacity: 0.6;
+  transform: translateZ(20px) scale(0.9);
+}
+
+/* Hover effects only on active card */
+.circle-3d-card.active:hover .card-inner {
+  transform: translateZ(60px) scale(1.15);
+  box-shadow: 0 30px 60px rgba(0, 0, 0, 0.6);
+}
+
+.circle-3d-card.active:hover .card-img {
+  transform: scale(1.1);
+}
+
+/* Disable hover on non-active cards */
+.circle-3d-card:not(.active):hover .card-inner {
+  transform: translateZ(20px) scale(0.9);
+  cursor: default;
+}
+
+/* Responsive */
+@media (max-width: 1024px) {
+  .circle-3d-card[data-position="0"],
+  .circle-3d-card[data-position="1"],
+  .circle-3d-card[data-position="2"],
+  .circle-3d-card[data-position="3"],
+  .circle-3d-card[data-position="4"],
+  .circle-3d-card[data-position="5"] {
+    transform: translate(-50%, -50%) rotateY(var(--rotate)) translateZ(200px);
+  }
+  
+  .circle-3d-card {
+    width: 240px;
+    height: 280px;
+  }
+}
+
+@media (max-width: 768px) {
+  .circle-3d-card[data-position="0"],
+  .circle-3d-card[data-position="1"],
+  .circle-3d-card[data-position="2"],
+  .circle-3d-card[data-position="3"],
+  .circle-3d-card[data-position="4"],
+  .circle-3d-card[data-position="5"] {
+    transform: translate(-50%, -50%) rotateY(var(--rotate)) translateZ(150px);
+  }
+  
+  .circle-3d-card {
+    width: 200px;
+    height: 240px;
+  }
+  
+  .image-wrapper {
+    height: 140px;
+  }
+}
+
+/* 3D Depth Effects for active card only */
+.circle-3d-card.active::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(45deg, transparent 30%, rgba(255,255,255,0.1) 100%);
+  border-radius: 20px;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  pointer-events: none;
+}
+
+.circle-3d-card.active:hover::before {
+  opacity: 1;
+}
 
  /* Style For Thmes Portfolio */
             .perspective-1000 {
@@ -709,6 +832,7 @@
             </div>
         </section>
 
+        <!-- Logo Section -->
         <section class="customer-logos py-12 px-4 sm:px-6 relative overflow-hidden">
             <!-- Background Elements -->
             <div class="absolute top-20 left-5 w-24 h-24 bg-ztore-purple/10 rounded-full blur-2xl"></div>
@@ -890,8 +1014,6 @@
                 </div>
             </div>
         </section>
-
-
 
 
         <!-- Testimonials Section - Interactive Cards -->
@@ -1207,8 +1329,7 @@
                                     class="bg-gradient-to-br from-orange-500/20 to-red-600/20 rounded-3xl p-6 backdrop-blur-xl border border-white/10">
                                     <div class="relative">
                                         <!-- Image -->
-                                        <div
-                                            class="w-full h-80 bg-gradient-to-br from-orange-400 to-red-500 rounded-2xl flex items-center justify-center overflow-hidden">
+                                        <div class="w-full h-64 sm:h-72 md:h-80 lg:h-96 rounded-2xl overflow-hidden">
                                             <img src="./images/hero.jpg" alt="Variant B - Optimized Workflow"
                                                 class="w-full h-full object-cover rounded-2xl">
                                         </div>
@@ -1275,9 +1396,8 @@
                                     class="bg-gradient-to-br from-blue-500/20 to-purple-600/20 rounded-3xl p-6 backdrop-blur-xl border border-white/10">
                                     <div class="relative">
                                         <!-- Image -->
-                                        <div
-                                            class="w-full h-80 bg-gradient-to-br from-blue-400 to-purple-500 rounded-2xl flex items-center justify-center overflow-hidden">
-                                            <img src="./images/hero.jpg" alt="Variant A - A/B Test Dashboard"
+                                        <div class="w-full h-64 sm:h-72 md:h-80 lg:h-96 rounded-2xl overflow-hidden">
+                                            <img src="./images/hero.jpg" alt="Variant B - Optimized Workflow"
                                                 class="w-full h-full object-cover rounded-2xl">
                                         </div>
                                     </div>
@@ -1333,270 +1453,143 @@
             </div>
         </section>
 
-        <!-- Use Cases Section with Customer Proof -->
-        <section class="use-cases py-16 px-4 sm:px-6 relative overflow-hidden">
-            <!-- Background Elements -->
-            <div class="absolute top-10 left-5% w-40 h-40 bg-ztore-purple/10 rounded-full blur-3xl"></div>
-            <div class="absolute bottom-10 right-5% w-48 h-48 bg-ztore-pink/10 rounded-full blur-3xl"></div>
 
-            <div class="max-w-7xl mx-auto">
-                <!-- Section Header -->
-                <div class="text-center mb-12">
-                    <h2 class="text-3xl sm:text-4xl md:text-5xl font-bold mb-4">
-                        Trusted by <span class="text-gradient">5,000+ Businesses</span>
-                    </h2>
-                    <p class="text-xl text-gray-300 max-w-3xl mx-auto">
-                        From startups to enterprises across every industry - see how they succeed with ScalePlus
-                    </p>
+        <!-- Use Case Section -->
+        <section class="relative py-12 overflow-hidden">
+            <div class="max-w-6xl mx-auto text-center mb-12 px-6">
+                <h2 class="text-4xl sm:text-5xl font-bold mb-4 text-white">
+                    <span class="text-gradient">Niches</span> that Boost Revenue
+                </h2>
+                <p class="text-gray-300 max-w-2xl mx-auto">
+                    Proven results across industries — optimized for faster growth and higher conversions.
+                </p>
+            </div>
+
+            <!-- 3D Circle Carousel Container -->
+            <div class="carousel-3d-circle-container relative h-[500px] md:h-[600px] flex items-center justify-center">
+
+                <div class="carousel-3d-circle relative w-full h-full">
+
+                    <!-- Card 1 -->
+                    <div class="circle-3d-card active" data-position="0">
+                        <div class="card-inner bg-gradient-to-br from-blue-600 to-blue-800">
+                            <div class="image-wrapper">
+                                <img src="https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?auto=format&fit=crop&w=900&q=80"
+                                    class="card-img">
+                            </div>
+                            <div class="card-content">
+                                <h3 class="text-xl md:text-2xl font-bold text-white mb-2">Electronics</h3>
+                                <p class="text-gray-100 text-sm">Gadgets & accessories</p>
+                                <div class="mt-2 p-2 bg-black/20 rounded-lg border border-white/20">
+                                    <p class="text-green-300 text-xs">"Revenue +40%"</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Card 2 -->
+                    <div class="circle-3d-card" data-position="1">
+                        <div class="card-inner bg-gradient-to-br from-pink-600 to-pink-800">
+                            <div class="image-wrapper">
+                                <img src="https://images.unsplash.com/photo-1520975918318-3e7a4ab5a8eb?auto=format&fit=crop&w=900&q=80"
+                                    class="card-img">
+                            </div>
+                            <div class="card-content">
+                                <h3 class="text-xl md:text-2xl font-bold text-white mb-2">Fashion</h3>
+                                <p class="text-gray-100 text-sm">Personalized collections</p>
+                                <div class="mt-2 p-2 bg-black/20 rounded-lg border border-white/20">
+                                    <p class="text-green-300 text-xs">"Upsell +30%"</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Card 3 -->
+                    <div class="circle-3d-card" data-position="2">
+                        <div class="card-inner bg-gradient-to-br from-amber-600 to-amber-800">
+                            <div class="image-wrapper">
+                                <img src="https://images.unsplash.com/photo-1578898881192-c9d6f82e0f1f?auto=format&fit=crop&w=900&q=80"
+                                    class="card-img">
+                            </div>
+                            <div class="card-content">
+                                <h3 class="text-xl md:text-2xl font-bold text-white mb-2">Toys & Games</h3>
+                                <p class="text-gray-100 text-sm">Trending for all ages</p>
+                                <div class="mt-2 p-2 bg-black/20 rounded-lg border border-white/20">
+                                    <p class="text-green-300 text-xs">"Sales +35%"</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Card 4 -->
+                    <div class="circle-3d-card" data-position="3">
+                        <div class="card-inner bg-gradient-to-br from-emerald-600 to-emerald-800">
+                            <div class="image-wrapper">
+                                <img src="https://images.unsplash.com/photo-1586201375761-83865001b3c1?auto=format&fit=crop&w=900&q=80"
+                                    class="card-img">
+                            </div>
+                            <div class="card-content">
+                                <h3 class="text-xl md:text-2xl font-bold text-white mb-2">Groceries</h3>
+                                <p class="text-gray-100 text-sm">Fresh essentials</p>
+                                <div class="mt-2 p-2 bg-black/20 rounded-lg border border-white/20">
+                                    <p class="text-green-300 text-xs">"Orders +20%"</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Card 5 -->
+                    <div class="circle-3d-card" data-position="4">
+                        <div class="card-inner bg-gradient-to-br from-purple-600 to-purple-800">
+                            <div class="image-wrapper">
+                                <img src="https://images.unsplash.com/photo-1587019157575-9d6d80d528b5?auto=format&fit=crop&w=900&q=80"
+                                    class="card-img">
+                            </div>
+                            <div class="card-content">
+                                <h3 class="text-xl md:text-2xl font-bold text-white mb-2">Home Decor</h3>
+                                <p class="text-gray-100 text-sm">Stylish & functional</p>
+                                <div class="mt-2 p-2 bg-black/20 rounded-lg border border-white/20">
+                                    <p class="text-green-300 text-xs">"Repeat +25%"</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Card 6 -->
+                    <div class="circle-3d-card" data-position="5">
+                        <div class="card-inner bg-gradient-to-br from-cyan-600 to-cyan-800">
+                            <div class="image-wrapper">
+                                <img src="https://images.unsplash.com/photo-1607746882042-944635dfe10e?auto=format&fit=crop&w=900&q=80"
+                                    class="card-img">
+                            </div>
+                            <div class="card-content">
+                                <h3 class="text-xl md:text-2xl font-bold text-white mb-2">Dropshipping</h3>
+                                <p class="text-gray-100 text-sm">Global fulfillment</p>
+                                <div class="mt-2 p-2 bg-black/20 rounded-lg border border-white/20">
+                                    <p class="text-green-300 text-xs">"Costs -30%"</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
                 </div>
 
+                <!-- Navigation Arrows -->
+                <button
+                    class="carousel-prev absolute left-4 md:left-8 bg-white/10 hover:bg-white/20 text-white p-3 rounded-full backdrop-blur-xl border border-white/10 transition-all duration-300 z-20 hover:scale-110">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+                    </svg>
+                </button>
+                <button
+                    class="carousel-next absolute right-4 md:right-8 bg-white/10 hover:bg-white/20 text-white p-3 rounded-full backdrop-blur-xl border border-white/10 transition-all duration-300 z-20 hover:scale-110">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                    </svg>
+                </button>
 
-
-                <!-- Business Categories Grid -->
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
-                    <!-- Electronics -->
-                    <div
-                        class="category-card bg-white/5 rounded-2xl p-6 backdrop-blur-xl border border-white/10 hover:border-purple-500/50 transition-all duration-300 group">
-                        <div class="flex items-start justify-between mb-4">
-                            <div
-                                class="w-12 h-12 bg-gradient-to-br from-purple-500 to-pink-500 rounded-2xl flex items-center justify-center">
-                                <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M9 3v2m6-2v2M9 19v2m6-2v2M5 9H3m2 6H3m18-6h-2m2 6h-2M7 19h10a2 2 0 002-2V7a2 2 0 00-2-2H7a2 2 0 00-2 2v10a2 2 0 002 2zM9 9h6v6H9V9z" />
-                                </svg>
-                            </div>
-                            <span class="text-xs bg-purple-500/20 text-purple-300 px-2 py-1 rounded-full">500+
-                                Stores</span>
-                        </div>
-                        <h3 class="text-xl font-bold text-white mb-3">Electronics</h3>
-                        <p class="text-gray-300 mb-4">
-                            Gadgets, smartphones, accessories with warranty management and real-time inventory
-                        </p>
-                        <div class="mt-4 p-3 bg-white/10 rounded-lg border border-white/20">
-                            <p class="text-green-300 text-sm">
-                                "Managed 500+ SKUs with automated inventory tracking"
-                            </p>
-                        </div>
-                        <div class="mt-4 flex items-center justify-between">
-                            <span class="text-xs text-gray-400">Featured: TechGadgets</span>
-                            <a href="https://techgadgets.example.com" target="_blank"
-                                class="text-purple-400 hover:text-purple-300 text-sm font-semibold group-hover:underline">
-                                Visit Store →
-                            </a>
-                        </div>
-                    </div>
-
-                    <!-- Fashion & Apparel -->
-                    <div
-                        class="category-card bg-white/5 rounded-2xl p-6 backdrop-blur-xl border border-white/10 hover:border-orange-500/50 transition-all duration-300 group">
-                        <div class="flex items-start justify-between mb-4">
-                            <div
-                                class="w-12 h-12 bg-gradient-to-br from-orange-500 to-red-500 rounded-2xl flex items-center justify-center">
-                                <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-                                </svg>
-                            </div>
-                            <span class="text-xs bg-orange-500/20 text-orange-300 px-2 py-1 rounded-full">800+
-                                Stores</span>
-                        </div>
-                        <h3 class="text-xl font-bold text-white mb-3">Fashion & Apparel</h3>
-                        <p class="text-gray-300 mb-4">
-                            Clothing, accessories, footwear with size and color variations management
-                        </p>
-                        <div class="mt-4 p-3 bg-white/10 rounded-lg border border-white/20">
-                            <p class="text-green-300 text-sm">
-                                "Increased sales by 300% with size variant management"
-                            </p>
-                        </div>
-                        <div class="mt-4 flex items-center justify-between">
-                            <span class="text-xs text-gray-400">Featured: StyleBoutique</span>
-                            <a href="https://styleboutique.example.com" target="_blank"
-                                class="text-orange-400 hover:text-orange-300 text-sm font-semibold group-hover:underline">
-                                Visit Store →
-                            </a>
-                        </div>
-                    </div>
-
-                    <!-- Toys & Games -->
-                    <div
-                        class="category-card bg-white/5 rounded-2xl p-6 backdrop-blur-xl border border-white/10 hover:border-green-500/50 transition-all duration-300 group">
-                        <div class="flex items-start justify-between mb-4">
-                            <div
-                                class="w-12 h-12 bg-gradient-to-br from-green-500 to-emerald-500 rounded-2xl flex items-center justify-center">
-                                <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" />
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                                </svg>
-                            </div>
-                            <span class="text-xs bg-green-500/20 text-green-300 px-2 py-1 rounded-full">300+
-                                Stores</span>
-                        </div>
-                        <h3 class="text-xl font-bold text-white mb-3">Toys & Games</h3>
-                        <p class="text-gray-300 mb-4">
-                            Educational toys, video games, puzzles with age categorization and recommendations
-                        </p>
-                        <div class="mt-4 p-3 bg-white/10 rounded-lg border border-white/20">
-                            <p class="text-green-300 text-sm">
-                                "Expanded to 3 age categories with automated recommendations"
-                            </p>
-                        </div>
-                        <div class="mt-4 flex items-center justify-between">
-                            <span class="text-xs text-gray-400">Featured: PlayZone</span>
-                            <a href="https://playzone.example.com" target="_blank"
-                                class="text-green-400 hover:text-green-300 text-sm font-semibold group-hover:underline">
-                                Visit Store →
-                            </a>
-                        </div>
-                    </div>
-
-                    <!-- Groceries -->
-                    <div
-                        class="category-card bg-white/5 rounded-2xl p-6 backdrop-blur-xl border border-white/10 hover:border-blue-500/50 transition-all duration-300 group">
-                        <div class="flex items-start justify-between mb-4">
-                            <div
-                                class="w-12 h-12 bg-gradient-to-br from-blue-500 to-cyan-500 rounded-2xl flex items-center justify-center">
-                                <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
-                                </svg>
-                            </div>
-                            <span class="text-xs bg-blue-500/20 text-blue-300 px-2 py-1 rounded-full">1200+
-                                Stores</span>
-                        </div>
-                        <h3 class="text-xl font-bold text-white mb-3">Groceries & Daily Needs</h3>
-                        <p class="text-gray-300 mb-4">
-                            Supermarkets, kirana stores with quick delivery integration and inventory management
-                        </p>
-                        <div class="mt-4 p-3 bg-white/10 rounded-lg border border-white/20">
-                            <p class="text-green-300 text-sm">
-                                "Achieved 45-minute delivery with integrated logistics"
-                            </p>
-                        </div>
-                        <div class="mt-4 flex items-center justify-between">
-                            <span class="text-xs text-gray-400">Featured: FreshMart</span>
-                            <a href="https://freshmart.example.com" target="_blank"
-                                class="text-blue-400 hover:text-blue-300 text-sm font-semibold group-hover:underline">
-                                Visit Store →
-                            </a>
-                        </div>
-                    </div>
-
-                    <!-- Home Accessories -->
-                    <div
-                        class="category-card bg-white/5 rounded-2xl p-6 backdrop-blur-xl border border-white/10 hover:border-yellow-500/50 transition-all duration-300 group">
-                        <div class="flex items-start justify-between mb-4">
-                            <div
-                                class="w-12 h-12 bg-gradient-to-br from-yellow-500 to-amber-500 rounded-2xl flex items-center justify-center">
-                                <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
-                                </svg>
-                            </div>
-                            <span class="text-xs bg-yellow-500/20 text-yellow-300 px-2 py-1 rounded-full">450+
-                                Stores</span>
-                        </div>
-                        <h3 class="text-xl font-bold text-white mb-3">Home Accessories</h3>
-                        <p class="text-gray-300 mb-4">
-                            Home decor, utilities, and household items with easy categorization and management
-                        </p>
-                        <div class="mt-4 p-3 bg-white/10 rounded-lg border border-white/20">
-                            <p class="text-green-300 text-sm">
-                                "Streamlined inventory for 200+ home product categories"
-                            </p>
-                        </div>
-                        <div class="mt-4 flex items-center justify-between">
-                            <span class="text-xs text-gray-400">Featured: HomeStyle</span>
-                            <a href="https://homestyle.example.com" target="_blank"
-                                class="text-yellow-400 hover:text-yellow-300 text-sm font-semibold group-hover:underline">
-                                Visit Store →
-                            </a>
-                        </div>
-                    </div>
-
-                    <!-- Dropshipping -->
-                    <div
-                        class="category-card bg-white/5 rounded-2xl p-6 backdrop-blur-xl border border-white/10 hover:border-indigo-500/50 transition-all duration-300 group">
-                        <div class="flex items-start justify-between mb-4">
-                            <div
-                                class="w-12 h-12 bg-gradient-to-br from-indigo-500 to-purple-500 rounded-2xl flex items-center justify-center">
-                                <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M8 14v3m4-3v3m4-3v3M3 21h18M3 10h18M3 7l9-4 9 4M4 10h16v11H4V10z" />
-                                </svg>
-                            </div>
-                            <span class="text-xs bg-indigo-500/20 text-indigo-300 px-2 py-1 rounded-full">900+
-                                Stores</span>
-                        </div>
-                        <h3 class="text-xl font-bold text-white mb-3">Dropshipping</h3>
-                        <p class="text-gray-300 mb-4">
-                            Inventory-free business model with supplier integration and automated order processing
-                        </p>
-                        <div class="mt-4 p-3 bg-white/10 rounded-lg border border-white/20">
-                            <p class="text-green-300 text-sm">
-                                "Launched store in 2 days with 50+ supplier integrations"
-                            </p>
-                        </div>
-                        <div class="mt-4 flex items-center justify-between">
-                            <span class="text-xs text-gray-400">Featured: GlobalSource</span>
-                            <a href="https://globalsource.example.com" target="_blank"
-                                class="text-indigo-400 hover:text-indigo-300 text-sm font-semibold group-hover:underline">
-                                Visit Store →
-                            </a>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Social Proof Stats -->
-                <div
-                    class="social-proof-stats bg-gradient-to-br from-ztore-purple/20 to-ztore-pink/20 rounded-2xl p-8 backdrop-blur-xl border border-white/10 mb-12">
-                    <div class="grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
-                        <div>
-                            <div class="text-3xl font-bold text-white mb-2">5,000+</div>
-                            <div class="text-gray-300 text-sm">Active Stores</div>
-                        </div>
-                        <div>
-                            <div class="text-3xl font-bold text-white mb-2">$2.5B+</div>
-                            <div class="text-gray-300 text-sm">Total Sales</div>
-                        </div>
-                        <div>
-                            <div class="text-3xl font-bold text-white mb-2">98%</div>
-                            <div class="text-gray-300 text-sm">Success Rate</div>
-                        </div>
-                        <div>
-                            <div class="text-3xl font-bold text-white mb-2">24/7</div>
-                            <div class="text-gray-300 text-sm">Support</div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Final CTA Section -->
-                <div class="text-center">
-                    <div class="bg-white/5 rounded-2xl p-8 backdrop-blur-xl border border-white/10">
-                        <h3 class="text-2xl font-bold text-white mb-4">Join 5,000+ Successful Store Owners</h3>
-                        <p class="text-gray-300 mb-6 max-w-2xl mx-auto">
-                            See why businesses across all industries choose ScalePlus to power their online stores
-                        </p>
-                        <div class="flex flex-col sm:flex-row gap-4 justify-center">
-                            <button
-                                class="bg-gradient-to-br from-ztore-purple to-ztore-pink hover:from-ztore-purple/90 hover:to-ztore-pink/90 text-white py-3 px-8 rounded-xl font-semibold transition-all duration-300 shadow-lg hover:shadow-ztore-purple/30 hover:scale-105">
-                                Start Free Trial
-                            </button>
-                            <button
-                                class="bg-white/10 hover:bg-white/20 text-white py-3 px-8 rounded-xl font-semibold transition-all duration-300 border border-white/10 hover:border-white/30">
-                                View Live Demos
-                            </button>
-                        </div>
-                        <p class="text-gray-400 text-sm mt-4">
-                            No credit card required • 30-day free trial • Setup in minutes
-                        </p>
-                    </div>
-                </div>
             </div>
         </section>
-
 
 
         <!-- Pricing Plans Section -->
@@ -2349,6 +2342,8 @@
     </footer>
 
 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
 
     <script>
         // Your existing JavaScript remains the same...
@@ -2400,18 +2395,42 @@
             }
         });
 
+        // Navigation Scroll Behavior
+        let lastScrollY = window.scrollY;
+        const header = document.querySelector('header');
+
         window.addEventListener('scroll', () => {
-            const header = document.querySelector('header');
-            if (window.scrollY > 50) {
+            const currentScrollY = window.scrollY;
+
+            // Sticky background
+            if (currentScrollY > 50) {
                 header.classList.add('scrolled');
-                header.classList.add('bg-[rgba(10,10,30,0.95)]', 'backdrop-blur-2xl', 'py-4', 'shadow-[0_4px_30px_rgba(0,0,0,0.3)]');
-                header.classList.remove('py-6', 'bg-[rgba(10,10,30,0.6)]', 'backdrop-blur-xl');
+                header.classList.add('bg-[rgba(10,10,30,0.95)]', 'backdrop-blur-2xl', 'shadow-[0_4px_30px_rgba(0,0,0,0.3)]');
+                header.classList.remove('bg-[rgba(10,10,30,0.6)]', 'backdrop-blur-xl');
             } else {
                 header.classList.remove('scrolled');
-                header.classList.remove('bg-[rgba(10,10,30,0.95)]', 'backdrop-blur-2xl', 'py-4', 'shadow-[0_4px_30px_rgba(0,0,0,0.3)]');
-                header.classList.add('py-6', 'bg-[rgba(10,10,30,0.6)]', 'backdrop-blur-xl');
+                header.classList.remove('bg-[rgba(10,10,30,0.95)]', 'backdrop-blur-2xl', 'shadow-[0_4px_30px_rgba(0,0,0,0.3)]');
+                header.classList.add('bg-[rgba(10,10,30,0.6)]', 'backdrop-blur-xl');
             }
+
+            // Hide/show on scroll direction (desktop only)
+            if (window.innerWidth > 1024) {
+                if (currentScrollY > lastScrollY && currentScrollY > 200) {
+                    // Scrolling down - hide with fade
+                    header.style.transform = 'translateY(-100%)';
+                    header.style.opacity = '0';
+                } else {
+                    // Scrolling up - show with fade
+                    header.style.transform = 'translateY(0)';
+                    header.style.opacity = '1';
+                }
+            }
+
+            lastScrollY = currentScrollY;
         });
+
+        // Add smooth transition
+        header.style.transition = 'transform 0.3s ease, background 0.3s ease';
 
         window.addEventListener('load', () => {
             document.body.style.opacity = '0';
@@ -2420,7 +2439,7 @@
         });
 
 
-        //Style For Hro Vide Line animation
+        //Style For Hero Vide Line animation
         const section = document.querySelector(".dashboard");
         const video = document.querySelector("video");
 
@@ -2544,115 +2563,268 @@
             }
         });
 
-        // -------------- js for  3D Carousel Functionality --------------
-        // 3D Carousel Functionality
-        document.addEventListener('DOMContentLoaded', function () {
-            const carouselItems = document.querySelectorAll('.carousel-item');
-            const prevButton = document.querySelector('.carousel-prev');
-            const nextButton = document.querySelector('.carousel-next');
 
-            let currentIndex = 1; // Start with center item
+        // -------------- js for 3D Carousel For Who use Ztorespot --------------
+        class CircleCarousel3D {
+            constructor() {
+                this.carousel = document.querySelector('.carousel-3d-circle');
+                this.cards = document.querySelectorAll('.circle-3d-card');
+                this.prevBtn = document.querySelector('.carousel-prev');
+                this.nextBtn = document.querySelector('.carousel-next');
 
-            function updateCarousel() {
-                carouselItems.forEach((item, index) => {
-                    const positions = ['left', 'center', 'right'];
-                    const positionIndex = (index - currentIndex + carouselItems.length) % carouselItems.length;
-                    item.setAttribute('data-position', positions[positionIndex]);
+                this.currentRotation = 0;
+                this.angle = 60; // 360 / 6 cards
+                this.isAnimating = false;
+
+                this.init();
+            }
+
+            init() {
+                this.setCardPositions();
+
+                this.prevBtn.addEventListener('click', () => this.rotate(this.angle)); // Rotate right to go left
+                this.nextBtn.addEventListener('click', () => this.rotate(-this.angle)); // Rotate left to go right
+
+                // Add touch/mouse drag support
+                this.addDragSupport();
+
+                // Auto-rotate CLOCKWISE (changed from -this.angle to this.angle)
+                setInterval(() => this.rotate(this.angle), 4000);
+            }
+
+            setCardPositions() {
+                this.cards.forEach((card, index) => {
+                    const rotate = index * this.angle;
+                    card.style.setProperty('--rotate', `${rotate}deg`);
+                    card.classList.remove('active');
                 });
+
+                // Set front card as active (always position 0 after rotation)
+                const activeIndex = this.getActiveIndex();
+                this.cards[activeIndex].classList.add('active');
             }
 
-            function nextSlide() {
-                currentIndex = (currentIndex + 1) % carouselItems.length;
-                updateCarousel();
+            getActiveIndex() {
+                // Calculate which card is in front (position 0)
+                const normalizedRotation = (360 - this.currentRotation) % 360;
+                const activeIndex = Math.round(normalizedRotation / this.angle) % this.cards.length;
+                return activeIndex;
             }
 
-            function prevSlide() {
-                currentIndex = (currentIndex - 1 + carouselItems.length) % carouselItems.length;
-                updateCarousel();
+            rotate(angle) {
+                if (this.isAnimating) return;
+                this.isAnimating = true;
+
+                this.currentRotation = (this.currentRotation + angle) % 360;
+                this.carousel.style.transform = `rotateY(${this.currentRotation}deg)`;
+
+                setTimeout(() => {
+                    this.setCardPositions();
+                    this.isAnimating = false;
+                }, 800);
             }
 
-            // Event Listeners
-            prevButton.addEventListener('click', prevSlide);
-            nextButton.addEventListener('click', nextSlide);
+            addDragSupport() {
+                let startX = 0;
+                let currentX = 0;
+                let isDragging = false;
 
-            // Initialize carousel
-            updateCarousel();
+                const container = this.carousel;
 
-            // Auto-rotate every 5 seconds
-            setInterval(nextSlide, 5000);
+                container.addEventListener('mousedown', (e) => {
+                    startX = e.clientX;
+                    isDragging = true;
+                    container.style.cursor = 'grabbing';
+                });
 
-            // Animation trigger for portfolio section
-            const observerOptions = {
-                threshold: 0.2,
-                rootMargin: '0px 0px -50px 0px'
-            };
+                container.addEventListener('mousemove', (e) => {
+                    if (!isDragging) return;
+                    currentX = e.clientX;
+                    const diff = currentX - startX;
 
-            const observer = new IntersectionObserver(function (entries) {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        const elements = entry.target.querySelectorAll('.opacity-0');
-                        elements.forEach((el, index) => {
-                            el.style.animation = `fadeInUp 0.8s ease ${0.2 + (index * 0.2)}s forwards`;
-                        });
-                        observer.unobserve(entry.target);
+                    // Add slight rotation during drag for better UX
+                    if (Math.abs(diff) > 50) {
+                        const dragRotation = this.currentRotation + (diff * 0.5);
+                        container.style.transform = `rotateY(${dragRotation}deg)`;
                     }
                 });
-            }, observerOptions);
 
-            const portfolioSection = document.querySelector('.theme-portfolio');
-            if (portfolioSection) {
-                observer.observe(portfolioSection);
-            }
-        });
+                container.addEventListener('mouseup', (e) => {
+                    if (!isDragging) return;
+                    isDragging = false;
+                    container.style.cursor = 'grab';
 
-        // -------------- js for  3D FAQ Functionality --------------
-        // FAQ Accordion Functionality
-        document.addEventListener('DOMContentLoaded', function () {
-            const faqItems = document.querySelectorAll('.faq-item');
+                    const diff = e.clientX - startX;
 
-            faqItems.forEach(item => {
-                const question = item.querySelector('.faq-question');
-                const answer = item.querySelector('.faq-answer');
-
-                question.addEventListener('click', () => {
-                    // Close all other items
-                    faqItems.forEach(otherItem => {
-                        if (otherItem !== item) {
-                            otherItem.classList.remove('active');
-                            otherItem.querySelector('.faq-answer').classList.add('hidden');
-                        }
-                    });
-
-                    // Toggle current item
-                    item.classList.toggle('active');
-                    answer.classList.toggle('hidden');
-                });
-            });
-
-            // Animation trigger for FAQ section
-            const observerOptions = {
-                threshold: 0.2,
-                rootMargin: '0px 0px -50px 0px'
-            };
-
-            const observer = new IntersectionObserver(function (entries) {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        const elements = entry.target.querySelectorAll('.opacity-0');
-                        elements.forEach((el, index) => {
-                            el.style.animation = `fadeInUp 0.8s ease ${0.2 + (index * 0.2)}s forwards`;
-                        });
-                        observer.unobserve(entry.target);
+                    if (Math.abs(diff) > 50) {
+                        const direction = diff > 0 ? this.angle : -this.angle;
+                        this.rotate(direction);
+                    } else {
+                        // Reset to current position if drag was too small
+                        container.style.transform = `rotateY(${this.currentRotation}deg)`;
                     }
                 });
-            }, observerOptions);
 
-            const faqSection = document.querySelector('.faq');
-            if (faqSection) {
-                observer.observe(faqSection);
+                container.addEventListener('mouseleave', () => {
+                    if (isDragging) {
+                        isDragging = false;
+                        container.style.cursor = 'grab';
+                        container.style.transform = `rotateY(${this.currentRotation}deg)`;
+                    }
+                });
+
+                // Touch support
+                container.addEventListener('touchstart', (e) => {
+                    startX = e.touches[0].clientX;
+                    isDragging = true;
+                });
+
+                container.addEventListener('touchmove', (e) => {
+                    if (!isDragging) return;
+                    currentX = e.touches[0].clientX;
+                    const diff = currentX - startX;
+
+                    if (Math.abs(diff) > 30) {
+                        const dragRotation = this.currentRotation + (diff * 0.5);
+                        container.style.transform = `rotateY(${dragRotation}deg)`;
+                    }
+                });
+
+                container.addEventListener('touchend', (e) => {
+                    if (!isDragging) return;
+                    isDragging = false;
+
+                    const diff = e.changedTouches[0].clientX - startX;
+
+                    if (Math.abs(diff) > 50) {
+                        const direction = diff > 0 ? this.angle : -this.angle;
+                        this.rotate(direction);
+                    } else {
+                        container.style.transform = `rotateY(${this.currentRotation}deg)`;
+                    }
+                });
+
+                // Set initial cursor
+                container.style.cursor = 'grab';
             }
+        }
+
+        // Initialize carousel when DOM is loaded
+        document.addEventListener('DOMContentLoaded', () => {
+            new CircleCarousel3D();
         });
     </script>
+
+    // -------------- js for 3D Carousel Functionality --------------
+    // 3D Carousel Functionality
+    document.addEventListener('DOMContentLoaded', function () {
+    const carouselItems = document.querySelectorAll('.carousel-item');
+    const prevButton = document.querySelector('.carousel-prev');
+    const nextButton = document.querySelector('.carousel-next');
+
+    let currentIndex = 1; // Start with center item
+
+    function updateCarousel() {
+    carouselItems.forEach((item, index) => {
+    const positions = ['left', 'center', 'right'];
+    const positionIndex = (index - currentIndex + carouselItems.length) % carouselItems.length;
+    item.setAttribute('data-position', positions[positionIndex]);
+    });
+    }
+
+    function nextSlide() {
+    currentIndex = (currentIndex + 1) % carouselItems.length;
+    updateCarousel();
+    }
+
+    function prevSlide() {
+    currentIndex = (currentIndex - 1 + carouselItems.length) % carouselItems.length;
+    updateCarousel();
+    }
+
+    // Event Listeners
+    prevButton.addEventListener('click', prevSlide);
+    nextButton.addEventListener('click', nextSlide);
+
+    // Initialize carousel
+    updateCarousel();
+
+    // Auto-rotate every 5 seconds
+    setInterval(nextSlide, 5000);
+
+    // Animation trigger for portfolio section
+    const observerOptions = {
+    threshold: 0.2,
+    rootMargin: '0px 0px -50px 0px'
+    };
+
+    const observer = new IntersectionObserver(function (entries) {
+    entries.forEach(entry => {
+    if (entry.isIntersecting) {
+    const elements = entry.target.querySelectorAll('.opacity-0');
+    elements.forEach((el, index) => {
+    el.style.animation = `fadeInUp 0.8s ease ${0.2 + (index * 0.2)}s forwards`;
+    });
+    observer.unobserve(entry.target);
+    }
+    });
+    }, observerOptions);
+
+    const portfolioSection = document.querySelector('.theme-portfolio');
+    if (portfolioSection) {
+    observer.observe(portfolioSection);
+    }
+    });
+
+    // -------------- js for 3D FAQ Functionality --------------
+    // FAQ Accordion Functionality
+    document.addEventListener('DOMContentLoaded', function () {
+    const faqItems = document.querySelectorAll('.faq-item');
+
+    faqItems.forEach(item => {
+    const question = item.querySelector('.faq-question');
+    const answer = item.querySelector('.faq-answer');
+
+    question.addEventListener('click', () => {
+    // Close all other items
+    faqItems.forEach(otherItem => {
+    if (otherItem !== item) {
+    otherItem.classList.remove('active');
+    otherItem.querySelector('.faq-answer').classList.add('hidden');
+    }
+    });
+
+    // Toggle current item
+    item.classList.toggle('active');
+    answer.classList.toggle('hidden');
+    });
+    });
+
+    // Animation trigger for FAQ section
+    const observerOptions = {
+    threshold: 0.2,
+    rootMargin: '0px 0px -50px 0px'
+    };
+
+    const observer = new IntersectionObserver(function (entries) {
+    entries.forEach(entry => {
+    if (entry.isIntersecting) {
+    const elements = entry.target.querySelectorAll('.opacity-0');
+    elements.forEach((el, index) => {
+    el.style.animation = `fadeInUp 0.8s ease ${0.2 + (index * 0.2)}s forwards`;
+    });
+    observer.unobserve(entry.target);
+    }
+    });
+    }, observerOptions);
+
+    const faqSection = document.querySelector('.faq');
+    if (faqSection) {
+    observer.observe(faqSection);
+    }
+    });
+    </script>
+
 </body>
 
 </html>
