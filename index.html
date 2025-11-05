@@ -642,7 +642,7 @@
 
             <h1 class="text-3xl sm:text-4xl md:text-5xl font-extrabold leading-tight mb-4 text-gradient opacity-0 animate-fade-in-up"
                 style="animation-delay: 0.6s">
-                Test Page Operations.<br>Deliver Results.
+                Home Page Operations.<br>Deliver Results.
             </h1>
 
             <p class="text-base sm:text-lg text-gray-300 mb-8 opacity-0 animate-fade-in-up max-w-2xl mx-auto px-4"
@@ -2332,6 +2332,22 @@
             <div
                 class="border-t border-white/10 mt-12 pt-6 flex flex-col sm:flex-row justify-between items-center text-gray-400 text-sm gap-4">
                 <p>© 2025 ScalePlus. All rights reserved.</p>
+
+                <!-- Made in India with Flying Flag -->
+                <div class="flex items-center gap-2 text-gray-300">
+                    <div class="flag-container relative w-6 h-4 animate-flag-wave">
+                        <div class="absolute inset-0 flex flex-col rounded-sm overflow-hidden shadow-lg">
+                            <div class="h-1/3 bg-orange-500 flag-stripe"></div>
+                            <div class="h-1/3 bg-white flex items-center justify-center flag-stripe">
+                                <div class="w-1 h-1 bg-blue-600 rounded-full ashoka-chakra"></div>
+                            </div>
+                            <div class="h-1/3 bg-green-500 flag-stripe"></div>
+                        </div>
+                        <!-- Flag Pole -->
+                    </div>
+                    <span class="text-xs font-medium">Made in India</span>
+                </div>
+
                 <div class="flex gap-6">
                     <a href="#" class="footer-link">Privacy Policy</a>
                     <a href="#" class="footer-link">Terms</a>
@@ -2713,116 +2729,115 @@
         document.addEventListener('DOMContentLoaded', () => {
             new CircleCarousel3D();
         });
-    </script>
 
-    // -------------- js for 3D Carousel Functionality --------------
-    // 3D Carousel Functionality
-    document.addEventListener('DOMContentLoaded', function () {
-    const carouselItems = document.querySelectorAll('.carousel-item');
-    const prevButton = document.querySelector('.carousel-prev');
-    const nextButton = document.querySelector('.carousel-next');
+        // -------------- js for 3D Carousel Functionality --------------
+        // 3D Carousel Functionality
+        document.addEventListener('DOMContentLoaded', function () {
+            const carouselItems = document.querySelectorAll('.carousel-item');
+            const prevButton = document.querySelector('.carousel-prev');
+            const nextButton = document.querySelector('.carousel-next');
 
-    let currentIndex = 1; // Start with center item
+            let currentIndex = 1; // Start with center item
 
-    function updateCarousel() {
-    carouselItems.forEach((item, index) => {
-    const positions = ['left', 'center', 'right'];
-    const positionIndex = (index - currentIndex + carouselItems.length) % carouselItems.length;
-    item.setAttribute('data-position', positions[positionIndex]);
-    });
-    }
+            function updateCarousel() {
+                carouselItems.forEach((item, index) => {
+                    const positions = ['left', 'center', 'right'];
+                    const positionIndex = (index - currentIndex + carouselItems.length) % carouselItems.length;
+                    item.setAttribute('data-position', positions[positionIndex]);
+                });
+            }
 
-    function nextSlide() {
-    currentIndex = (currentIndex + 1) % carouselItems.length;
-    updateCarousel();
-    }
+            function nextSlide() {
+                currentIndex = (currentIndex + 1) % carouselItems.length;
+                updateCarousel();
+            }
 
-    function prevSlide() {
-    currentIndex = (currentIndex - 1 + carouselItems.length) % carouselItems.length;
-    updateCarousel();
-    }
+            function prevSlide() {
+                currentIndex = (currentIndex - 1 + carouselItems.length) % carouselItems.length;
+                updateCarousel();
+            }
 
-    // Event Listeners
-    prevButton.addEventListener('click', prevSlide);
-    nextButton.addEventListener('click', nextSlide);
+            // Event Listeners
+            prevButton.addEventListener('click', prevSlide);
+            nextButton.addEventListener('click', nextSlide);
 
-    // Initialize carousel
-    updateCarousel();
+            // Initialize carousel
+            updateCarousel();
 
-    // Auto-rotate every 5 seconds
-    setInterval(nextSlide, 5000);
+            // Auto-rotate every 5 seconds
+            setInterval(nextSlide, 5000);
 
-    // Animation trigger for portfolio section
-    const observerOptions = {
-    threshold: 0.2,
-    rootMargin: '0px 0px -50px 0px'
-    };
+            // Animation trigger for portfolio section
+            const observerOptions = {
+                threshold: 0.2,
+                rootMargin: '0px 0px -50px 0px'
+            };
 
-    const observer = new IntersectionObserver(function (entries) {
-    entries.forEach(entry => {
-    if (entry.isIntersecting) {
-    const elements = entry.target.querySelectorAll('.opacity-0');
-    elements.forEach((el, index) => {
-    el.style.animation = `fadeInUp 0.8s ease ${0.2 + (index * 0.2)}s forwards`;
-    });
-    observer.unobserve(entry.target);
-    }
-    });
-    }, observerOptions);
+            const observer = new IntersectionObserver(function (entries) {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        const elements = entry.target.querySelectorAll('.opacity-0');
+                        elements.forEach((el, index) => {
+                            el.style.animation = `fadeInUp 0.8s ease ${0.2 + (index * 0.2)}s forwards`;
+                        });
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, observerOptions);
 
-    const portfolioSection = document.querySelector('.theme-portfolio');
-    if (portfolioSection) {
-    observer.observe(portfolioSection);
-    }
-    });
+            const portfolioSection = document.querySelector('.theme-portfolio');
+            if (portfolioSection) {
+                observer.observe(portfolioSection);
+            }
+        });
 
-    // -------------- js for 3D FAQ Functionality --------------
-    // FAQ Accordion Functionality
-    document.addEventListener('DOMContentLoaded', function () {
-    const faqItems = document.querySelectorAll('.faq-item');
+        // -------------- js for 3D FAQ Functionality --------------
+        // FAQ Accordion Functionality
+        document.addEventListener('DOMContentLoaded', function () {
+            const faqItems = document.querySelectorAll('.faq-item');
 
-    faqItems.forEach(item => {
-    const question = item.querySelector('.faq-question');
-    const answer = item.querySelector('.faq-answer');
+            faqItems.forEach(item => {
+                const question = item.querySelector('.faq-question');
+                const answer = item.querySelector('.faq-answer');
 
-    question.addEventListener('click', () => {
-    // Close all other items
-    faqItems.forEach(otherItem => {
-    if (otherItem !== item) {
-    otherItem.classList.remove('active');
-    otherItem.querySelector('.faq-answer').classList.add('hidden');
-    }
-    });
+                question.addEventListener('click', () => {
+                    // Close all other items
+                    faqItems.forEach(otherItem => {
+                        if (otherItem !== item) {
+                            otherItem.classList.remove('active');
+                            otherItem.querySelector('.faq-answer').classList.add('hidden');
+                        }
+                    });
 
-    // Toggle current item
-    item.classList.toggle('active');
-    answer.classList.toggle('hidden');
-    });
-    });
+                    // Toggle current item
+                    item.classList.toggle('active');
+                    answer.classList.toggle('hidden');
+                });
+            });
 
-    // Animation trigger for FAQ section
-    const observerOptions = {
-    threshold: 0.2,
-    rootMargin: '0px 0px -50px 0px'
-    };
+            // Animation trigger for FAQ section
+            const observerOptions = {
+                threshold: 0.2,
+                rootMargin: '0px 0px -50px 0px'
+            };
 
-    const observer = new IntersectionObserver(function (entries) {
-    entries.forEach(entry => {
-    if (entry.isIntersecting) {
-    const elements = entry.target.querySelectorAll('.opacity-0');
-    elements.forEach((el, index) => {
-    el.style.animation = `fadeInUp 0.8s ease ${0.2 + (index * 0.2)}s forwards`;
-    });
-    observer.unobserve(entry.target);
-    }
-    });
-    }, observerOptions);
+            const observer = new IntersectionObserver(function (entries) {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        const elements = entry.target.querySelectorAll('.opacity-0');
+                        elements.forEach((el, index) => {
+                            el.style.animation = `fadeInUp 0.8s ease ${0.2 + (index * 0.2)}s forwards`;
+                        });
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, observerOptions);
 
-    const faqSection = document.querySelector('.faq');
-    if (faqSection) {
-    observer.observe(faqSection);
-    }
-    });
+            const faqSection = document.querySelector('.faq');
+            if (faqSection) {
+                observer.observe(faqSection);
+            }
+        });
     </script>
 
 </body>
