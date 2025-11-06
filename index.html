@@ -244,6 +244,219 @@
         }
     }
 
+
+ /* Style For More Testimonial */
+    .testimonials-scroll-section {
+        background: radial-gradient(circle at 30% -10%, #1a0a2e, #000);
+    }
+
+    /* COMPLETELY NEW CLASS NAMES */
+    .testimonials-scroll-wrapper {
+        overflow: hidden;
+        position: relative;
+        padding: 1.5rem 0;
+    }
+
+    .testimonials-scroll-track {
+        display: flex;
+        gap: 1.5rem;
+        animation: testimonials-scroll-animation 40s linear infinite;
+        width: max-content;
+    }
+
+    .testimonial-review-card {
+        flex: 0 0 320px;
+        background: rgba(255, 255, 255, 0.05);
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 1.25rem;
+        padding: 1.5rem;
+        transition: all 0.3s ease;
+        cursor: pointer;
+        height: fit-content;
+    }
+
+    .testimonial-review-card:hover {
+        transform: translateY(-5px);
+        border-color: rgba(138, 0, 255, 0.3);
+        box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
+    }
+
+    .review-stars {
+        display: flex;
+        gap: 0.2rem;
+        margin-bottom: 0.875rem;
+    }
+
+    .review-stars i {
+        color: #FFD700;
+        font-size: 0.875rem;
+    }
+
+    .review-stars-large {
+        display: flex;
+        gap: 0.2rem;
+        justify-content: center;
+    }
+
+    .review-stars-large i {
+        color: #FFD700;
+        font-size: 1.25rem;
+    }
+
+    .review-text {
+        color: #d1d5db;
+        line-height: 1.5;
+        margin-bottom: 1.25rem;
+        font-style: italic;
+        font-size: 0.9rem;
+    }
+
+    .review-author {
+        display: flex;
+        align-items: center;
+        gap: 0.875rem;
+    }
+
+    .customer-avatar {
+        width: 2.5rem;
+        height: 2.5rem;
+        border-radius: 50%;
+        background: linear-gradient(135deg, #8A00FF, #FF00A8);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 600;
+        color: white;
+        flex-shrink: 0;
+        font-size: 0.875rem;
+    }
+
+    .customer-info h4 {
+        color: white;
+        font-weight: 600;
+        margin-bottom: 0.125rem;
+        font-size: 0.95rem;
+    }
+
+    .customer-info p {
+        color: #9ca3af;
+        font-size: 0.8rem;
+    }
+
+    /* LEFT TO RIGHT SCROLLING ANIMATION */
+    @keyframes testimonials-scroll-animation {
+        0% {
+            transform: translateX(-50%);
+        }
+        100% {
+            transform: translateX(0%);
+        }
+    }
+
+    /* Pause animation on hover */
+    .testimonials-scroll-wrapper:hover .testimonials-scroll-track {
+        animation-play-state: paused;
+    }
+
+    /* Gradient fade edges */
+    .testimonials-scroll-wrapper::before,
+    .testimonials-scroll-wrapper::after {
+        content: '';
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        width: 80px;
+        z-index: 2;
+        pointer-events: none;
+    }
+
+    .testimonials-scroll-wrapper::before {
+        left: 0;
+        background: linear-gradient(to right, rgba(26, 10, 46, 1), rgba(26, 10, 46, 0));
+    }
+
+    .testimonials-scroll-wrapper::after {
+        right: 0;
+        background: linear-gradient(to left, rgba(26, 10, 46, 1), rgba(26, 10, 46, 0));
+    }
+
+    /* Mobile responsiveness */
+    @media (max-width: 1024px) {
+        .testimonial-review-card {
+            flex: 0 0 300px;
+            padding: 1.25rem;
+        }
+    }
+
+    @media (max-width: 768px) {
+        .testimonial-review-card {
+            flex: 0 0 280px;
+            padding: 1.25rem;
+        }
+
+        .testimonials-scroll-track {
+            gap: 1rem;
+            animation: testimonials-scroll-animation-mobile 35s linear infinite;
+        }
+
+        @keyframes testimonials-scroll-animation-mobile {
+            0% {
+                transform: translateX(-50%);
+            }
+            100% {
+                transform: translateX(0%);
+            }
+        }
+    }
+
+    @media (max-width: 480px) {
+        .testimonial-review-card {
+            flex: 0 0 260px;
+            padding: 1rem;
+        }
+
+        .review-text {
+            font-size: 0.85rem;
+            margin-bottom: 1rem;
+        }
+
+        .customer-info h4 {
+            font-size: 0.9rem;
+        }
+
+        .customer-info p {
+            font-size: 0.75rem;
+        }
+
+        .review-stars i {
+            font-size: 0.8rem;
+        }
+
+        .customer-avatar {
+            width: 2rem;
+            height: 2rem;
+            font-size: 0.75rem;
+        }
+    }
+
+ /* Style For How its work */
+
+/* Tablet (≤1024px) */
+@media (max-width: 1024px) {
+  .order-image {
+    width: 100%;
+  }
+}
+
+/* Mobile (≤640px) */
+@media (max-width: 640px) {
+  .order-image {
+    width: 110%;
+  }
+}
+
+
  /* Style For Who Use ztorespot */
 .carousel-3d-circle-container {
   perspective: 1500px;
@@ -642,7 +855,7 @@
 
             <h1 class="text-3xl sm:text-4xl md:text-5xl font-extrabold leading-tight mb-4 text-gradient opacity-0 animate-fade-in-up"
                 style="animation-delay: 0.6s">
-                Home Page Operations.<br>Deliver Results.
+                Test Page Operations.<br>Deliver Results.
             </h1>
 
             <p class="text-base sm:text-lg text-gray-300 mb-8 opacity-0 animate-fade-in-up max-w-2xl mx-auto px-4"
@@ -828,189 +1041,6 @@
                             </footer>
                         </div>
                     </article>
-                </div>
-            </div>
-        </section>
-
-        <!-- Logo Section -->
-        <section class="customer-logos py-12 px-4 sm:px-6 relative overflow-hidden">
-            <!-- Background Elements -->
-            <div class="absolute top-20 left-5 w-24 h-24 bg-ztore-purple/10 rounded-full blur-2xl"></div>
-            <div class="absolute bottom-20 right-5 w-28 h-28 bg-ztore-pink/10 rounded-full blur-2xl"></div>
-
-            <div class="max-w-6xl mx-auto">
-                <!-- Section Header -->
-                <div class="text-center mb-8">
-                    <h3 class="text-2xl sm:text-3xl font-bold text-white mb-3">
-                        Trusted by Industry Leaders
-                    </h3>
-                    <p class="text-gray-400 text-base max-w-2xl mx-auto">
-                        Join thousands of businesses accelerating their growth with ScalePlus
-                    </p>
-                </div>
-
-                <!-- Marquee Container -->
-                <div class="relative mb-8 overflow-hidden">
-                    <!-- Marquee Wrapper -->
-                    <div class="marquee-wrapper flex">
-                        <!-- First Set of Logos (Left to Right) -->
-                        <div class="marquee-track flex items-center animate-marquee whitespace-nowrap">
-                            <!-- Logo 1 -->
-                            <div class="flex items-center justify-center mx-2 sm:mx-3">
-                                <div
-                                    class="w-14 h-14 sm:w-16 sm:h-16 md:w-18 md:h-18 lg:w-20 lg:h-20 rounded-full overflow-hidden border-2 border-white/20 bg-white/5">
-                                    <img src="https://web.ztorespot.com/uploads/images/5749/2025/07/17/1752741539/WhatsAppImage2025-07-17at1.47.13PM.jpeg"
-                                        alt="Logo 1" class="w-full h-full object-cover">
-                                </div>
-                            </div>
-                            <!-- Logo 2 -->
-                            <div class="flex items-center justify-center mx-2 sm:mx-3">
-                                <div
-                                    class="w-14 h-14 sm:w-16 sm:h-16 md:w-18 md:h-18 lg:w-20 lg:h-20 rounded-full overflow-hidden border-2 border-white/20 bg-white/5">
-                                    <img src="./images/hero.jpg" alt="Logo 2" class="w-full h-full object-cover">
-                                </div>
-                            </div>
-                            <!-- Logo 3 -->
-                            <div class="flex items-center justify-center mx-2 sm:mx-3">
-                                <div
-                                    class="w-14 h-14 sm:w-16 sm:h-16 md:w-18 md:h-18 lg:w-20 lg:h-20 rounded-full overflow-hidden border-2 border-white/20 bg-white/5">
-                                    <img src="./images/hero.jpg" alt="Logo 3" class="w-full h-full object-cover">
-                                </div>
-                            </div>
-                            <!-- Logo 4 -->
-                            <div class="flex items-center justify-center mx-2 sm:mx-3">
-                                <div
-                                    class="w-14 h-14 sm:w-16 sm:h-16 md:w-18 md:h-18 lg:w-20 lg:h-20 rounded-full overflow-hidden border-2 border-white/20 bg-white/5">
-                                    <img src="./images/hero.jpg" alt="Logo 4" class="w-full h-full object-cover">
-                                </div>
-                            </div>
-                            <!-- Logo 5 -->
-                            <div class="flex items-center justify-center mx-2 sm:mx-3">
-                                <div
-                                    class="w-14 h-14 sm:w-16 sm:h-16 md:w-18 md:h-18 lg:w-20 lg:h-20 rounded-full overflow-hidden border-2 border-white/20 bg-white/5">
-                                    <img src="./images/hero.jpg" alt="Logo 5" class="w-full h-full object-cover">
-                                </div>
-                            </div>
-                            <!-- Logo 6 -->
-                            <div class="flex items-center justify-center mx-2 sm:mx-3">
-                                <div
-                                    class="w-14 h-14 sm:w-16 sm:h-16 md:w-18 md:h-18 lg:w-20 lg:h-20 rounded-full overflow-hidden border-2 border-white/20 bg-white/5">
-                                    <img src="./images/hero.jpg" alt="Logo 6" class="w-full h-full object-cover">
-                                </div>
-                            </div>
-                            <!-- Logo 7 -->
-                            <div class="flex items-center justify-center mx-2 sm:mx-3">
-                                <div
-                                    class="w-14 h-14 sm:w-16 sm:h-16 md:w-18 md:h-18 lg:w-20 lg:h-20 rounded-full overflow-hidden border-2 border-white/20 bg-white/5">
-                                    <img src="./images/hero.jpg" alt="Logo 7" class="w-full h-full object-cover">
-                                </div>
-                            </div>
-                            <!-- Logo 8 -->
-                            <div class="flex items-center justify-center mx-2 sm:mx-3">
-                                <div
-                                    class="w-14 h-14 sm:w-16 sm:h-16 md:w-18 md:h-18 lg:w-20 lg:h-20 rounded-full overflow-hidden border-2 border-white/20 bg-white/5">
-                                    <img src="./images/hero.jpg" alt="Logo 8" class="w-full h-full object-cover">
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Duplicate Set for Seamless Loop -->
-                        <div class="marquee-track flex items-center animate-marquee whitespace-nowrap"
-                            aria-hidden="true">
-                            <!-- Logo 1 -->
-                            <div class="flex items-center justify-center mx-2 sm:mx-3">
-                                <div
-                                    class="w-14 h-14 sm:w-16 sm:h-16 md:w-18 md:h-18 lg:w-20 lg:h-20 rounded-full overflow-hidden border-2 border-white/20 bg-white/5">
-                                    <img src="https://web.ztorespot.com/uploads/images/5749/2025/07/17/1752741539/WhatsAppImage2025-07-17at1.47.13PM.jpeg"
-                                        alt="Logo 1" class="w-full h-full object-cover">
-                                </div>
-                            </div>
-                            <!-- Logo 2 -->
-                            <div class="flex items-center justify-center mx-2 sm:mx-3">
-                                <div
-                                    class="w-14 h-14 sm:w-16 sm:h-16 md:w-18 md:h-18 lg:w-20 lg:h-20 rounded-full overflow-hidden border-2 border-white/20 bg-white/5">
-                                    <img src="./images/hero.jpg" alt="Logo 2" class="w-full h-full object-cover">
-                                </div>
-                            </div>
-                            <!-- Logo 3 -->
-                            <div class="flex items-center justify-center mx-2 sm:mx-3">
-                                <div
-                                    class="w-14 h-14 sm:w-16 sm:h-16 md:w-18 md:h-18 lg:w-20 lg:h-20 rounded-full overflow-hidden border-2 border-white/20 bg-white/5">
-                                    <img src="./images/hero.jpg" alt="Logo 3" class="w-full h-full object-cover">
-                                </div>
-                            </div>
-                            <!-- Logo 4 -->
-                            <div class="flex items-center justify-center mx-2 sm:mx-3">
-                                <div
-                                    class="w-14 h-14 sm:w-16 sm:h-16 md:w-18 md:h-18 lg:w-20 lg:h-20 rounded-full overflow-hidden border-2 border-white/20 bg-white/5">
-                                    <img src="./images/hero.jpg" alt="Logo 4" class="w-full h-full object-cover">
-                                </div>
-                            </div>
-                            <!-- Logo 5 -->
-                            <div class="flex items-center justify-center mx-2 sm:mx-3">
-                                <div
-                                    class="w-14 h-14 sm:w-16 sm:h-16 md:w-18 md:h-18 lg:w-20 lg:h-20 rounded-full overflow-hidden border-2 border-white/20 bg-white/5">
-                                    <img src="./images/hero.jpg" alt="Logo 5" class="w-full h-full object-cover">
-                                </div>
-                            </div>
-                            <!-- Logo 6 -->
-                            <div class="flex items-center justify-center mx-2 sm:mx-3">
-                                <div
-                                    class="w-14 h-14 sm:w-16 sm:h-16 md:w-18 md:h-18 lg:w-20 lg:h-20 rounded-full overflow-hidden border-2 border-white/20 bg-white/5">
-                                    <img src="./images/hero.jpg" alt="Logo 6" class="w-full h-full object-cover">
-                                </div>
-                            </div>
-                            <!-- Logo 7 -->
-                            <div class="flex items-center justify-center mx-2 sm:mx-3">
-                                <div
-                                    class="w-14 h-14 sm:w-16 sm:h-16 md:w-18 md:h-18 lg:w-20 lg:h-20 rounded-full overflow-hidden border-2 border-white/20 bg-white/5">
-                                    <img src="./images/hero.jpg" alt="Logo 7" class="w-full h-full object-cover">
-                                </div>
-                            </div>
-                            <!-- Logo 8 -->
-                            <div class="flex items-center justify-center mx-2 sm:mx-3">
-                                <div
-                                    class="w-14 h-14 sm:w-16 sm:h-16 md:w-18 md:h-18 lg:w-20 lg:h-20 rounded-full overflow-hidden border-2 border-white/20 bg-white/5">
-                                    <img src="./images/hero.jpg" alt="Logo 8" class="w-full h-full object-cover">
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Gradient Fades -->
-                    <div class="absolute left-0 top-0 w-20 h-full bg-gradient-to-r from-[#0a0a1e] to-transparent z-10">
-                    </div>
-                    <div class="absolute right-0 top-0 w-20 h-full bg-gradient-to-l from-[#0a0a1e] to-transparent z-10">
-                    </div>
-                </div>
-
-                <!-- Image Arrow -->
-                <div class="flex justify-center mb-6">
-                    <div class="flex flex-col items-center">
-                        <!-- Arrow Image with smooth fade and shake effects -->
-                        <img src="./images/arrow.gif" alt="Arrow"
-                            class="w-24 h-20 sm:w-28 sm:h-24 md:w-32 md:h-28 animate-smoothFadeShake">
-                    </div>
-                </div>
-
-                <!-- "Next You" Section -->
-                <div class="text-center">
-                    <div
-                        class="inline-flex flex-col items-center gap-2 sm:gap-3 p-3 sm:p-4 bg-white/5 rounded-xl border border-white/10 backdrop-blur-xl">
-                        <!-- Empty Frame with Green Question Mark -->
-                        <div
-                            class="w-14 h-14 sm:w-16 sm:h-16 rounded-full border-2 border-dashed border-gray-500 flex items-center justify-center overflow-hidden bg-white/5">
-                            <span class="text-xl sm:text-2xl font-bold text-green-400">?</span>
-                        </div>
-
-                        <!-- Text -->
-                        <div>
-                            <h4 class="text-sm sm:text-base font-bold text-white mb-1">Next Your's Store?</h4>
-                            <p class="text-gray-400 text-xs max-w-xs">
-                                Join our growing community of successful businesses
-                            </p>
-                        </div>
-                    </div>
                 </div>
             </div>
         </section>
@@ -1300,6 +1330,464 @@
             </div>
         </section>
 
+
+        <!-- Logo Section -->
+        <section class="customer-logos py-12 px-4 sm:px-6 relative overflow-hidden">
+            <!-- Background Elements -->
+            <div class="absolute top-20 left-5 w-24 h-24 bg-ztore-purple/10 rounded-full blur-2xl"></div>
+            <div class="absolute bottom-20 right-5 w-28 h-28 bg-ztore-pink/10 rounded-full blur-2xl"></div>
+
+            <div class="max-w-6xl mx-auto">
+                <!-- Section Header -->
+                <div class="text-center mb-8">
+                    <h3 class="text-2xl sm:text-3xl font-bold text-white mb-3">
+                        Trusted by Industry Leaders
+                    </h3>
+                    <p class="text-gray-400 text-base max-w-2xl mx-auto">
+                        Join thousands of businesses accelerating their growth with ScalePlus
+                    </p>
+                </div>
+
+                <!-- Marquee Container -->
+                <div class="relative mb-8 overflow-hidden">
+                    <!-- Marquee Wrapper -->
+                    <div class="marquee-wrapper flex">
+                        <!-- First Set of Logos (Left to Right) -->
+                        <div class="marquee-track flex items-center animate-marquee whitespace-nowrap">
+                            <!-- Logo 1 -->
+                            <div class="flex items-center justify-center mx-2 sm:mx-3">
+                                <div
+                                    class="w-14 h-14 sm:w-16 sm:h-16 md:w-18 md:h-18 lg:w-20 lg:h-20 rounded-full overflow-hidden border-2 border-white/20 bg-white/5">
+                                    <img src="https://web.ztorespot.com/uploads/images/5749/2025/07/17/1752741539/WhatsAppImage2025-07-17at1.47.13PM.jpeg"
+                                        alt="Logo 1" class="w-full h-full object-cover">
+                                </div>
+                            </div>
+                            <!-- Logo 2 -->
+                            <div class="flex items-center justify-center mx-2 sm:mx-3">
+                                <div
+                                    class="w-14 h-14 sm:w-16 sm:h-16 md:w-18 md:h-18 lg:w-20 lg:h-20 rounded-full overflow-hidden border-2 border-white/20 bg-white/5">
+                                    <img src="./images/hero.jpg" alt="Logo 2" class="w-full h-full object-cover">
+                                </div>
+                            </div>
+                            <!-- Logo 3 -->
+                            <div class="flex items-center justify-center mx-2 sm:mx-3">
+                                <div
+                                    class="w-14 h-14 sm:w-16 sm:h-16 md:w-18 md:h-18 lg:w-20 lg:h-20 rounded-full overflow-hidden border-2 border-white/20 bg-white/5">
+                                    <img src="./images/hero.jpg" alt="Logo 3" class="w-full h-full object-cover">
+                                </div>
+                            </div>
+                            <!-- Logo 4 -->
+                            <div class="flex items-center justify-center mx-2 sm:mx-3">
+                                <div
+                                    class="w-14 h-14 sm:w-16 sm:h-16 md:w-18 md:h-18 lg:w-20 lg:h-20 rounded-full overflow-hidden border-2 border-white/20 bg-white/5">
+                                    <img src="./images/hero.jpg" alt="Logo 4" class="w-full h-full object-cover">
+                                </div>
+                            </div>
+                            <!-- Logo 5 -->
+                            <div class="flex items-center justify-center mx-2 sm:mx-3">
+                                <div
+                                    class="w-14 h-14 sm:w-16 sm:h-16 md:w-18 md:h-18 lg:w-20 lg:h-20 rounded-full overflow-hidden border-2 border-white/20 bg-white/5">
+                                    <img src="./images/hero.jpg" alt="Logo 5" class="w-full h-full object-cover">
+                                </div>
+                            </div>
+                            <!-- Logo 6 -->
+                            <div class="flex items-center justify-center mx-2 sm:mx-3">
+                                <div
+                                    class="w-14 h-14 sm:w-16 sm:h-16 md:w-18 md:h-18 lg:w-20 lg:h-20 rounded-full overflow-hidden border-2 border-white/20 bg-white/5">
+                                    <img src="./images/hero.jpg" alt="Logo 6" class="w-full h-full object-cover">
+                                </div>
+                            </div>
+                            <!-- Logo 7 -->
+                            <div class="flex items-center justify-center mx-2 sm:mx-3">
+                                <div
+                                    class="w-14 h-14 sm:w-16 sm:h-16 md:w-18 md:h-18 lg:w-20 lg:h-20 rounded-full overflow-hidden border-2 border-white/20 bg-white/5">
+                                    <img src="./images/hero.jpg" alt="Logo 7" class="w-full h-full object-cover">
+                                </div>
+                            </div>
+                            <!-- Logo 8 -->
+                            <div class="flex items-center justify-center mx-2 sm:mx-3">
+                                <div
+                                    class="w-14 h-14 sm:w-16 sm:h-16 md:w-18 md:h-18 lg:w-20 lg:h-20 rounded-full overflow-hidden border-2 border-white/20 bg-white/5">
+                                    <img src="./images/hero.jpg" alt="Logo 8" class="w-full h-full object-cover">
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Duplicate Set for Seamless Loop -->
+                        <div class="marquee-track flex items-center animate-marquee whitespace-nowrap"
+                            aria-hidden="true">
+                            <!-- Logo 1 -->
+                            <div class="flex items-center justify-center mx-2 sm:mx-3">
+                                <div
+                                    class="w-14 h-14 sm:w-16 sm:h-16 md:w-18 md:h-18 lg:w-20 lg:h-20 rounded-full overflow-hidden border-2 border-white/20 bg-white/5">
+                                    <img src="https://web.ztorespot.com/uploads/images/5749/2025/07/17/1752741539/WhatsAppImage2025-07-17at1.47.13PM.jpeg"
+                                        alt="Logo 1" class="w-full h-full object-cover">
+                                </div>
+                            </div>
+                            <!-- Logo 2 -->
+                            <div class="flex items-center justify-center mx-2 sm:mx-3">
+                                <div
+                                    class="w-14 h-14 sm:w-16 sm:h-16 md:w-18 md:h-18 lg:w-20 lg:h-20 rounded-full overflow-hidden border-2 border-white/20 bg-white/5">
+                                    <img src="./images/hero.jpg" alt="Logo 2" class="w-full h-full object-cover">
+                                </div>
+                            </div>
+                            <!-- Logo 3 -->
+                            <div class="flex items-center justify-center mx-2 sm:mx-3">
+                                <div
+                                    class="w-14 h-14 sm:w-16 sm:h-16 md:w-18 md:h-18 lg:w-20 lg:h-20 rounded-full overflow-hidden border-2 border-white/20 bg-white/5">
+                                    <img src="./images/hero.jpg" alt="Logo 3" class="w-full h-full object-cover">
+                                </div>
+                            </div>
+                            <!-- Logo 4 -->
+                            <div class="flex items-center justify-center mx-2 sm:mx-3">
+                                <div
+                                    class="w-14 h-14 sm:w-16 sm:h-16 md:w-18 md:h-18 lg:w-20 lg:h-20 rounded-full overflow-hidden border-2 border-white/20 bg-white/5">
+                                    <img src="./images/hero.jpg" alt="Logo 4" class="w-full h-full object-cover">
+                                </div>
+                            </div>
+                            <!-- Logo 5 -->
+                            <div class="flex items-center justify-center mx-2 sm:mx-3">
+                                <div
+                                    class="w-14 h-14 sm:w-16 sm:h-16 md:w-18 md:h-18 lg:w-20 lg:h-20 rounded-full overflow-hidden border-2 border-white/20 bg-white/5">
+                                    <img src="./images/hero.jpg" alt="Logo 5" class="w-full h-full object-cover">
+                                </div>
+                            </div>
+                            <!-- Logo 6 -->
+                            <div class="flex items-center justify-center mx-2 sm:mx-3">
+                                <div
+                                    class="w-14 h-14 sm:w-16 sm:h-16 md:w-18 md:h-18 lg:w-20 lg:h-20 rounded-full overflow-hidden border-2 border-white/20 bg-white/5">
+                                    <img src="./images/hero.jpg" alt="Logo 6" class="w-full h-full object-cover">
+                                </div>
+                            </div>
+                            <!-- Logo 7 -->
+                            <div class="flex items-center justify-center mx-2 sm:mx-3">
+                                <div
+                                    class="w-14 h-14 sm:w-16 sm:h-16 md:w-18 md:h-18 lg:w-20 lg:h-20 rounded-full overflow-hidden border-2 border-white/20 bg-white/5">
+                                    <img src="./images/hero.jpg" alt="Logo 7" class="w-full h-full object-cover">
+                                </div>
+                            </div>
+                            <!-- Logo 8 -->
+                            <div class="flex items-center justify-center mx-2 sm:mx-3">
+                                <div
+                                    class="w-14 h-14 sm:w-16 sm:h-16 md:w-18 md:h-18 lg:w-20 lg:h-20 rounded-full overflow-hidden border-2 border-white/20 bg-white/5">
+                                    <img src="./images/hero.jpg" alt="Logo 8" class="w-full h-full object-cover">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Gradient Fades -->
+                    <div class="absolute left-0 top-0 w-20 h-full bg-gradient-to-r from-[#0a0a1e] to-transparent z-10">
+                    </div>
+                    <div class="absolute right-0 top-0 w-20 h-full bg-gradient-to-l from-[#0a0a1e] to-transparent z-10">
+                    </div>
+                </div>
+
+                <!-- Image Arrow -->
+                <div class="flex justify-center mb-6">
+                    <div class="flex flex-col items-center">
+                        <!-- Arrow Image with smooth fade and shake effects -->
+                        <img src="./images/arrow.gif" alt="Arrow"
+                            class="w-24 h-20 sm:w-28 sm:h-24 md:w-32 md:h-28 animate-smoothFadeShake">
+                    </div>
+                </div>
+
+                <!-- "Next You" Section -->
+                <div class="text-center">
+                    <div
+                        class="inline-flex flex-col items-center gap-2 sm:gap-3 p-3 sm:p-4 bg-white/5 rounded-xl border border-white/10 backdrop-blur-xl">
+                        <!-- Empty Frame with Green Question Mark -->
+                        <div
+                            class="w-14 h-14 sm:w-16 sm:h-16 rounded-full border-2 border-dashed border-gray-500 flex items-center justify-center overflow-hidden bg-white/5">
+                            <span class="text-xl sm:text-2xl font-bold text-green-400">?</span>
+                        </div>
+
+                        <!-- Text -->
+                        <div>
+                            <h4 class="text-sm sm:text-base font-bold text-white mb-1">Next Your's Store?</h4>
+                            <p class="text-gray-400 text-xs max-w-xs">
+                                Join our growing community of successful businesses
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+
+
+        <!-- Testimonials Section with Marquee -->
+        <section class="testimonials-scroll-section py-16 px-4 sm:px-6 relative overflow-hidden">
+            <!-- Background Elements -->
+            <div class="absolute top-10 left-5% w-40 h-40 bg-ztore-purple/10 rounded-full blur-3xl"></div>
+            <div class="absolute bottom-10 right-5% w-48 h-48 bg-ztore-pink/10 rounded-full blur-3xl"></div>
+
+            <div class="max-w-7xl mx-auto">
+                <!-- Section Header -->
+                <div class="text-center mb-12">
+                    <h2 class="text-3xl sm:text-4xl md:text-5xl font-bold mb-4">
+                        Loved by <span class="text-gradient">Thousands</span> of Businesses
+                    </h2>
+                    <p class="text-lg sm:text-xl text-gray-300 max-w-3xl mx-auto">
+                        Don't just take our word for it - hear from successful store owners who transformed their
+                        business
+                    </p>
+                </div>
+
+                <!-- Testimonials Scroll Container -->
+                <div class="testimonials-scroll-wrapper mb-12">
+                    <div class="testimonials-scroll-track">
+                        <!-- Testimonial 1 - 5 Stars -->
+                        <div class="testimonial-review-card">
+                            <div class="review-stars">
+                                <i class="bi bi-star-fill"></i>
+                                <i class="bi bi-star-fill"></i>
+                                <i class="bi bi-star-fill"></i>
+                                <i class="bi bi-star-fill"></i>
+                                <i class="bi bi-star-fill"></i>
+                            </div>
+                            <p class="review-text">
+                                "ScalePlus transformed our electronics store. We went from managing spreadsheets to
+                                automated inventory in days!"
+                            </p>
+                            <div class="review-author">
+                                <div class="customer-avatar">
+                                    <span>RK</span>
+                                </div>
+                                <div class="customer-info">
+                                    <h4>Rajesh Kumar</h4>
+                                    <p>TechGadgets Store</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Testimonial 2 - 5 Stars -->
+                        <div class="testimonial-review-card">
+                            <div class="review-stars">
+                                <i class="bi bi-star-fill"></i>
+                                <i class="bi bi-star-fill"></i>
+                                <i class="bi bi-star-fill"></i>
+                                <i class="bi bi-star-fill"></i>
+                                <i class="bi bi-star-fill"></i>
+                            </div>
+                            <p class="review-text">
+                                "The zero transaction fees feature saved us ₹50,000+ in the first month alone.
+                                Incredible value!"
+                            </p>
+                            <div class="review-author">
+                                <div class="customer-avatar">
+                                    <span>PS</span>
+                                </div>
+                                <div class="customer-info">
+                                    <h4>Priya Sharma</h4>
+                                    <p>StyleBoutique Fashion</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Testimonial 3 - 4.5 Stars -->
+                        <div class="testimonial-review-card">
+                            <div class="review-stars">
+                                <i class="bi bi-star-fill"></i>
+                                <i class="bi bi-star-fill"></i>
+                                <i class="bi bi-star-fill"></i>
+                                <i class="bi bi-star-fill"></i>
+                                <i class="bi bi-star-half"></i>
+                            </div>
+                            <p class="review-text">
+                                "Setup was so simple! No technical knowledge needed. Our toy store was live in 2 hours."
+                            </p>
+                            <div class="review-author">
+                                <div class="customer-avatar">
+                                    <span>AP</span>
+                                </div>
+                                <div class="customer-info">
+                                    <h4>Ankit Patel</h4>
+                                    <p>PlayZone Toys</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Testimonial 4 - 5 Stars -->
+                        <div class="testimonial-review-card">
+                            <div class="review-stars">
+                                <i class="bi bi-star-fill"></i>
+                                <i class="bi bi-star-fill"></i>
+                                <i class="bi bi-star-fill"></i>
+                                <i class="bi bi-star-fill"></i>
+                                <i class="bi bi-star-fill"></i>
+                            </div>
+                            <p class="review-text">
+                                "45-minute delivery integration changed everything for our grocery business. Customer
+                                satisfaction skyrocketed!"
+                            </p>
+                            <div class="review-author">
+                                <div class="customer-avatar">
+                                    <span>SM</span>
+                                </div>
+                                <div class="customer-info">
+                                    <h4>Sunita Mehta</h4>
+                                    <p>FreshMart Groceries</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Testimonial 5 - 4.5 Stars -->
+                        <div class="testimonial-review-card">
+                            <div class="review-stars">
+                                <i class="bi bi-star-fill"></i>
+                                <i class="bi bi-star-fill"></i>
+                                <i class="bi bi-star-fill"></i>
+                                <i class="bi bi-star-fill"></i>
+                                <i class="bi bi-star-half"></i>
+                            </div>
+                            <p class="review-text">
+                                "The multi-staff access feature helped us scale our home decor business seamlessly with
+                                our team."
+                            </p>
+                            <div class="review-author">
+                                <div class="customer-avatar">
+                                    <span>VK</span>
+                                </div>
+                                <div class="customer-info">
+                                    <h4>Vikram Khanna</h4>
+                                    <p>HomeStyle Decor</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Testimonial 6 - 5 Stars -->
+                        <div class="testimonial-review-card">
+                            <div class="review-stars">
+                                <i class="bi bi-star-fill"></i>
+                                <i class="bi bi-star-fill"></i>
+                                <i class="bi bi-star-fill"></i>
+                                <i class="bi bi-star-fill"></i>
+                                <i class="bi bi-star-fill"></i>
+                            </div>
+                            <p class="review-text">
+                                "Launched our dropshipping store in 48 hours with 50+ supplier integrations. Game
+                                changer!"
+                            </p>
+                            <div class="review-author">
+                                <div class="customer-avatar">
+                                    <span>NJ</span>
+                                </div>
+                                <div class="customer-info">
+                                    <h4>Neha Joshi</h4>
+                                    <p>GlobalSource Dropshipping</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Duplicate for seamless loop -->
+                        <div class="testimonial-review-card">
+                            <div class="review-stars">
+                                <i class="bi bi-star-fill"></i>
+                                <i class="bi bi-star-fill"></i>
+                                <i class="bi bi-star-fill"></i>
+                                <i class="bi bi-star-fill"></i>
+                                <i class="bi bi-star-fill"></i>
+                            </div>
+                            <p class="review-text">
+                                "ScalePlus transformed our electronics store. We went from managing spreadsheets to
+                                automated inventory in days!"
+                            </p>
+                            <div class="review-author">
+                                <div class="customer-avatar">
+                                    <span>RK</span>
+                                </div>
+                                <div class="customer-info">
+                                    <h4>Rajesh Kumar</h4>
+                                    <p>TechGadgets Store</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="testimonial-review-card">
+                            <div class="review-stars">
+                                <i class="bi bi-star-fill"></i>
+                                <i class="bi bi-star-fill"></i>
+                                <i class="bi bi-star-fill"></i>
+                                <i class="bi bi-star-fill"></i>
+                                <i class="bi bi-star-fill"></i>
+                            </div>
+                            <p class="review-text">
+                                "The zero transaction fees feature saved us ₹50,000+ in the first month alone.
+                                Incredible value!"
+                            </p>
+                            <div class="review-author">
+                                <div class="customer-avatar">
+                                    <span>PS</span>
+                                </div>
+                                <div class="customer-info">
+                                    <h4>Priya Sharma</h4>
+                                    <p>StyleBoutique Fashion</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Overall Rating Summary -->
+                <div class="rating-summary text-center mb-8">
+                    <div class="bg-white/5 rounded-2xl p-6 backdrop-blur-xl border border-white/10 max-w-2xl mx-auto">
+                        <div class="flex flex-col md:flex-row items-center justify-between gap-6">
+                            <div class="text-center md:text-left">
+                                <div class="text-3xl md:text-4xl font-bold text-white mb-2">4.8/5</div>
+                                <div class="review-stars-large mb-2">
+                                    <i class="bi bi-star-fill"></i>
+                                    <i class="bi bi-star-fill"></i>
+                                    <i class="bi bi-star-fill"></i>
+                                    <i class="bi bi-star-fill"></i>
+                                    <i class="bi bi-star-half"></i>
+                                </div>
+                                <p class="text-gray-300 text-sm">Based on 2,500+ reviews</p>
+                            </div>
+                            <div class="grid grid-cols-2 gap-3 text-sm">
+                                <div class="text-right">
+                                    <span class="text-white font-semibold">5 stars</span>
+                                    <span class="text-gray-400 ml-2">1,800+</span>
+                                </div>
+                                <div class="text-right">
+                                    <span class="text-white font-semibold">4 stars</span>
+                                    <span class="text-gray-400 ml-2">500+</span>
+                                </div>
+                                <div class="text-right">
+                                    <span class="text-white font-semibold">Support</span>
+                                    <span class="text-green-400 ml-2">4.9/5</span>
+                                </div>
+                                <div class="text-right">
+                                    <span class="text-white font-semibold">Ease of Use</span>
+                                    <span class="text-green-400 ml-2">4.8/5</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Trust Badges -->
+                <div class="trust-badges flex flex-wrap justify-center gap-4 mb-8">
+                    <div
+                        class="badge-item flex items-center gap-2 bg-white/5 px-3 py-2 rounded-full border border-white/10">
+                        <i class="bi bi-shield-check text-green-400 text-sm"></i>
+                        <span class="text-gray-300 text-xs sm:text-sm">Verified Reviews</span>
+                    </div>
+                    <div
+                        class="badge-item flex items-center gap-2 bg-white/5 px-3 py-2 rounded-full border border-white/10">
+                        <i class="bi bi-arrow-repeat text-blue-400 text-sm"></i>
+                        <span class="text-gray-300 text-xs sm:text-sm">Real Customers</span>
+                    </div>
+                    <div
+                        class="badge-item flex items-center gap-2 bg-white/5 px-3 py-2 rounded-full border border-white/10">
+                        <i class="bi bi-chat-heart text-pink-400 text-sm"></i>
+                        <span class="text-gray-300 text-xs sm:text-sm">98% Satisfaction</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+
         <!-- A/B Testing Section -->
         <section class="ab-testing py-20 px-4 sm:px-6 relative overflow-hidden">
             <!-- Background Elements -->
@@ -1454,6 +1942,25 @@
         </section>
 
 
+
+        <!--How Its Work-->
+        <section class="relative min-h-[600px] py-32 bg-gradient-to-b from-[#060618] to-[#0b001f] overflow-hidden"
+            id="order-cycle-3d">
+            <div class="max-w-6xl mx-auto px-6 text-center relative">
+                <h2 class="text-4xl sm:text-5xl font-bold text-white mb-4">
+                    Automate Your <span class="text-gradient">Order Cycle</span>
+                </h2>
+                <p class="text-gray-400 mb-12">From cart to customer — powered by Ztorespot automation.</p>
+
+                <!-- Image (no orbit) -->
+                <div class="image-container">
+                    <img src="./images/How Its Work.gif" alt="Order Cycle Image" class="order-image" />
+                </div>
+            </div>
+        </section>
+
+
+
         <!-- Use Case Section -->
         <section class="relative py-12 overflow-hidden">
             <div class="max-w-6xl mx-auto text-center mb-12 px-6">
@@ -1474,7 +1981,7 @@
                     <div class="circle-3d-card active" data-position="0">
                         <div class="card-inner bg-gradient-to-br from-blue-600 to-blue-800">
                             <div class="image-wrapper">
-                                <img src="https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?auto=format&fit=crop&w=900&q=80"
+                                <img src="./images/electronics_niche.jpg"
                                     class="card-img">
                             </div>
                             <div class="card-content">
@@ -1491,14 +1998,14 @@
                     <div class="circle-3d-card" data-position="1">
                         <div class="card-inner bg-gradient-to-br from-pink-600 to-pink-800">
                             <div class="image-wrapper">
-                                <img src="https://images.unsplash.com/photo-1520975918318-3e7a4ab5a8eb?auto=format&fit=crop&w=900&q=80"
+                                <img src="./images//clothes_niche.jpg"
                                     class="card-img">
                             </div>
                             <div class="card-content">
                                 <h3 class="text-xl md:text-2xl font-bold text-white mb-2">Fashion</h3>
-                                <p class="text-gray-100 text-sm">Personalized collections</p>
+                                <p class="text-gray-100 text-sm">Trending for all ages</p>
                                 <div class="mt-2 p-2 bg-black/20 rounded-lg border border-white/20">
-                                    <p class="text-green-300 text-xs">"Upsell +30%"</p>
+                                    <p class="text-green-300 text-xs">"Sales +35%"</p>
                                 </div>
                             </div>
                         </div>
@@ -1508,7 +2015,7 @@
                     <div class="circle-3d-card" data-position="2">
                         <div class="card-inner bg-gradient-to-br from-amber-600 to-amber-800">
                             <div class="image-wrapper">
-                                <img src="https://images.unsplash.com/photo-1578898881192-c9d6f82e0f1f?auto=format&fit=crop&w=900&q=80"
+                                <img src="./images/toys_niche.jpg"
                                     class="card-img">
                             </div>
                             <div class="card-content">
@@ -1523,9 +2030,9 @@
 
                     <!-- Card 4 -->
                     <div class="circle-3d-card" data-position="3">
-                        <div class="card-inner bg-gradient-to-br from-emerald-600 to-emerald-800">
+                        <div class="card-inner bg-gradient-to-br from-green-700 to-green-900">
                             <div class="image-wrapper">
-                                <img src="https://images.unsplash.com/photo-1586201375761-83865001b3c1?auto=format&fit=crop&w=900&q=80"
+                                <img src="./images/grocery_niche.jpg"
                                     class="card-img">
                             </div>
                             <div class="card-content">
@@ -1542,7 +2049,7 @@
                     <div class="circle-3d-card" data-position="4">
                         <div class="card-inner bg-gradient-to-br from-purple-600 to-purple-800">
                             <div class="image-wrapper">
-                                <img src="https://images.unsplash.com/photo-1587019157575-9d6d80d528b5?auto=format&fit=crop&w=900&q=80"
+                                <img src="./images/homedecor_niche.png"
                                     class="card-img">
                             </div>
                             <div class="card-content">
@@ -1559,7 +2066,7 @@
                     <div class="circle-3d-card" data-position="5">
                         <div class="card-inner bg-gradient-to-br from-cyan-600 to-cyan-800">
                             <div class="image-wrapper">
-                                <img src="https://images.unsplash.com/photo-1607746882042-944635dfe10e?auto=format&fit=crop&w=900&q=80"
+                                <img src="./images/dropshipping_niche.jpg"
                                     class="card-img">
                             </div>
                             <div class="card-content">
@@ -1571,18 +2078,17 @@
                             </div>
                         </div>
                     </div>
-
                 </div>
 
-                <!-- Navigation Arrows -->
+                <!-- Side Navigation Arrows Only -->
                 <button
-                    class="carousel-prev absolute left-4 md:left-8 bg-white/10 hover:bg-white/20 text-white p-3 rounded-full backdrop-blur-xl border border-white/10 transition-all duration-300 z-20 hover:scale-110">
+                    class="circle-carousel-prev absolute left-4 md:left-8 bg-white/10 hover:bg-white/20 text-white p-3 rounded-full backdrop-blur-xl border border-white/10 transition-all duration-300 z-20 hover:scale-110">
                     <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
                     </svg>
                 </button>
                 <button
-                    class="carousel-next absolute right-4 md:right-8 bg-white/10 hover:bg-white/20 text-white p-3 rounded-full backdrop-blur-xl border border-white/10 transition-all duration-300 z-20 hover:scale-110">
+                    class="circle-carousel-next absolute right-4 md:right-8 bg-white/10 hover:bg-white/20 text-white p-3 rounded-full backdrop-blur-xl border border-white/10 transition-all duration-300 z-20 hover:scale-110">
                     <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
                     </svg>
@@ -1590,7 +2096,6 @@
 
             </div>
         </section>
-
 
         <!-- Pricing Plans Section -->
         <section class="pricing py-20 px-4 sm:px-6 relative overflow-hidden">
@@ -1609,7 +2114,7 @@
                     </p>
                 </div>
 
-                <!-- Billing Toggle -->
+
                 <!-- Billing Toggle -->
                 <div class="flex justify-center mb-12 lg:mb-16 opacity-0 animate-fade-in-up"
                     style="animation-delay: 0.2s">
@@ -2031,14 +2536,14 @@
                     <!-- Carousel Controls -->
                     <div class="flex justify-center items-center gap-6 mt-6 z-20 relative">
                         <button
-                            class="carousel-prev bg-white/10 hover:bg-white/20 text-white p-3 rounded-full backdrop-blur-xl border border-white/10 transition-all duration-300">
+                            class="themes-carousel-prev bg-white/10 hover:bg-white/20 text-white p-3 rounded-full backdrop-blur-xl border border-white/10 transition-all duration-300">
                             <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                     d="M15 19l-7-7 7-7" />
                             </svg>
                         </button>
                         <button
-                            class="carousel-next bg-white/10 hover:bg-white/20 text-white p-3 rounded-full backdrop-blur-xl border border-white/10 transition-all duration-300">
+                            class="themes-carousel-next bg-white/10 hover:bg-white/20 text-white p-3 rounded-full backdrop-blur-xl border border-white/10 transition-all duration-300">
                             <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                     d="M9 5l7 7-7 7" />
@@ -2580,13 +3085,13 @@
         });
 
 
-        // -------------- js for 3D Carousel For Who use Ztorespot --------------
+        // -------------- js for 3D Circle Carousel --------------
         class CircleCarousel3D {
             constructor() {
                 this.carousel = document.querySelector('.carousel-3d-circle');
                 this.cards = document.querySelectorAll('.circle-3d-card');
-                this.prevBtn = document.querySelector('.carousel-prev');
-                this.nextBtn = document.querySelector('.carousel-next');
+                this.prevBtn = document.querySelector('.circle-carousel-prev');
+                this.nextBtn = document.querySelector('.circle-carousel-next');
 
                 this.currentRotation = 0;
                 this.angle = 60; // 360 / 6 cards
@@ -2598,14 +3103,23 @@
             init() {
                 this.setCardPositions();
 
-                this.prevBtn.addEventListener('click', () => this.rotate(this.angle)); // Rotate right to go left
-                this.nextBtn.addEventListener('click', () => this.rotate(-this.angle)); // Rotate left to go right
+                // Fixed rotation directions - now intuitive
+                this.prevBtn.addEventListener('click', () => this.showPrevious());
+                this.nextBtn.addEventListener('click', () => this.showNext());
 
                 // Add touch/mouse drag support
                 this.addDragSupport();
 
-                // Auto-rotate CLOCKWISE (changed from -this.angle to this.angle)
-                setInterval(() => this.rotate(this.angle), 4000);
+                // Auto-rotate
+                setInterval(() => this.showNext(), 4000);
+            }
+
+            showNext() {
+                this.rotate(-this.angle); // Rotate left to show next card
+            }
+
+            showPrevious() {
+                this.rotate(this.angle); // Rotate right to show previous card
             }
 
             setCardPositions() {
@@ -2615,13 +3129,12 @@
                     card.classList.remove('active');
                 });
 
-                // Set front card as active (always position 0 after rotation)
+                // Set front card as active
                 const activeIndex = this.getActiveIndex();
                 this.cards[activeIndex].classList.add('active');
             }
 
             getActiveIndex() {
-                // Calculate which card is in front (position 0)
                 const normalizedRotation = (360 - this.currentRotation) % 360;
                 const activeIndex = Math.round(normalizedRotation / this.angle) % this.cards.length;
                 return activeIndex;
@@ -2658,7 +3171,6 @@
                     currentX = e.clientX;
                     const diff = currentX - startX;
 
-                    // Add slight rotation during drag for better UX
                     if (Math.abs(diff) > 50) {
                         const dragRotation = this.currentRotation + (diff * 0.5);
                         container.style.transform = `rotateY(${dragRotation}deg)`;
@@ -2673,10 +3185,10 @@
                     const diff = e.clientX - startX;
 
                     if (Math.abs(diff) > 50) {
+                        // Fixed drag direction
                         const direction = diff > 0 ? this.angle : -this.angle;
                         this.rotate(direction);
                     } else {
-                        // Reset to current position if drag was too small
                         container.style.transform = `rotateY(${this.currentRotation}deg)`;
                     }
                 });
@@ -2720,7 +3232,6 @@
                     }
                 });
 
-                // Set initial cursor
                 container.style.cursor = 'grab';
             }
         }
@@ -2729,13 +3240,12 @@
         document.addEventListener('DOMContentLoaded', () => {
             new CircleCarousel3D();
         });
-
-        // -------------- js for 3D Carousel Functionality --------------
+        // -------------- js for 3D Carousel Functionality themes --------------
         // 3D Carousel Functionality
         document.addEventListener('DOMContentLoaded', function () {
             const carouselItems = document.querySelectorAll('.carousel-item');
-            const prevButton = document.querySelector('.carousel-prev');
-            const nextButton = document.querySelector('.carousel-next');
+            const prevButton = document.querySelector('.themes-carousel-prev');
+            const nextButton = document.querySelector('.themes-carousel-next');
 
             let currentIndex = 1; // Start with center item
 
