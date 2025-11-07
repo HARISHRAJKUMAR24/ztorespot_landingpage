@@ -195,54 +195,58 @@
           }
         }
 
- /* Style For Logo Next You */
-    /* Marquee Animation */
-    @keyframes marquee {
-        0% {
-            transform: translateX(-50%);
-        }
-        100% {
-            transform: translateX(0%);
-        }
-    }
+ /* Style For Logo Next You
+            /* Marquee Animation - Single infinite loop left to right */
+            @keyframes marquee {
+                0% {
+                    transform: translateX(-50%);
+                }
 
-    .animate-marquee {
-        animation: marquee 10s linear infinite;
-    }
+                100% {
+                    transform: translateX(0);
+                }
+            }
 
-    /* Smooth fade and shake for arrow */
-    @keyframes smoothFadeShake {
-        0%, 100% {
-            opacity: 1;
-            transform: translateY(0) rotate(0deg);
-        }
-        25% {
-            transform: translateY(-5px) rotate(2deg);
-        }
-        50% {
-            opacity: 0.8;
-            transform: translateY(0) rotate(0deg);
-        }
-        75% {
-            transform: translateY(-3px) rotate(-2deg);
-        }
-    }
+            .animate-marquee {
+                animation: marquee 60s linear infinite;
+            }
 
-    .animate-smoothFadeShake {
-        animation: smoothFadeShake 2s ease-in-out infinite;
-    }
+            /* Smooth fade and shake for arrow */
+            @keyframes smoothFadeShake {
 
-    /* Hover pause effect */
-    .marquee-wrapper:hover .animate-marquee {
-        animation-play-state: paused;
-    }
+                0%,
+                100% {
+                    opacity: 1;
+                    transform: translateY(0) rotate(0deg);
+                }
 
-    /* Responsive adjustments */
-    @media (max-width: 640px) {
-        .animate-marquee {
-            animation-duration: 20s;
-        }
-    }
+                25% {
+                    transform: translateY(-5px) rotate(2deg);
+                }
+
+                50% {
+                    opacity: 0.8;
+                    transform: translateY(0) rotate(0deg);
+                }
+
+                75% {
+                    transform: translateY(-3px) rotate(-2deg);
+                }
+            }
+
+            .animate-smoothFadeShake {
+                animation: smoothFadeShake 2s ease-in-out infinite;
+            }
+
+            .marquee-wrapper:hover .animate-marquee {
+                animation-play-state: paused;
+            }
+
+            @media (max-width: 640px) {
+                .animate-marquee {
+                    animation-duration: 40s;
+                }
+            }
 
 
  /* Style For More Testimonial */
@@ -1348,127 +1352,198 @@
                 <div class="relative mb-8 overflow-hidden">
                     <!-- Marquee Wrapper -->
                     <div class="marquee-wrapper flex">
-                        <!-- First Set of Logos (Left to Right) -->
+                        <!-- Single Set of 21 Logos for Infinite Loop -->
                         <div class="marquee-track flex items-center animate-marquee whitespace-nowrap">
-                            <!-- Logo 1 -->
-                            <div class="flex items-center justify-center mx-2 sm:mx-3">
-                                <div
-                                    class="w-14 h-14 sm:w-16 sm:h-16 md:w-18 md:h-18 lg:w-20 lg:h-20 rounded-full overflow-hidden border-2 border-white/20 bg-white/5">
-                                    <img src="./images/clients-logos/AivaLogo.png"
-                                        alt="Logo 1" class="w-full h-full object-cover">
-                                </div>
-                            </div>
-                            <!-- Logo 2 -->
-                            <div class="flex items-center justify-center mx-2 sm:mx-3">
-                                <div
-                                    class="w-14 h-14 sm:w-16 sm:h-16 md:w-18 md:h-18 lg:w-20 lg:h-20 rounded-full overflow-hidden border-2 border-white/20 bg-white/5">
-                                    <img src="./images/clients-logos/arisuclothing.png" alt="Logo 2" class="w-full h-full object-cover">
-                                </div>
-                            </div>
-                            <!-- Logo 3 -->
-                            <div class="flex items-center justify-center mx-2 sm:mx-3">
-                                <div
-                                    class="w-14 h-14 sm:w-16 sm:h-16 md:w-18 md:h-18 lg:w-20 lg:h-20 rounded-full overflow-hidden border-2 border-white/20 bg-white/5">
-                                    <img src="./images/clients-logos/BuyCoorg.jpg" alt="Logo 3" class="w-full h-full object-cover">
-                                </div>
-                            </div>
-                            <!-- Logo 4 -->
-                            <div class="flex items-center justify-center mx-2 sm:mx-3">
-                                <div
-                                    class="w-14 h-14 sm:w-16 sm:h-16 md:w-18 md:h-18 lg:w-20 lg:h-20 rounded-full overflow-hidden border-2 border-white/20 bg-white/5">
-                                    <img src="./images/clients-logos/himajalittleshopee.png" alt="Logo 4" class="w-full h-full object-cover">
-                                </div>
-                            </div>
-                            <!-- Logo 5 -->
-                            <div class="flex items-center justify-center mx-2 sm:mx-3">
-                                <div
-                                    class="w-14 h-14 sm:w-16 sm:h-16 md:w-18 md:h-18 lg:w-20 lg:h-20 rounded-full overflow-hidden border-2 border-white/20 bg-white/5">
-                                    <img src="./images/clients-logos/hyzafashion.png" alt="Logo 5" class="w-full h-full object-cover">
-                                </div>
-                            </div>
-                            <!-- Logo 6 -->
-                            <div class="flex items-center justify-center mx-2 sm:mx-3">
-                                <div
-                                    class="w-14 h-14 sm:w-16 sm:h-16 md:w-18 md:h-18 lg:w-20 lg:h-20 rounded-full overflow-hidden border-2 border-white/20 bg-white/5">
-                                    <img src="./images/clients-logos/karuvattukadal.png" alt="Logo 6" class="w-full h-full object-cover">
-                                </div>
-                            </div>
-                            <!-- Logo 7 -->
-                            <div class="flex items-center justify-center mx-2 sm:mx-3">
-                                <div
-                                    class="w-14 h-14 sm:w-16 sm:h-16 md:w-18 md:h-18 lg:w-20 lg:h-20 rounded-full overflow-hidden border-2 border-white/20 bg-white/5">
-                                    <img src="./images/clients-logos/kingspark.png" alt="Logo 7" class="w-full h-full object-cover">
-                                </div>
-                            </div>
-                            <!-- Logo 8 -->
-                            <div class="flex items-center justify-center mx-2 sm:mx-3">
-                                <div
-                                    class="w-14 h-14 sm:w-16 sm:h-16 md:w-18 md:h-18 lg:w-20 lg:h-20 rounded-full overflow-hidden border-2 border-white/20 bg-white/5">
-                                    <img src="./images/clients-logos/littlelanterns.jpg" alt="Logo 8" class="w-full h-full object-cover">
-                                </div>
-                            </div>
-                        </div>
 
-                        <!-- Duplicate Set for Seamless Loop -->
-                        <div class="marquee-track flex items-center animate-marquee whitespace-nowrap"
-                            aria-hidden="true">
-                            <!-- Logo 1 -->
+                            <!-- Logo 1 - Rectangular -->
+                            <div class="flex items-center justify-center mx-2 sm:mx-3">
+                                <div
+                                    class="w-20 h-12 sm:w-24 sm:h-14 md:w-28 md:h-16 lg:w-32 lg:h-18 overflow-hidden border border-white/20 bg-white/5 rounded-lg">
+                                    <img src="./images/clients-logos/AivaLogo.png" alt="Aiva Logo"
+                                        class="w-full h-full object-contain p-1">
+                                </div>
+                            </div>
+
+                            <!-- Logo 2 - Rectangular -->
+                            <div class="flex items-center justify-center mx-2 sm:mx-3">
+                                <div
+                                    class="w-20 h-12 sm:w-24 sm:h-14 md:w-28 md:h-16 lg:w-32 lg:h-18 overflow-hidden border border-white/20 bg-white/5 rounded-lg">
+                                    <img src="./images/clients-logos/arisuclothing.png" alt="Arisu Clothing"
+                                        class="w-full h-full object-contain p-1">
+                                </div>
+                            </div>
+
+                            <!-- Logo 3 - Rectangular -->
+                            <div class="flex items-center justify-center mx-2 sm:mx-3">
+                                <div
+                                    class="w-20 h-12 sm:w-24 sm:h-14 md:w-28 md:h-16 lg:w-32 lg:h-18 overflow-hidden border border-white/20 bg-white/5 rounded-lg">
+                                    <img src="./images/clients-logos/BuyCoorg.jpg" alt="Buy Coorg"
+                                        class="w-full h-full object-contain p-1">
+                                </div>
+                            </div>
+
+                            <!-- Logo 4 - Rectangular -->
+                            <div class="flex items-center justify-center mx-2 sm:mx-3">
+                                <div
+                                    class="w-20 h-12 sm:w-24 sm:h-14 md:w-28 md:h-16 lg:w-32 lg:h-18 overflow-hidden border border-white/20 bg-white/5 rounded-lg">
+                                    <img src="./images/clients-logos/himajalittleshopee.png" alt="Himaja Little Shoppe"
+                                        class="w-full h-full object-contain p-1">
+                                </div>
+                            </div>
+
+                            <!-- Logo 5 - Rectangular -->
+                            <div class="flex items-center justify-center mx-2 sm:mx-3">
+                                <div
+                                    class="w-20 h-12 sm:w-24 sm:h-14 md:w-28 md:h-16 lg:w-32 lg:h-18 overflow-hidden border border-white/20 bg-white/5 rounded-lg">
+                                    <img src="./images/clients-logos/hyzafashion.png" alt="Hyza Fashion"
+                                        class="w-full h-full object-contain p-1">
+                                </div>
+                            </div>
+
+                            <!-- Logo 6 - Rectangular -->
+                            <div class="flex items-center justify-center mx-2 sm:mx-3">
+                                <div
+                                    class="w-20 h-12 sm:w-24 sm:h-14 md:w-28 md:h-16 lg:w-32 lg:h-18 overflow-hidden border border-white/20 bg-white/5 rounded-lg">
+                                    <img src="./images/clients-logos/karuvattukadal.png" alt="Karuvattukadal"
+                                        class="w-full h-full object-contain p-1">
+                                </div>
+                            </div>
+
+                            <!-- Logo 7 - Rectangular -->
+                            <div class="flex items-center justify-center mx-2 sm:mx-3">
+                                <div
+                                    class="w-20 h-12 sm:w-24 sm:h-14 md:w-28 md:h-16 lg:w-32 lg:h-18 overflow-hidden border border-white/20 bg-white/5 rounded-lg">
+                                    <img src="./images/clients-logos/kingspark.png" alt="Kings Park"
+                                        class="w-full h-full object-contain p-1">
+                                </div>
+                            </div>
+
+                            <!-- Logo 8 - ROUND (littlelanterns) -->
                             <div class="flex items-center justify-center mx-2 sm:mx-3">
                                 <div
                                     class="w-14 h-14 sm:w-16 sm:h-16 md:w-18 md:h-18 lg:w-20 lg:h-20 rounded-full overflow-hidden border-2 border-white/20 bg-white/5">
-                                    <img src="./images/clients-logos/Lotystore.png"
-                                        alt="Logo 1" class="w-full h-full object-cover">
+                                    <img src="./images/clients-logos/littlelanterns.jpg" alt="Little Lanterns"
+                                        class="w-full h-full object-cover">
                                 </div>
                             </div>
-                            <!-- Logo 2 -->
+
+                            <!-- Logo 9 - Rectangular -->
+                            <div class="flex items-center justify-center mx-2 sm:mx-3">
+                                <div
+                                    class="w-20 h-12 sm:w-24 sm:h-14 md:w-28 md:h-16 lg:w-32 lg:h-18 overflow-hidden border border-white/20 bg-white/5 rounded-lg">
+                                    <img src="./images/clients-logos/Lotystore.png" alt="Lotystore"
+                                        class="w-full h-full object-contain p-1">
+                                </div>
+                            </div>
+
+                            <!-- Logo 10 - ROUND (MDF) -->
                             <div class="flex items-center justify-center mx-2 sm:mx-3">
                                 <div
                                     class="w-14 h-14 sm:w-16 sm:h-16 md:w-18 md:h-18 lg:w-20 lg:h-20 rounded-full overflow-hidden border-2 border-white/20 bg-white/5">
-                                    <img src="./images/clients-logos/MDF.jpg" alt="Logo 2" class="w-full h-full object-cover">
+                                    <img src="./images/clients-logos/MDF.jpg" alt="MDF"
+                                        class="w-full h-full object-cover">
                                 </div>
                             </div>
-                            <!-- Logo 3 -->
+
+                            <!-- Logo 11 - ROUND (momanionshop) -->
                             <div class="flex items-center justify-center mx-2 sm:mx-3">
                                 <div
                                     class="w-14 h-14 sm:w-16 sm:h-16 md:w-18 md:h-18 lg:w-20 lg:h-20 rounded-full overflow-hidden border-2 border-white/20 bg-white/5">
-                                    <img src="./images/clients-logos/momanionshop.jpg" alt="Logo 3" class="w-full h-full object-cover">
+                                    <img src="./images/clients-logos/momanionshop.jpg" alt="Momanion Shop"
+                                        class="w-full h-full object-cover">
                                 </div>
                             </div>
-                            <!-- Logo 4 -->
+
+                            <!-- Logo 12 - Rectangular -->
+                            <div class="flex items-center justify-center mx-2 sm:mx-3">
+                                <div
+                                    class="w-20 h-12 sm:w-24 sm:h-14 md:w-28 md:h-16 lg:w-32 lg:h-18 overflow-hidden border border-white/20 bg-white/5 rounded-lg">
+                                    <img src="./images/clients-logos/mr2s.png" alt="MR2S"
+                                        class="w-full h-full object-contain p-1">
+                                </div>
+                            </div>
+
+                            <!-- Logo 13 - Rectangular -->
+                            <div class="flex items-center justify-center mx-2 sm:mx-3">
+                                <div
+                                    class="w-20 h-12 sm:w-24 sm:h-14 md:w-28 md:h-16 lg:w-32 lg:h-18 overflow-hidden border border-white/20 bg-white/5 rounded-lg">
+                                    <img src="./images/clients-logos/nammagarden.png" alt="Namma Garden"
+                                        class="w-full h-full object-contain p-1">
+                                </div>
+                            </div>
+
+                            <!-- Logo 14 - Rectangular -->
+                            <div class="flex items-center justify-center mx-2 sm:mx-3">
+                                <div
+                                    class="w-20 h-12 sm:w-24 sm:h-14 md:w-28 md:h-16 lg:w-32 lg:h-18 overflow-hidden border border-white/20 bg-white/5 rounded-lg">
+                                    <img src="./images/clients-logos/paatiyamma.png" alt="Paatiyamma"
+                                        class="w-full h-full object-contain p-1">
+                                </div>
+                            </div>
+
+                            <!-- Logo 15 - Rectangular -->
+                            <div class="flex items-center justify-center mx-2 sm:mx-3">
+                                <div
+                                    class="w-20 h-12 sm:w-24 sm:h-14 md:w-28 md:h-16 lg:w-32 lg:h-18 overflow-hidden border border-white/20 bg-white/5 rounded-lg">
+                                    <img src="./images/clients-logos/PoornaProductTMLogo.png" alt="Poorna Product"
+                                        class="w-full h-full object-contain p-1">
+                                </div>
+                            </div>
+
+                            <!-- Logo 16 - Rectangular -->
+                            <div class="flex items-center justify-center mx-2 sm:mx-3">
+                                <div
+                                    class="w-20 h-12 sm:w-24 sm:h-14 md:w-28 md:h-16 lg:w-32 lg:h-18 overflow-hidden border border-white/20 bg-white/5 rounded-lg">
+                                    <img src="./images/clients-logos/qqchef.png" alt="QQ Chef"
+                                        class="w-full h-full object-contain p-1">
+                                </div>
+                            </div>
+
+                            <!-- Logo 17 - Rectangular -->
+                            <div class="flex items-center justify-center mx-2 sm:mx-3">
+                                <div
+                                    class="w-20 h-12 sm:w-24 sm:h-14 md:w-28 md:h-16 lg:w-32 lg:h-18 overflow-hidden border border-white/20 bg-white/5 rounded-lg">
+                                    <img src="./images/clients-logos/smartkadai.png" alt="Smart Kadai"
+                                        class="w-full h-full object-contain p-1">
+                                </div>
+                            </div>
+
+                            <!-- Logo 18 - ROUND (uniqfashions) -->
                             <div class="flex items-center justify-center mx-2 sm:mx-3">
                                 <div
                                     class="w-14 h-14 sm:w-16 sm:h-16 md:w-18 md:h-18 lg:w-20 lg:h-20 rounded-full overflow-hidden border-2 border-white/20 bg-white/5">
-                                    <img src="./images/clients-logos/mr2s.png" alt="Logo 4" class="w-full h-full object-cover">
+                                    <img src="./images/clients-logos/uniqfashions.jpg" alt="Uniq Fashions"
+                                        class="w-full h-full object-cover">
                                 </div>
                             </div>
-                            <!-- Logo 5 -->
+
+                            <!-- Logo 19 - Rectangular -->
                             <div class="flex items-center justify-center mx-2 sm:mx-3">
                                 <div
-                                    class="w-14 h-14 sm:w-16 sm:h-16 md:w-18 md:h-18 lg:w-20 lg:h-20 rounded-full overflow-hidden border-2 border-white/20 bg-white/5">
-                                    <img src="./images/clients-logos/nammagarden.png" alt="Logo 5" class="w-full h-full object-cover">
+                                    class="w-20 h-12 sm:w-24 sm:h-14 md:w-28 md:h-16 lg:w-32 lg:h-18 overflow-hidden border border-white/20 bg-white/5 rounded-lg">
+                                    <img src="./images/clients-logos/VJGraphicsLogo.png" alt="VJ Graphics"
+                                        class="w-full h-full object-contain p-1">
                                 </div>
                             </div>
-                            <!-- Logo 6 -->
+
+                            <!-- Logo 20 - Rectangular -->
                             <div class="flex items-center justify-center mx-2 sm:mx-3">
                                 <div
-                                    class="w-14 h-14 sm:w-16 sm:h-16 md:w-18 md:h-18 lg:w-20 lg:h-20 rounded-full overflow-hidden border-2 border-white/20 bg-white/5">
-                                    <img src="./images/clients-logos/paatiyamma.png" alt="Logo 6" class="w-full h-full object-cover">
+                                    class="w-20 h-12 sm:w-24 sm:h-14 md:w-28 md:h-16 lg:w-32 lg:h-18 overflow-hidden border border-white/20 bg-white/5 rounded-lg">
+                                    <img src="./images/clients-logos/vronlineshopping.png" alt="VR Online Shopping"
+                                        class="w-full h-full object-contain p-1">
                                 </div>
                             </div>
-                            <!-- Logo 7 -->
+
+                            <!-- Logo 21 - Rectangular -->
                             <div class="flex items-center justify-center mx-2 sm:mx-3">
                                 <div
-                                    class="w-14 h-14 sm:w-16 sm:h-16 md:w-18 md:h-18 lg:w-20 lg:h-20 rounded-full overflow-hidden border-2 border-white/20 bg-white/5">
-                                    <img src="./images/clients-logos/PoornaProductTMLogo.png" alt="Logo 7" class="w-full h-full object-cover">
+                                    class="w-20 h-12 sm:w-24 sm:h-14 md:w-28 md:h-16 lg:w-32 lg:h-18 overflow-hidden border border-white/20 bg-white/5 rounded-lg">
+                                    <img src="./images/clients-logos/xtra.png" alt="Xtra"
+                                        class="w-full h-full object-contain p-1">
                                 </div>
                             </div>
-                            <!-- Logo 8 -->
-                            <div class="flex items-center justify-center mx-2 sm:mx-3">
-                                <div
-                                    class="w-14 h-14 sm:w-16 sm:h-16 md:w-18 md:h-18 lg:w-20 lg:h-20 rounded-full overflow-hidden border-2 border-white/20 bg-white/5">
-                                    <img src="./images/clients-logos/qqchef.png" alt="Logo 8" class="w-full h-full object-cover">
-                                </div>
-                            </div>
+
                         </div>
                     </div>
 
@@ -1482,7 +1557,6 @@
                 <!-- Image Arrow -->
                 <div class="flex justify-center mb-6">
                     <div class="flex flex-col items-center">
-                        <!-- Arrow Image with smooth fade and shake effects -->
                         <img src="./images/arrow.gif" alt="Arrow"
                             class="w-24 h-20 sm:w-28 sm:h-24 md:w-32 md:h-28 animate-smoothFadeShake">
                     </div>
