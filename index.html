@@ -7,6 +7,7 @@
     <title>Ztorespot</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
     <!-- Tailwind Configuration -->
     <script>
         tailwind.config = {
@@ -142,6 +143,83 @@
             .mobile-nav-menu.active nav a:nth-child(4) { transition-delay: 0.25s; }
             .mobile-nav-menu.active nav a:nth-child(5) { transition-delay: 0.3s; }
         }
+
+
+
+ /* ===== Typing Container fix style ===== */
+    /* VH-Based Typing Container - BETTER APPROACH */
+    .typing-container {
+        height: 45vh;           /* ← PRIMARY CONTROL - Adjust this! */
+        min-height: 100px;      /* Fallback for very small screens */
+        max-height: 200px;      /* Prevents getting too tall */
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: relative;
+    }
+
+    /* Ensure text stays centered */
+    #typing-headline {
+        height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0;
+        width: 100%;
+    }
+
+    #typing-text {
+        display: inline-block;
+        text-align: center;
+        min-height: 1.2em;
+        line-height: 1.2;
+        width: 100%;
+    }
+
+    /* Optional: Fine-tune for different screen sizes */
+    @media (max-width: 640px) {
+        .typing-container {
+            height: 40vh;       /* Slightly smaller on mobile */
+            min-height: 80px;
+        }
+    }
+
+    @media (min-width: 1920px) {
+        .typing-container {
+            height: 40vh;       /* Slightly smaller on very large screens */
+            max-height: 180px;
+        }
+    }
+
+    /* For landscape mobile */
+    @media (max-height: 500px) and (orientation: landscape) {
+        .typing-container {
+            height: 4%;       /* Taller in landscape */
+            min-height: 60px;
+        }
+    }
+
+ /* ===== Dot Glowing Effect ===== */
+  @keyframes glow {
+    0%, 100% {
+      box-shadow: 0 0 8px rgba(74, 222, 128, 0.8), 0 0 15px rgba(163, 230, 53, 0.5);
+      opacity: 1;
+      transform: scale(1);
+    }
+    50% {
+      box-shadow: 0 0 15px rgba(74, 222, 128, 1), 0 0 30px rgba(163, 230, 53, 0.7);
+      opacity: 0.9;
+      transform: scale(1.2);
+    }
+  }
+
+  .glow-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 9999px;
+    display: inline-block;
+    animation: glow 1.6s infinite ease-in-out;
+  }
 
         /* ===== GLOW BORDER EFFECTS ===== */
         @layer utilities {
@@ -778,12 +856,12 @@
 
                 <!-- Main Heading -->
                 <h3 class="text-2xl font-bold text-white mb-3">
-                    Try Weart Free for 7 Days
+                    Try Ztorespot Free for 7 Days
                 </h3>
 
                 <!-- Offer Text -->
                 <p class="text-gray-300 mb-4">
-                    Not ready to lock the ₹99 offer? Start a free trial today!
+                    Not ready to lock the ₹199 offer? Start a free trial today!
                 </p>
 
                 <!-- Countdown Timer -->
@@ -813,7 +891,7 @@
                         class="bg-gradient-to-br from-ztore-purple to-ztore-pink hover:from-ztore-purple/90 hover:to-ztore-pink/90 text-white py-3 rounded-xl font-semibold transition-all duration-300 shadow-lg hover:scale-105">
                         Start 7-Day Free Trial
                     </button>
-                    <button
+                    <button id="noThanksBtn"
                         class="bg-white/10 hover:bg-white/20 text-white py-3 rounded-xl font-semibold transition-all duration-300 border border-white/10">
                         No Thanks, Maybe Later
                     </button>
@@ -836,9 +914,14 @@
         document.addEventListener('DOMContentLoaded', function () {
             const popupOverlay = document.getElementById('popupOverlay');
             const closePopup = document.getElementById('closePopup');
+            const noThanksBtn = document.getElementById('noThanksBtn');
             const hoursElement = document.getElementById('hours');
             const minutesElement = document.getElementById('minutes');
             const secondsElement = document.getElementById('seconds');
+
+            let popupShown = false;
+            let popupTimer = null;
+            let countdownInterval = null;
 
             // Calculate end time (2 hours from now)
             const endTime = new Date();
@@ -864,47 +947,81 @@
                 secondsElement.textContent = seconds.toString().padStart(2, '0');
             }
 
-            // Show popup after 5 seconds
-            setTimeout(() => {
+            // Function to show popup
+            function showPopup() {
+                if (popupShown) return;
+
                 popupOverlay.classList.remove('hidden');
                 popupOverlay.classList.add('flex');
-                document.body.style.overflow = 'hidden';
+                document.body.classList.add('no-scroll');
+                popupShown = true;
 
                 // Start countdown timer
                 updateCountdown();
-                setInterval(updateCountdown, 1000);
-            }, 5000);
+                countdownInterval = setInterval(updateCountdown, 1000);
+            }
 
-            // Close popup functionality
-            closePopup.addEventListener('click', function () {
+            // Function to hide popup
+            function hidePopup() {
                 popupOverlay.classList.add('hidden');
                 popupOverlay.classList.remove('flex');
-                document.body.style.overflow = 'auto';
-            });
+                document.body.classList.remove('no-scroll');
+
+                // Clear countdown interval
+                if (countdownInterval) {
+                    clearInterval(countdownInterval);
+                }
+            }
+
+            // Intersection Observer for "Next You" section
+            const nextYouSection = document.querySelector('.customer-logos');
+
+            if (nextYouSection) {
+                const observer = new IntersectionObserver(function (entries) {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting && !popupShown) {
+                            // Wait 3 seconds after section becomes visible
+                            popupTimer = setTimeout(() => {
+                                showPopup();
+                            }, 3000);
+                        }
+                    });
+                }, {
+                    threshold: 0.3, // Trigger when 30% of section is visible
+                    rootMargin: '0px'
+                });
+
+                observer.observe(nextYouSection);
+            }
+
+            // Close popup functionality
+            closePopup.addEventListener('click', hidePopup);
+
+            // No Thanks button
+            noThanksBtn.addEventListener('click', hidePopup);
 
             // Close when clicking outside popup
             popupOverlay.addEventListener('click', function (e) {
                 if (e.target === popupOverlay) {
-                    popupOverlay.classList.add('hidden');
-                    popupOverlay.classList.remove('flex');
-                    document.body.style.overflow = 'auto';
+                    hidePopup();
                 }
             });
 
             // Close with Escape key
             document.addEventListener('keydown', function (e) {
                 if (e.key === 'Escape' && popupOverlay.classList.contains('flex')) {
-                    popupOverlay.classList.add('hidden');
-                    popupOverlay.classList.remove('flex');
-                    document.body.style.overflow = 'auto';
+                    hidePopup();
                 }
             });
 
-            // No Thanks button
-            document.querySelector('#popupOverlay button:last-child').addEventListener('click', function () {
-                popupOverlay.classList.add('hidden');
-                popupOverlay.classList.remove('flex');
-                document.body.style.overflow = 'auto';
+            // Cleanup on page leave
+            window.addEventListener('beforeunload', function () {
+                if (popupTimer) {
+                    clearTimeout(popupTimer);
+                }
+                if (countdownInterval) {
+                    clearInterval(countdownInterval);
+                }
             });
         });
     </script>
@@ -949,24 +1066,27 @@
     </style>
 
     <!-- Top Offer Bar -->
-    <div class="w-full bg-gradient-to-r from-ztore-purple to-ztore-pink py-2 px-4 fixed top-0 z-[60]">
+    <div
+        class="w-full bg-gradient-to-r from-emerald-500 via-green-500 to-lime-400 py-2 px-4 fixed top-0 z-[60] shadow-md">
         <div class="max-w-7xl mx-auto">
             <!-- Offer Content - Stacked on mobile, inline on desktop -->
             <div
                 class="flex flex-col sm:flex-row items-center justify-center gap-1 sm:gap-3 text-white text-xs sm:text-sm text-center">
                 <!-- Limited Time Badge -->
-                <div class="bg-white/20 rounded-full px-2 py-0.5 flex items-center gap-1 flex-shrink-0">
+                <div
+                    class="bg-white/20 rounded-full px-2 py-0.5 flex items-center gap-1 flex-shrink-0 backdrop-blur-sm">
                     <span class="font-bold">🔥</span>
                     <span class="font-semibold">LIMITED TIME</span>
                 </div>
 
                 <!-- Offer Text -->
                 <span class="font-medium">
-                    Launch your store in 2 minutes & get 50% off!
+                    Launch your store in 2 minutes & get <span class="font-bold">50% OFF!</span>
                 </span>
             </div>
         </div>
     </div>
+
 
     <!-- Header Navigation - Only navigation content -->
     <header
@@ -1048,73 +1168,89 @@
 
     <!-- Main Content -->
     <main class="pt-32 relative overflow-hidden">
+
         <!-- Hero Section -->
         <section class="hero text-center px-4 sm:px-6 mt-6">
             <!-- Background Elements -->
             <div
                 class="absolute top-[-150px] left-[-100px] w-64 sm:w-96 h-64 sm:h-96 rounded-full bg-ztore-pink blur-[100px] sm:blur-[150px] z-0 animate-float">
             </div>
-            <!-- <div
-            class="absolute bottom-[-100px] right-[-150px] w-64 sm:w-96 h-64 sm:h-96 rounded-full bg-ztore-purple blur-[100px] sm:blur-[150px] z-0 animate-float-reverse">
-        </div> -->
 
             <div class="badge bg-white/10 inline-flex items-center gap-2 rounded-full py-1.5 px-4 text-xs sm:text-sm text-gray-400 mb-5 opacity-0 animate-fade-in-up"
                 style="animation-delay: 0.4s">
-
                 <span
                     class="bg-gradient-to-br from-ztore-purple to-ztore-pink text-white font-semibold py-0.5 px-2.5 rounded-full text-xs">NEW</span>
                 We've just released new features →
             </div>
 
-            <h1 class="text-3xl sm:text-4xl md:text-5xl font-extrabold leading-tight mb-6 text-gradient opacity-0 animate-fade-in-up min-h-[120px] sm:min-h-[100px] md:min-h-[90px] flex items-center justify-center text-center"
-                style="animation-delay: 0.6s" id="typing-headline">
-                <span id="typing-text" class="leading-relaxed px-4"></span>
-            </h1>
-
-
+            <!-- VH-Based Typing Container -->
+            <div class="typing-container mb-6">
+                <h1 class="text-3xl sm:text-4xl md:text-5xl font-extrabold leading-tight text-gradient opacity-0 animate-fade-in-up flex items-center justify-center text-center"
+                    style="animation-delay: 0.6s" id="typing-headline">
+                    <span id="typing-text" class="leading-relaxed px-4 inline-block"></span>
+                </h1>
+            </div>
 
             <p class="text-base sm:text-lg text-gray-300 mb-8 opacity-0 animate-fade-in-up max-w-2xl mx-auto px-4"
                 style="animation-delay: 0.8s">
                 Simple setup. Affordable pricing. Everything you need to start selling in minutes.
             </p>
 
-            <!-- CTA Input + Button Separate -->
-            <div class="flex flex-col sm:flex-row justify-center items-center gap-3 mt-6 opacity-0 animate-fade-in-up"
-                style="animation-delay: 1s">
-
-                <!-- Input Field -->
-                <div
-                    class="relative w-full sm:w-[380px] bg-[#1a1a1a]/90 border border-white/10 rounded-full py-3.5 sm:py-4 px-6 text-gray-200 backdrop-blur-xl shadow-[0_0_25px_rgba(0,0,0,0.4)] flex items-center transition-all duration-300 focus-within:ring-2 focus-within:ring-[#a855f7]/60">
-
-                    <span class="text-white-400 text-sm sm:text-base select-none">ztorespot.com/</span>
-                    <input type="text" placeholder="yourstore"
-                        class="bg-transparent border-none outline-none ml-1 w-full text-gray-200 placeholder-gray-500 focus:text-white text-sm sm:text-base" />
+            <!-- Rest of your content remains the same -->
+            <div class="flex flex-col items-center justify-center mt-10 space-y-6 text-center">
+                <!-- Input + Button -->
+                <div class="flex flex-col sm:flex-row justify-center items-center gap-3 w-full sm:w-auto opacity-0 animate-fade-in-up"
+                    style="animation-delay: 1s">
+                    <!-- Input Field -->
+                    <div
+                        class="relative w-full sm:w-[380px] bg-white/10 border border-white/20 rounded-full py-3.5 sm:py-4 px-6 text-gray-100 backdrop-blur-2xl shadow-[0_0_40px_rgba(255,255,255,0.1)] flex items-center transition-all duration-300 focus-within:ring-2 focus-within:ring-emerald-400/70">
+                        <span class="text-gray-300 text-sm sm:text-base select-none">ztorespot.com/</span>
+                        <input type="text" placeholder="yourstore"
+                            class="bg-transparent border-none outline-none ml-1 w-full text-white placeholder-gray-400 text-sm sm:text-base focus:text-white" />
+                    </div>
+                    <!-- Claim Button -->
+                    <button
+                        class="bg-gradient-to-br from-ztore-purple to-ztore-pink hover:shadow-[0_6px_20px_rgba(138,0,255,0.4)] text-white font-semibold py-3.5 sm:py-4 px-10 rounded-full text-sm sm:text-base transition-all duration-300 shadow-[0_4px_25px_rgba(74,222,128,0.4)] hover:shadow-[0_4px_35px_rgba(163,230,53,0.5)] backdrop-blur-xl w-full sm:w-auto">
+                        Claim Now
+                    </button>
                 </div>
 
-                <!-- Claim Button -->
-                <button
-                    class="bg-gradient-to-r from-[#a855f7] to-[#ec4899] hover:from-[#9333ea] hover:to-[#db2777] text-white font-semibold py-3.5 sm:py-4 px-10 rounded-full text-sm sm:text-base transition-all duration-300 hover:shadow-[0_4px_20px_rgba(236,72,153,0.4)] w-full sm:w-auto">
-                    Claim Now
-                </button>
+                <!-- Already have account -->
+                <p class="text-gray-400 text-sm sm:text-base">
+                    Already have an account?
+                    <a href="#" class=" font-medium hover:underline hover:text-emerald-300"> <span
+                            class="text-gradient">Log in</span></a>
+                </p>
+
+                <!-- Stats Section -->
+                <div
+                    class="flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-8 mt-4 text-gray-300 text-xs sm:text-sm font-medium">
+                    <div class="flex items-center gap-1">
+                        <span class="glow-dot bg-emerald-400"></span>
+                        <span>Active Customers: <span class="text-white font-semibold">20K+</span></span>
+                    </div>
+                    <div class="flex items-center gap-1">
+                        <span class="glow-dot bg-lime-400"></span>
+                        <span>Total Sales: <span class="text-white font-semibold">₹12Cr+</span></span>
+                    </div>
+                    <div class="flex items-center gap-1">
+                        <span class="glow-dot bg-emerald-300"></span>
+                        <span>Avg Customer Profit / Month: <span class="text-white font-semibold">₹30K+</span></span>
+                    </div>
+                </div>
             </div>
-
-
 
             <!-- Dashboard Section -->
             <section
                 class="dashboard mt-12 sm:mt-16 mx-auto w-full max-w-4xl xl:max-w-5xl bg-[#121019]/80 rounded-2xl p-4 sm:p-6 backdrop-blur-xl shadow-[0_0_40px_rgba(0,0,0,0.4)] relative z-[30] overflow-hidden mb-9 transform-gpu transition-transform duration-700 will-change-transform">
                 <div class="glow-border"></div>
-
-                <!-- Video container with line animation -->
                 <div class="relative z-10">
                     <div class="w-full h-64 sm:h-80 md:h-96 lg:h-[28rem] xl:h-[30rem] rounded-xl overflow-hidden">
-                        <!-- Video with full view - no cropping -->
                         <video
                             class="w-full h-full object-cover rounded-xl transition-transform duration-700 hover:scale-105"
                             autoplay muted loop playsinline preload="auto" poster="./images/hero.jpg">
                             <source src="./images/Hero.webm" type="video/webm">
                             <source src="./images/Hero.mp4" type="video/mp4">
-                            <!-- Fallback to image if video not supported -->
                             <img src="./images/hero.jpg" alt="Dashboard Preview"
                                 class="w-full h-full object-cover rounded-xl">
                         </video>
@@ -1122,6 +1258,9 @@
                 </div>
             </section>
         </section>
+
+
+
 
 
         <!-- Problem → Solution Section -->
@@ -2287,15 +2426,14 @@
             <div class="max-w-7xl mx-auto px-4 sm:px-6">
                 <!-- Section Header -->
                 <div class="text-center mb-12">
-                    <h2 class="text-3xl sm:text-4xl md:text-5xl font-bold mb-4 text-white">
-                        <span class="text-gradient">Low Cost</span>,
-                        <span class="block mt-2">More Customers,</span>
-                        <span class="block mt-2">More Orders</span>
+                    <h2 class="text-3xl sm:text-4xl md:text-5xl font-bold mb-4 text-white leading-tight">
+                        <span class="text-gradient">Low Cost</span>, More Customers, More Orders
                     </h2>
                     <p class="text-base sm:text-lg lg:text-xl text-gray-300 max-w-2xl mx-auto italic">
                         This seller started with our Welcome Plan and achieved impressive revenue results
                     </p>
                 </div>
+
 
                 <!-- Dashboard Image - Reduced Padding -->
                 <div class="relative max-w-5xl mx-auto">
@@ -2921,8 +3059,9 @@
                                 <p class="text-gray-400 text-sm mt-2">Start your dream online store</p>
                             </div>
 
-                            <!-- Features -->
-                            <ul class="space-y-3 mb-6">
+                            <!-- Features - Limited View -->
+                            <ul class="space-y-3 mb-4 welcome-features">
+                                <!-- First 6 features visible -->
                                 <li class="flex items-center gap-2">
                                     <svg class="w-4 h-4 text-green-400 flex-shrink-0" fill="none" stroke="currentColor"
                                         viewBox="0 0 24 24">
@@ -2971,111 +3110,127 @@
                                     </svg>
                                     <span class="text-gray-300 text-sm">5 Blog limits</span>
                                 </li>
-                                <li class="flex items-center gap-2">
-                                    <svg class="w-4 h-4 text-green-400 flex-shrink-0" fill="none" stroke="currentColor"
-                                        viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M5 13l4 4L19 7" />
-                                    </svg>
-                                    <span class="text-gray-300 text-sm">10 Page Limits</span>
-                                </li>
-                                <li class="flex items-center gap-2">
-                                    <svg class="w-4 h-4 text-green-400 flex-shrink-0" fill="none" stroke="currentColor"
-                                        viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M5 13l4 4L19 7" />
-                                    </svg>
-                                    <span class="text-gray-300 text-sm">10 Discount Limits</span>
-                                </li>
-                                <li class="flex items-center gap-2">
-                                    <svg class="w-4 h-4 text-green-400 flex-shrink-0" fill="none" stroke="currentColor"
-                                        viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M5 13l4 4L19 7" />
-                                    </svg>
-                                    <span class="text-gray-300 text-sm">Advanced Reports</span>
-                                </li>
-                                <li class="flex items-center gap-2">
-                                    <svg class="w-4 h-4 text-green-400 flex-shrink-0" fill="none" stroke="currentColor"
-                                        viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M5 13l4 4L19 7" />
-                                    </svg>
-                                    <span class="text-gray-300 text-sm">Push Notification Updates</span>
-                                </li>
-                                <li class="flex items-center gap-2">
-                                    <svg class="w-4 h-4 text-green-400 flex-shrink-0" fill="none" stroke="currentColor"
-                                        viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M5 13l4 4L19 7" />
-                                    </svg>
-                                    <span class="text-gray-300 text-sm">Wishlist Features</span>
-                                </li>
-                                <li class="flex items-center gap-2">
-                                    <svg class="w-4 h-4 text-green-400 flex-shrink-0" fill="none" stroke="currentColor"
-                                        viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M5 13l4 4L19 7" />
-                                    </svg>
-                                    <span class="text-gray-300 text-sm">Themes</span>
-                                </li>
-                                <li class="flex items-center gap-2">
-                                    <svg class="w-4 h-4 text-green-400 flex-shrink-0" fill="none" stroke="currentColor"
-                                        viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M5 13l4 4L19 7" />
-                                    </svg>
-                                    <span class="text-gray-300 text-sm">Custom JS</span>
-                                </li>
-                                <li class="flex items-center gap-2">
-                                    <svg class="w-4 h-4 text-green-400 flex-shrink-0" fill="none" stroke="currentColor"
-                                        viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M5 13l4 4L19 7" />
-                                    </svg>
-                                    <span class="text-gray-300 text-sm">Cash on Delivery</span>
-                                </li>
-                                <li class="flex items-center gap-2">
-                                    <svg class="w-4 h-4 text-green-400 flex-shrink-0" fill="none" stroke="currentColor"
-                                        viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M5 13l4 4L19 7" />
-                                    </svg>
-                                    <span class="text-gray-300 text-sm">QR Code For Store</span>
-                                </li>
-                                <li class="flex items-center gap-2">
-                                    <svg class="w-4 h-4 text-green-400 flex-shrink-0" fill="none" stroke="currentColor"
-                                        viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M5 13l4 4L19 7" />
-                                    </svg>
-                                    <span class="text-gray-300 text-sm">UPI Payment Option</span>
-                                </li>
-                                <li class="flex items-center gap-2">
-                                    <svg class="w-4 h-4 text-green-400 flex-shrink-0" fill="none" stroke="currentColor"
-                                        viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M5 13l4 4L19 7" />
-                                    </svg>
-                                    <span class="text-gray-300 text-sm">Offline Payment Options</span>
-                                </li>
-                                <li class="flex items-center gap-2">
-                                    <svg class="w-4 h-4 text-green-400 flex-shrink-0" fill="none" stroke="currentColor"
-                                        viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M5 13l4 4L19 7" />
-                                    </svg>
-                                    <span class="text-gray-300 text-sm">Pickup Locations</span>
-                                </li>
-                                <li class="flex items-center gap-2">
-                                    <svg class="w-4 h-4 text-green-400 flex-shrink-0" fill="none" stroke="currentColor"
-                                        viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M5 13l4 4L19 7" />
-                                    </svg>
-                                    <span class="text-gray-300 text-sm">Free Hosting</span>
-                                </li>
+
+                                <!-- Hidden features -->
+                                <div class="welcome-hidden-features hidden space-y-3">
+                                    <li class="flex items-center gap-2">
+                                        <svg class="w-4 h-4 text-green-400 flex-shrink-0" fill="none"
+                                            stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M5 13l4 4L19 7" />
+                                        </svg>
+                                        <span class="text-gray-300 text-sm">10 Page Limits</span>
+                                    </li>
+                                    <li class="flex items-center gap-2">
+                                        <svg class="w-4 h-4 text-green-400 flex-shrink-0" fill="none"
+                                            stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M5 13l4 4L19 7" />
+                                        </svg>
+                                        <span class="text-gray-300 text-sm">10 Discount Limits</span>
+                                    </li>
+                                    <li class="flex items-center gap-2">
+                                        <svg class="w-4 h-4 text-green-400 flex-shrink-0" fill="none"
+                                            stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M5 13l4 4L19 7" />
+                                        </svg>
+                                        <span class="text-gray-300 text-sm">Advanced Reports</span>
+                                    </li>
+                                    <li class="flex items-center gap-2">
+                                        <svg class="w-4 h-4 text-green-400 flex-shrink-0" fill="none"
+                                            stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M5 13l4 4L19 7" />
+                                        </svg>
+                                        <span class="text-gray-300 text-sm">Push Notification Updates</span>
+                                    </li>
+                                    <li class="flex items-center gap-2">
+                                        <svg class="w-4 h-4 text-green-400 flex-shrink-0" fill="none"
+                                            stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M5 13l4 4L19 7" />
+                                        </svg>
+                                        <span class="text-gray-300 text-sm">Wishlist Features</span>
+                                    </li>
+                                    <li class="flex items-center gap-2">
+                                        <svg class="w-4 h-4 text-green-400 flex-shrink-0" fill="none"
+                                            stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M5 13l4 4L19 7" />
+                                        </svg>
+                                        <span class="text-gray-300 text-sm">Themes</span>
+                                    </li>
+                                    <li class="flex items-center gap-2">
+                                        <svg class="w-4 h-4 text-green-400 flex-shrink-0" fill="none"
+                                            stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M5 13l4 4L19 7" />
+                                        </svg>
+                                        <span class="text-gray-300 text-sm">Custom JS</span>
+                                    </li>
+                                    <li class="flex items-center gap-2">
+                                        <svg class="w-4 h-4 text-green-400 flex-shrink-0" fill="none"
+                                            stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M5 13l4 4L19 7" />
+                                        </svg>
+                                        <span class="text-gray-300 text-sm">Cash on Delivery</span>
+                                    </li>
+                                    <li class="flex items-center gap-2">
+                                        <svg class="w-4 h-4 text-green-400 flex-shrink-0" fill="none"
+                                            stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M5 13l4 4L19 7" />
+                                        </svg>
+                                        <span class="text-gray-300 text-sm">QR Code For Store</span>
+                                    </li>
+                                    <li class="flex items-center gap-2">
+                                        <svg class="w-4 h-4 text-green-400 flex-shrink-0" fill="none"
+                                            stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M5 13l4 4L19 7" />
+                                        </svg>
+                                        <span class="text-gray-300 text-sm">UPI Payment Option</span>
+                                    </li>
+                                    <li class="flex items-center gap-2">
+                                        <svg class="w-4 h-4 text-green-400 flex-shrink-0" fill="none"
+                                            stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M5 13l4 4L19 7" />
+                                        </svg>
+                                        <span class="text-gray-300 text-sm">Offline Payment Options</span>
+                                    </li>
+                                    <li class="flex items-center gap-2">
+                                        <svg class="w-4 h-4 text-green-400 flex-shrink-0" fill="none"
+                                            stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M5 13l4 4L19 7" />
+                                        </svg>
+                                        <span class="text-gray-300 text-sm">Pickup Locations</span>
+                                    </li>
+                                    <li class="flex items-center gap-2">
+                                        <svg class="w-4 h-4 text-green-400 flex-shrink-0" fill="none"
+                                            stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M5 13l4 4L19 7" />
+                                        </svg>
+                                        <span class="text-gray-300 text-sm">Free Hosting</span>
+                                    </li>
+                                </div>
                             </ul>
+
+                            <!-- See More/Less Button -->
+                            <div class="text-center mb-4">
+                                <button
+                                    class="see-more-btn welcome-see-more text-ztore-purple text-sm font-semibold hover:text-ztore-pink transition-colors duration-300">
+                                    See More Features ↓
+                                </button>
+                                <button
+                                    class="see-less-btn welcome-see-less hidden text-ztore-purple text-sm font-semibold hover:text-ztore-pink transition-colors duration-300">
+                                    See Less Features ↑
+                                </button>
+                            </div>
 
                             <!-- CTA Button -->
                             <button
@@ -3105,8 +3260,9 @@
                                 <p class="text-gray-400 text-sm mt-2">Elevate Your E-commerce Journey</p>
                             </div>
 
-                            <!-- Features -->
-                            <ul class="space-y-3 mb-6">
+                            <!-- Features - Limited View -->
+                            <ul class="space-y-3 mb-4 starter-features">
+                                <!-- First 6 features visible -->
                                 <li class="flex items-center gap-2">
                                     <svg class="w-4 h-4 text-green-400 flex-shrink-0" fill="none" stroke="currentColor"
                                         viewBox="0 0 24 24">
@@ -3155,135 +3311,151 @@
                                     </svg>
                                     <span class="text-gray-300 text-sm">25 Blog limits</span>
                                 </li>
-                                <li class="flex items-center gap-2">
-                                    <svg class="w-4 h-4 text-green-400 flex-shrink-0" fill="none" stroke="currentColor"
-                                        viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M5 13l4 4L19 7" />
-                                    </svg>
-                                    <span class="text-gray-300 text-sm">15 Page Limits</span>
-                                </li>
-                                <li class="flex items-center gap-2">
-                                    <svg class="w-4 h-4 text-green-400 flex-shrink-0" fill="none" stroke="currentColor"
-                                        viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M5 13l4 4L19 7" />
-                                    </svg>
-                                    <span class="text-gray-300 text-sm">25 Discount Limits</span>
-                                </li>
-                                <li class="flex items-center gap-2">
-                                    <svg class="w-4 h-4 text-green-400 flex-shrink-0" fill="none" stroke="currentColor"
-                                        viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M5 13l4 4L19 7" />
-                                    </svg>
-                                    <span class="text-gray-300 text-sm">1 Staff account</span>
-                                </li>
-                                <li class="flex items-center gap-2">
-                                    <svg class="w-4 h-4 text-green-400 flex-shrink-0" fill="none" stroke="currentColor"
-                                        viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M5 13l4 4L19 7" />
-                                    </svg>
-                                    <span class="text-gray-300 text-sm">100 Product Individual Reports</span>
-                                </li>
-                                <li class="flex items-center gap-2">
-                                    <svg class="w-4 h-4 text-green-400 flex-shrink-0" fill="none" stroke="currentColor"
-                                        viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M5 13l4 4L19 7" />
-                                    </svg>
-                                    <span class="text-gray-300 text-sm">No Inventory management</span>
-                                </li>
-                                <li class="flex items-center gap-2">
-                                    <svg class="w-4 h-4 text-green-400 flex-shrink-0" fill="none" stroke="currentColor"
-                                        viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M5 13l4 4L19 7" />
-                                    </svg>
-                                    <span class="text-gray-300 text-sm">Bulk Product Upload</span>
-                                </li>
-                                <li class="flex items-center gap-2">
-                                    <svg class="w-4 h-4 text-green-400 flex-shrink-0" fill="none" stroke="currentColor"
-                                        viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M5 13l4 4L19 7" />
-                                    </svg>
-                                    <span class="text-gray-300 text-sm">File Manager access</span>
-                                </li>
-                                <li class="flex items-center gap-2">
-                                    <svg class="w-4 h-4 text-green-400 flex-shrink-0" fill="none" stroke="currentColor"
-                                        viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M5 13l4 4L19 7" />
-                                    </svg>
-                                    <span class="text-gray-300 text-sm">Custom JS</span>
-                                </li>
-                                <li class="flex items-center gap-2">
-                                    <svg class="w-4 h-4 text-green-400 flex-shrink-0" fill="none" stroke="currentColor"
-                                        viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M5 13l4 4L19 7" />
-                                    </svg>
-                                    <span class="text-gray-300 text-sm">Cash on Delivery</span>
-                                </li>
-                                <li class="flex items-center gap-2">
-                                    <svg class="w-4 h-4 text-green-400 flex-shrink-0" fill="none" stroke="currentColor"
-                                        viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M5 13l4 4L19 7" />
-                                    </svg>
-                                    <span class="text-gray-300 text-sm">QR Code For Store</span>
-                                </li>
-                                <li class="flex items-center gap-2">
-                                    <svg class="w-4 h-4 text-green-400 flex-shrink-0" fill="none" stroke="currentColor"
-                                        viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M5 13l4 4L19 7" />
-                                    </svg>
-                                    <span class="text-gray-300 text-sm">Phonepe Payment Options</span>
-                                </li>
-                                <li class="flex items-center gap-2">
-                                    <svg class="w-4 h-4 text-green-400 flex-shrink-0" fill="none" stroke="currentColor"
-                                        viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M5 13l4 4L19 7" />
-                                    </svg>
-                                    <span class="text-gray-300 text-sm">Bank Transfer Integrations</span>
-                                </li>
-                                <li class="flex items-center gap-2">
-                                    <svg class="w-4 h-4 text-green-400 flex-shrink-0" fill="none" stroke="currentColor"
-                                        viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M5 13l4 4L19 7" />
-                                    </svg>
-                                    <span class="text-gray-300 text-sm">Pickup Locations</span>
-                                </li>
-                                <li class="flex items-center gap-2">
-                                    <svg class="w-4 h-4 text-green-400 flex-shrink-0" fill="none" stroke="currentColor"
-                                        viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M5 13l4 4L19 7" />
-                                    </svg>
-                                    <span class="text-gray-300 text-sm">Wishlist Features</span>
-                                </li>
-                                <li class="flex items-center gap-2">
-                                    <svg class="w-4 h-4 text-green-400 flex-shrink-0" fill="none" stroke="currentColor"
-                                        viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M5 13l4 4L19 7" />
-                                    </svg>
-                                    <span class="text-gray-300 text-sm">Themes</span>
-                                </li>
-                                <li class="flex items-center gap-2">
-                                    <svg class="w-4 h-4 text-green-400 flex-shrink-0" fill="none" stroke="currentColor"
-                                        viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M5 13l4 4L19 7" />
-                                    </svg>
-                                    <span class="text-gray-300 text-sm">Free Hosting</span>
-                                </li>
+
+                                <!-- Hidden features -->
+                                <div class="starter-hidden-features hidden space-y-3">
+                                    <li class="flex items-center gap-2">
+                                        <svg class="w-4 h-4 text-green-400 flex-shrink-0" fill="none"
+                                            stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M5 13l4 4L19 7" />
+                                        </svg>
+                                        <span class="text-gray-300 text-sm">15 Page Limits</span>
+                                    </li>
+                                    <li class="flex items-center gap-2">
+                                        <svg class="w-4 h-4 text-green-400 flex-shrink-0" fill="none"
+                                            stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M5 13l4 4L19 7" />
+                                        </svg>
+                                        <span class="text-gray-300 text-sm">25 Discount Limits</span>
+                                    </li>
+                                    <li class="flex items-center gap-2">
+                                        <svg class="w-4 h-4 text-green-400 flex-shrink-0" fill="none"
+                                            stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M5 13l4 4L19 7" />
+                                        </svg>
+                                        <span class="text-gray-300 text-sm">1 Staff account</span>
+                                    </li>
+                                    <li class="flex items-center gap-2">
+                                        <svg class="w-4 h-4 text-green-400 flex-shrink-0" fill="none"
+                                            stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M5 13l4 4L19 7" />
+                                        </svg>
+                                        <span class="text-gray-300 text-sm">100 Product Individual Reports</span>
+                                    </li>
+                                    <li class="flex items-center gap-2">
+                                        <svg class="w-4 h-4 text-green-400 flex-shrink-0" fill="none"
+                                            stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M5 13l4 4L19 7" />
+                                        </svg>
+                                        <span class="text-gray-300 text-sm">No Inventory management</span>
+                                    </li>
+                                    <li class="flex items-center gap-2">
+                                        <svg class="w-4 h-4 text-green-400 flex-shrink-0" fill="none"
+                                            stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M5 13l4 4L19 7" />
+                                        </svg>
+                                        <span class="text-gray-300 text-sm">Bulk Product Upload</span>
+                                    </li>
+                                    <li class="flex items-center gap-2">
+                                        <svg class="w-4 h-4 text-green-400 flex-shrink-0" fill="none"
+                                            stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M5 13l4 4L19 7" />
+                                        </svg>
+                                        <span class="text-gray-300 text-sm">File Manager access</span>
+                                    </li>
+                                    <li class="flex items-center gap-2">
+                                        <svg class="w-4 h-4 text-green-400 flex-shrink-0" fill="none"
+                                            stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M5 13l4 4L19 7" />
+                                        </svg>
+                                        <span class="text-gray-300 text-sm">Custom JS</span>
+                                    </li>
+                                    <li class="flex items-center gap-2">
+                                        <svg class="w-4 h-4 text-green-400 flex-shrink-0" fill="none"
+                                            stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M5 13l4 4L19 7" />
+                                        </svg>
+                                        <span class="text-gray-300 text-sm">Cash on Delivery</span>
+                                    </li>
+                                    <li class="flex items-center gap-2">
+                                        <svg class="w-4 h-4 text-green-400 flex-shrink-0" fill="none"
+                                            stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M5 13l4 4L19 7" />
+                                        </svg>
+                                        <span class="text-gray-300 text-sm">QR Code For Store</span>
+                                    </li>
+                                    <li class="flex items-center gap-2">
+                                        <svg class="w-4 h-4 text-green-400 flex-shrink-0" fill="none"
+                                            stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M5 13l4 4L19 7" />
+                                        </svg>
+                                        <span class="text-gray-300 text-sm">Phonepe Payment Options</span>
+                                    </li>
+                                    <li class="flex items-center gap-2">
+                                        <svg class="w-4 h-4 text-green-400 flex-shrink-0" fill="none"
+                                            stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M5 13l4 4L19 7" />
+                                        </svg>
+                                        <span class="text-gray-300 text-sm">Bank Transfer Integrations</span>
+                                    </li>
+                                    <li class="flex items-center gap-2">
+                                        <svg class="w-4 h-4 text-green-400 flex-shrink-0" fill="none"
+                                            stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M5 13l4 4L19 7" />
+                                        </svg>
+                                        <span class="text-gray-300 text-sm">Pickup Locations</span>
+                                    </li>
+                                    <li class="flex items-center gap-2">
+                                        <svg class="w-4 h-4 text-green-400 flex-shrink-0" fill="none"
+                                            stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M5 13l4 4L19 7" />
+                                        </svg>
+                                        <span class="text-gray-300 text-sm">Wishlist Features</span>
+                                    </li>
+                                    <li class="flex items-center gap-2">
+                                        <svg class="w-4 h-4 text-green-400 flex-shrink-0" fill="none"
+                                            stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M5 13l4 4L19 7" />
+                                        </svg>
+                                        <span class="text-gray-300 text-sm">Themes</span>
+                                    </li>
+                                    <li class="flex items-center gap-2">
+                                        <svg class="w-4 h-4 text-green-400 flex-shrink-0" fill="none"
+                                            stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M5 13l4 4L19 7" />
+                                        </svg>
+                                        <span class="text-gray-300 text-sm">Free Hosting</span>
+                                    </li>
+                                </div>
                             </ul>
+
+                            <!-- See More/Less Button -->
+                            <div class="text-center mb-4">
+                                <button
+                                    class="see-more-btn starter-see-more text-ztore-purple text-sm font-semibold hover:text-ztore-pink transition-colors duration-300">
+                                    See More Features ↓
+                                </button>
+                                <button
+                                    class="see-less-btn starter-see-less hidden text-ztore-purple text-sm font-semibold hover:text-ztore-pink transition-colors duration-300">
+                                    See Less Features ↑
+                                </button>
+                            </div>
 
                             <!-- CTA Button -->
                             <button
@@ -3321,8 +3493,9 @@
                                 <p class="text-white text-sm mt-2 font-semibold">Best for Small Business Owners</p>
                             </div>
 
-                            <!-- Features -->
-                            <ul class="space-y-3 mb-6">
+                            <!-- Features - Limited View -->
+                            <ul class="space-y-3 mb-4 intermediate-features">
+                                <!-- First 6 features visible -->
                                 <li class="flex items-center gap-2">
                                     <svg class="w-4 h-4 text-green-400 flex-shrink-0" fill="none" stroke="currentColor"
                                         viewBox="0 0 24 24">
@@ -3371,151 +3544,167 @@
                                     </svg>
                                     <span class="text-gray-300 text-sm">Unlimited Blogs</span>
                                 </li>
-                                <li class="flex items-center gap-2">
-                                    <svg class="w-4 h-4 text-green-400 flex-shrink-0" fill="none" stroke="currentColor"
-                                        viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M5 13l4 4L19 7" />
-                                    </svg>
-                                    <span class="text-gray-300 text-sm">50 Discount Limits</span>
-                                </li>
-                                <li class="flex items-center gap-2">
-                                    <svg class="w-4 h-4 text-green-400 flex-shrink-0" fill="none" stroke="currentColor"
-                                        viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M5 13l4 4L19 7" />
-                                    </svg>
-                                    <span class="text-gray-300 text-sm">03 Staff accounts</span>
-                                </li>
-                                <li class="flex items-center gap-2">
-                                    <svg class="w-4 h-4 text-green-400 flex-shrink-0" fill="none" stroke="currentColor"
-                                        viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M5 13l4 4L19 7" />
-                                    </svg>
-                                    <span class="text-gray-300 text-sm">Advanced Reports</span>
-                                </li>
-                                <li class="flex items-center gap-2">
-                                    <svg class="w-4 h-4 text-green-400 flex-shrink-0" fill="none" stroke="currentColor"
-                                        viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M5 13l4 4L19 7" />
-                                    </svg>
-                                    <span class="text-gray-300 text-sm">500 Product Individual Reports</span>
-                                </li>
-                                <li class="flex items-center gap-2">
-                                    <svg class="w-4 h-4 text-green-400 flex-shrink-0" fill="none" stroke="currentColor"
-                                        viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M5 13l4 4L19 7" />
-                                    </svg>
-                                    <span class="text-gray-300 text-sm">Inventory management</span>
-                                </li>
-                                <li class="flex items-center gap-2">
-                                    <svg class="w-4 h-4 text-green-400 flex-shrink-0" fill="none" stroke="currentColor"
-                                        viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M5 13l4 4L19 7" />
-                                    </svg>
-                                    <span class="text-gray-300 text-sm">Bulk Product Upload</span>
-                                </li>
-                                <li class="flex items-center gap-2">
-                                    <svg class="w-4 h-4 text-green-400 flex-shrink-0" fill="none" stroke="currentColor"
-                                        viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M5 13l4 4L19 7" />
-                                    </svg>
-                                    <span class="text-gray-300 text-sm">File Manager access</span>
-                                </li>
-                                <li class="flex items-center gap-2">
-                                    <svg class="w-4 h-4 text-green-400 flex-shrink-0" fill="none" stroke="currentColor"
-                                        viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M5 13l4 4L19 7" />
-                                    </svg>
-                                    <span class="text-gray-300 text-sm">Notification Updates</span>
-                                </li>
-                                <li class="flex items-center gap-2">
-                                    <svg class="w-4 h-4 text-green-400 flex-shrink-0" fill="none" stroke="currentColor"
-                                        viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M5 13l4 4L19 7" />
-                                    </svg>
-                                    <span class="text-gray-300 text-sm">Custom JS</span>
-                                </li>
-                                <li class="flex items-center gap-2">
-                                    <svg class="w-4 h-4 text-green-400 flex-shrink-0" fill="none" stroke="currentColor"
-                                        viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M5 13l4 4L19 7" />
-                                    </svg>
-                                    <span class="text-gray-300 text-sm">Cash on Delivery</span>
-                                </li>
-                                <li class="flex items-center gap-2">
-                                    <svg class="w-4 h-4 text-green-400 flex-shrink-0" fill="none" stroke="currentColor"
-                                        viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M5 13l4 4L19 7" />
-                                    </svg>
-                                    <span class="text-gray-300 text-sm">QR Code For Store</span>
-                                </li>
-                                <li class="flex items-center gap-2">
-                                    <svg class="w-4 h-4 text-green-400 flex-shrink-0" fill="none" stroke="currentColor"
-                                        viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M5 13l4 4L19 7" />
-                                    </svg>
-                                    <span class="text-gray-300 text-sm">Bank Transfer Integrations</span>
-                                </li>
-                                <li class="flex items-center gap-2">
-                                    <svg class="w-4 h-4 text-green-400 flex-shrink-0" fill="none" stroke="currentColor"
-                                        viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M5 13l4 4L19 7" />
-                                    </svg>
-                                    <span class="text-gray-300 text-sm">Razorpay Gateway Integrations</span>
-                                </li>
-                                <li class="flex items-center gap-2">
-                                    <svg class="w-4 h-4 text-green-400 flex-shrink-0" fill="none" stroke="currentColor"
-                                        viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M5 13l4 4L19 7" />
-                                    </svg>
-                                    <span class="text-gray-300 text-sm">Phonepe Gateway Integrations</span>
-                                </li>
-                                <li class="flex items-center gap-2">
-                                    <svg class="w-4 h-4 text-green-400 flex-shrink-0" fill="none" stroke="currentColor"
-                                        viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M5 13l4 4L19 7" />
-                                    </svg>
-                                    <span class="text-gray-300 text-sm">Pickup Locations</span>
-                                </li>
-                                <li class="flex items-center gap-2">
-                                    <svg class="w-4 h-4 text-green-400 flex-shrink-0" fill="none" stroke="currentColor"
-                                        viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M5 13l4 4L19 7" />
-                                    </svg>
-                                    <span class="text-gray-300 text-sm">Wishlist Features</span>
-                                </li>
-                                <li class="flex items-center gap-2">
-                                    <svg class="w-4 h-4 text-green-400 flex-shrink-0" fill="none" stroke="currentColor"
-                                        viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M5 13l4 4L19 7" />
-                                    </svg>
-                                    <span class="text-gray-300 text-sm">Themes</span>
-                                </li>
-                                <li class="flex items-center gap-2">
-                                    <svg class="w-4 h-4 text-green-400 flex-shrink-0" fill="none" stroke="currentColor"
-                                        viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M5 13l4 4L19 7" />
-                                    </svg>
-                                    <span class="text-gray-300 text-sm">Free Hosting</span>
-                                </li>
+
+                                <!-- Hidden features -->
+                                <div class="intermediate-hidden-features hidden space-y-3">
+                                    <li class="flex items-center gap-2">
+                                        <svg class="w-4 h-4 text-green-400 flex-shrink-0" fill="none"
+                                            stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M5 13l4 4L19 7" />
+                                        </svg>
+                                        <span class="text-gray-300 text-sm">50 Discount Limits</span>
+                                    </li>
+                                    <li class="flex items-center gap-2">
+                                        <svg class="w-4 h-4 text-green-400 flex-shrink-0" fill="none"
+                                            stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M5 13l4 4L19 7" />
+                                        </svg>
+                                        <span class="text-gray-300 text-sm">03 Staff accounts</span>
+                                    </li>
+                                    <li class="flex items-center gap-2">
+                                        <svg class="w-4 h-4 text-green-400 flex-shrink-0" fill="none"
+                                            stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M5 13l4 4L19 7" />
+                                        </svg>
+                                        <span class="text-gray-300 text-sm">Advanced Reports</span>
+                                    </li>
+                                    <li class="flex items-center gap-2">
+                                        <svg class="w-4 h-4 text-green-400 flex-shrink-0" fill="none"
+                                            stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M5 13l4 4L19 7" />
+                                        </svg>
+                                        <span class="text-gray-300 text-sm">500 Product Individual Reports</span>
+                                    </li>
+                                    <li class="flex items-center gap-2">
+                                        <svg class="w-4 h-4 text-green-400 flex-shrink-0" fill="none"
+                                            stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M5 13l4 4L19 7" />
+                                        </svg>
+                                        <span class="text-gray-300 text-sm">Inventory management</span>
+                                    </li>
+                                    <li class="flex items-center gap-2">
+                                        <svg class="w-4 h-4 text-green-400 flex-shrink-0" fill="none"
+                                            stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M5 13l4 4L19 7" />
+                                        </svg>
+                                        <span class="text-gray-300 text-sm">Bulk Product Upload</span>
+                                    </li>
+                                    <li class="flex items-center gap-2">
+                                        <svg class="w-4 h-4 text-green-400 flex-shrink-0" fill="none"
+                                            stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M5 13l4 4L19 7" />
+                                        </svg>
+                                        <span class="text-gray-300 text-sm">File Manager access</span>
+                                    </li>
+                                    <li class="flex items-center gap-2">
+                                        <svg class="w-4 h-4 text-green-400 flex-shrink-0" fill="none"
+                                            stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M5 13l4 4L19 7" />
+                                        </svg>
+                                        <span class="text-gray-300 text-sm">Notification Updates</span>
+                                    </li>
+                                    <li class="flex items-center gap-2">
+                                        <svg class="w-4 h-4 text-green-400 flex-shrink-0" fill="none"
+                                            stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M5 13l4 4L19 7" />
+                                        </svg>
+                                        <span class="text-gray-300 text-sm">Custom JS</span>
+                                    </li>
+                                    <li class="flex items-center gap-2">
+                                        <svg class="w-4 h-4 text-green-400 flex-shrink-0" fill="none"
+                                            stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M5 13l4 4L19 7" />
+                                        </svg>
+                                        <span class="text-gray-300 text-sm">Cash on Delivery</span>
+                                    </li>
+                                    <li class="flex items-center gap-2">
+                                        <svg class="w-4 h-4 text-green-400 flex-shrink-0" fill="none"
+                                            stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M5 13l4 4L19 7" />
+                                        </svg>
+                                        <span class="text-gray-300 text-sm">QR Code For Store</span>
+                                    </li>
+                                    <li class="flex items-center gap-2">
+                                        <svg class="w-4 h-4 text-green-400 flex-shrink-0" fill="none"
+                                            stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M5 13l4 4L19 7" />
+                                        </svg>
+                                        <span class="text-gray-300 text-sm">Bank Transfer Integrations</span>
+                                    </li>
+                                    <li class="flex items-center gap-2">
+                                        <svg class="w-4 h-4 text-green-400 flex-shrink-0" fill="none"
+                                            stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M5 13l4 4L19 7" />
+                                        </svg>
+                                        <span class="text-gray-300 text-sm">Razorpay Gateway Integrations</span>
+                                    </li>
+                                    <li class="flex items-center gap-2">
+                                        <svg class="w-4 h-4 text-green-400 flex-shrink-0" fill="none"
+                                            stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M5 13l4 4L19 7" />
+                                        </svg>
+                                        <span class="text-gray-300 text-sm">Phonepe Gateway Integrations</span>
+                                    </li>
+                                    <li class="flex items-center gap-2">
+                                        <svg class="w-4 h-4 text-green-400 flex-shrink-0" fill="none"
+                                            stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M5 13l4 4L19 7" />
+                                        </svg>
+                                        <span class="text-gray-300 text-sm">Pickup Locations</span>
+                                    </li>
+                                    <li class="flex items-center gap-2">
+                                        <svg class="w-4 h-4 text-green-400 flex-shrink-0" fill="none"
+                                            stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M5 13l4 4L19 7" />
+                                        </svg>
+                                        <span class="text-gray-300 text-sm">Wishlist Features</span>
+                                    </li>
+                                    <li class="flex items-center gap-2">
+                                        <svg class="w-4 h-4 text-green-400 flex-shrink-0" fill="none"
+                                            stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M5 13l4 4L19 7" />
+                                        </svg>
+                                        <span class="text-gray-300 text-sm">Themes</span>
+                                    </li>
+                                    <li class="flex items-center gap-2">
+                                        <svg class="w-4 h-4 text-green-400 flex-shrink-0" fill="none"
+                                            stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M5 13l4 4L19 7" />
+                                        </svg>
+                                        <span class="text-gray-300 text-sm">Free Hosting</span>
+                                    </li>
+                                </div>
                             </ul>
+
+                            <!-- See More/Less Button -->
+                            <div class="text-center mb-4">
+                                <button
+                                    class="see-more-btn intermediate-see-more text-yellow-400 text-sm font-semibold hover:text-orange-400 transition-colors duration-300">
+                                    See More Features ↓
+                                </button>
+                                <button
+                                    class="see-less-btn intermediate-see-less hidden text-yellow-400 text-sm font-semibold hover:text-orange-400 transition-colors duration-300">
+                                    See Less Features ↑
+                                </button>
+                            </div>
 
                             <!-- CTA Button -->
                             <button
@@ -3545,8 +3734,9 @@
                                 <p class="text-gray-400 text-sm mt-2">Kickstart Your E-commerce Business</p>
                             </div>
 
-                            <!-- Features -->
-                            <ul class="space-y-3 mb-6">
+                            <!-- Features - Limited View -->
+                            <ul class="space-y-3 mb-4 professional-features">
+                                <!-- First 6 features visible -->
                                 <li class="flex items-center gap-2">
                                     <svg class="w-4 h-4 text-green-400 flex-shrink-0" fill="none" stroke="currentColor"
                                         viewBox="0 0 24 24">
@@ -3595,143 +3785,165 @@
                                     </svg>
                                     <span class="text-gray-300 text-sm">Unlimited Blogs</span>
                                 </li>
-                                <li class="flex items-center gap-2">
-                                    <svg class="w-4 h-4 text-green-400 flex-shrink-0" fill="none" stroke="currentColor"
-                                        viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M5 13l4 4L19 7" />
-                                    </svg>
-                                    <span class="text-gray-300 text-sm">Unlimited Pages</span>
-                                </li>
-                                <li class="flex items-center gap-2">
-                                    <svg class="w-4 h-4 text-green-400 flex-shrink-0" fill="none" stroke="currentColor"
-                                        viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M5 13l4 4L19 7" />
-                                    </svg>
-                                    <span class="text-gray-300 text-sm">05 Staff accounts</span>
-                                </li>
-                                <li class="flex items-center gap-2">
-                                    <svg class="w-4 h-4 text-green-400 flex-shrink-0" fill="none" stroke="currentColor"
-                                        viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M5 13l4 4L19 7" />
-                                    </svg>
-                                    <span class="text-gray-300 text-sm">Inventory management</span>
-                                </li>
-                                <li class="flex items-center gap-2">
-                                    <svg class="w-4 h-4 text-green-400 flex-shrink-0" fill="none" stroke="currentColor"
-                                        viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M5 13l4 4L19 7" />
-                                    </svg>
-                                    <span class="text-gray-300 text-sm">Bulk Product Upload</span>
-                                </li>
-                                <li class="flex items-center gap-2">
-                                    <svg class="w-4 h-4 text-green-400 flex-shrink-0" fill="none" stroke="currentColor"
-                                        viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M5 13l4 4L19 7" />
-                                    </svg>
-                                    <span class="text-gray-300 text-sm">File Manager access</span>
-                                </li>
-                                <li class="flex items-center gap-2">
-                                    <svg class="w-4 h-4 text-green-400 flex-shrink-0" fill="none" stroke="currentColor"
-                                        viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M5 13l4 4L19 7" />
-                                    </svg>
-                                    <span class="text-gray-300 text-sm">Push Notification Updates</span>
-                                </li>
-                                <li class="flex items-center gap-2">
-                                    <svg class="w-4 h-4 text-green-400 flex-shrink-0" fill="none" stroke="currentColor"
-                                        viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M5 13l4 4L19 7" />
-                                    </svg>
-                                    <span class="text-gray-300 text-sm">Custom domain Mapping</span>
-                                </li>
-                                <li class="flex items-center gap-2">
-                                    <svg class="w-4 h-4 text-green-400 flex-shrink-0" fill="none" stroke="currentColor"
-                                        viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M5 13l4 4L19 7" />
-                                    </svg>
-                                    <span class="text-gray-300 text-sm">Custom JS</span>
-                                </li>
-                                <li class="flex items-center gap-2">
-                                    <svg class="w-4 h-4 text-green-400 flex-shrink-0" fill="none" stroke="currentColor"
-                                        viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M5 13l4 4L19 7" />
-                                    </svg>
-                                    <span class="text-gray-300 text-sm">Cash on Delivery</span>
-                                </li>
-                                <li class="flex items-center gap-2">
-                                    <svg class="w-4 h-4 text-green-400 flex-shrink-0" fill="none" stroke="currentColor"
-                                        viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M5 13l4 4L19 7" />
-                                    </svg>
-                                    <span class="text-gray-300 text-sm">QR Code For Store</span>
-                                </li>
-                                <li class="flex items-center gap-2">
-                                    <svg class="w-4 h-4 text-green-400 flex-shrink-0" fill="none" stroke="currentColor"
-                                        viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M5 13l4 4L19 7" />
-                                    </svg>
-                                    <span class="text-gray-300 text-sm">Bank Transfer Integrations</span>
-                                </li>
-                                <li class="flex items-center gap-2">
-                                    <svg class="w-4 h-4 text-green-400 flex-shrink-0" fill="none" stroke="currentColor"
-                                        viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M5 13l4 4L19 7" />
-                                    </svg>
-                                    <span class="text-gray-300 text-sm">Phonepe Gateway Integrations</span>
-                                </li>
-                                <li class="flex items-center gap-2">
-                                    <svg class="w-4 h-4 text-green-400 flex-shrink-0" fill="none" stroke="currentColor"
-                                        viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M5 13l4 4L19 7" />
-                                    </svg>
-                                    <span class="text-gray-300 text-sm">Razorpay Gateway Integrations</span>
-                                </li>
-                                <li class="flex items-center gap-2">
-                                    <svg class="w-4 h-4 text-green-400 flex-shrink-0" fill="none" stroke="currentColor"
-                                        viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M5 13l4 4L19 7" />
-                                    </svg>
-                                    <span class="text-gray-300 text-sm">Pickup Locations</span>
-                                </li>
-                                <li class="flex items-center gap-2">
-                                    <svg class="w-4 h-4 text-green-400 flex-shrink-0" fill="none" stroke="currentColor"
-                                        viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M5 13l4 4L19 7" />
-                                    </svg>
-                                    <span class="text-gray-300 text-sm">Wishlist Features</span>
-                                </li>
-                                <li class="flex items-center gap-2">
-                                    <svg class="w-4 h-4 text-green-400 flex-shrink-0" fill="none" stroke="currentColor"
-                                        viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M5 13l4 4L19 7" />
-                                    </svg>
-                                    <span class="text-gray-300 text-sm">Themes</span>
-                                </li>
-                                <li class="flex items-center gap-2">
-                                    <svg class="w-4 h-4 text-green-400 flex-shrink-0" fill="none" stroke="currentColor"
-                                        viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M5 13l4 4L19 7" />
-                                    </svg>
-                                    <span class="text-gray-300 text-sm">Free Hosting</span>
-                                </li>
+
+                                <!-- Hidden features -->
+                                <div class="professional-hidden-features hidden space-y-3">
+                                    <li class="flex items-center gap-2">
+                                        <svg class="w-4 h-4 text-green-400 flex-shrink-0" fill="none"
+                                            stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M5 13l4 4L19 7" />
+                                        </svg>
+                                        <span class="text-gray-300 text-sm">Unlimited Pages</span>
+                                    </li>
+                                    <li class="flex items-center gap-2">
+                                        <svg class="w-4 h-4 text-green-400 flex-shrink-0" fill="none"
+                                            stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M5 13l4 4L19 7" />
+                                        </svg>
+                                        <span class="text-gray-300 text-sm">05 Staff accounts</span>
+                                    </li>
+                                    <li class="flex items-center gap-2">
+                                        <svg class="w-4 h-4 text-green-400 flex-shrink-0" fill="none"
+                                            stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M5 13l4 4L19 7" />
+                                        </svg>
+                                        <span class="text-gray-300 text-sm">Inventory management</span>
+                                    </li>
+                                    <li class="flex items-center gap-2">
+                                        <svg class="w-4 h-4 text-green-400 flex-shrink-0" fill="none"
+                                            stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M5 13l4 4L19 7" />
+                                        </svg>
+                                        <span class="text-gray-300 text-sm">Bulk Product Upload</span>
+                                    </li>
+                                    <li class="flex items-center gap-2">
+                                        <svg class="w-4 h-4 text-green-400 flex-shrink-0" fill="none"
+                                            stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M5 13l4 4L19 7" />
+                                        </svg>
+                                        <span class="text-gray-300 text-sm">File Manager access</span>
+                                    </li>
+                                    <li class="flex items-center gap-2">
+                                        <svg class="w-4 h-4 text-green-400 flex-shrink-0" fill="none"
+                                            stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M5 13l4 4L19 7" />
+                                        </svg>
+                                        <span class="text-gray-300 text-sm">Push Notification Updates</span>
+                                    </li>
+                                    <!-- Enhanced Custom Domain Mapping Feature -->
+                                    <li
+                                        class="flex items-center gap-2 bg-gradient-to-r from-purple-500/20 to-pink-500/20 rounded-lg p-2 border border-purple-400/30">
+                                        <svg class="w-4 h-4 text-yellow-400 flex-shrink-0 animate-pulse"
+                                            fill="currentColor" viewBox="0 0 24 24">
+                                            <path
+                                                d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z" />
+                                        </svg>
+                                        <span
+                                            class="text-white text-sm font-semibold bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent">
+                                            Custom Domain Mapping
+                                        </span>
+
+                                    </li>
+                                    <li class="flex items-center gap-2">
+                                        <svg class="w-4 h-4 text-green-400 flex-shrink-0" fill="none"
+                                            stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M5 13l4 4L19 7" />
+                                        </svg>
+                                        <span class="text-gray-300 text-sm">Custom JS</span>
+                                    </li>
+                                    <li class="flex items-center gap-2">
+                                        <svg class="w-4 h-4 text-green-400 flex-shrink-0" fill="none"
+                                            stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M5 13l4 4L19 7" />
+                                        </svg>
+                                        <span class="text-gray-300 text-sm">Cash on Delivery</span>
+                                    </li>
+                                    <li class="flex items-center gap-2">
+                                        <svg class="w-4 h-4 text-green-400 flex-shrink-0" fill="none"
+                                            stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M5 13l4 4L19 7" />
+                                        </svg>
+                                        <span class="text-gray-300 text-sm">QR Code For Store</span>
+                                    </li>
+                                    <li class="flex items-center gap-2">
+                                        <svg class="w-4 h-4 text-green-400 flex-shrink-0" fill="none"
+                                            stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M5 13l4 4L19 7" />
+                                        </svg>
+                                        <span class="text-gray-300 text-sm">Bank Transfer Integrations</span>
+                                    </li>
+                                    <li class="flex items-center gap-2">
+                                        <svg class="w-4 h-4 text-green-400 flex-shrink-0" fill="none"
+                                            stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M5 13l4 4L19 7" />
+                                        </svg>
+                                        <span class="text-gray-300 text-sm">Phonepe Gateway Integrations</span>
+                                    </li>
+                                    <li class="flex items-center gap-2">
+                                        <svg class="w-4 h-4 text-green-400 flex-shrink-0" fill="none"
+                                            stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M5 13l4 4L19 7" />
+                                        </svg>
+                                        <span class="text-gray-300 text-sm">Razorpay Gateway Integrations</span>
+                                    </li>
+                                    <li class="flex items-center gap-2">
+                                        <svg class="w-4 h-4 text-green-400 flex-shrink-0" fill="none"
+                                            stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M5 13l4 4L19 7" />
+                                        </svg>
+                                        <span class="text-gray-300 text-sm">Pickup Locations</span>
+                                    </li>
+                                    <li class="flex items-center gap-2">
+                                        <svg class="w-4 h-4 text-green-400 flex-shrink-0" fill="none"
+                                            stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M5 13l4 4L19 7" />
+                                        </svg>
+                                        <span class="text-gray-300 text-sm">Wishlist Features</span>
+                                    </li>
+                                    <li class="flex items-center gap-2">
+                                        <svg class="w-4 h-4 text-green-400 flex-shrink-0" fill="none"
+                                            stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M5 13l4 4L19 7" />
+                                        </svg>
+                                        <span class="text-gray-300 text-sm">Themes</span>
+                                    </li>
+                                    <li class="flex items-center gap-2">
+                                        <svg class="w-4 h-4 text-green-400 flex-shrink-0" fill="none"
+                                            stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M5 13l4 4L19 7" />
+                                        </svg>
+                                        <span class="text-gray-300 text-sm">Free Hosting</span>
+                                    </li>
+                                </div>
                             </ul>
+
+                            <!-- See More/Less Button -->
+                            <div class="text-center mb-4">
+                                <button
+                                    class="see-more-btn professional-see-more text-ztore-purple text-sm font-semibold hover:text-ztore-pink transition-colors duration-300">
+                                    See More Features ↓
+                                </button>
+                                <button
+                                    class="see-less-btn professional-see-less hidden text-ztore-purple text-sm font-semibold hover:text-ztore-pink transition-colors duration-300">
+                                    See Less Features ↑
+                                </button>
+                            </div>
 
                             <!-- CTA Button -->
                             <button
@@ -3801,6 +4013,62 @@
                     });
                 });
 
+                // Smooth See More/Less Functionality
+                function setupSeeMoreButtons(planType) {
+                    const seeMoreBtn = document.querySelector(`.${planType}-see-more`);
+                    const seeLessBtn = document.querySelector(`.${planType}-see-less`);
+                    const hiddenFeatures = document.querySelector(`.${planType}-hidden-features`);
+
+                    if (seeMoreBtn && seeLessBtn && hiddenFeatures) {
+                        seeMoreBtn.addEventListener('click', function () {
+                            // Show hidden features with smooth animation
+                            hiddenFeatures.style.display = 'block';
+
+                            // Force reflow
+                            hiddenFeatures.offsetHeight;
+
+                            // Add animation classes
+                            hiddenFeatures.classList.add('animate-feature-slideDown');
+                            hiddenFeatures.classList.remove('hidden');
+
+                            // Hide/show buttons
+                            seeMoreBtn.classList.add('hidden');
+                            seeLessBtn.classList.remove('hidden');
+
+                            // Smooth scroll to keep button in view
+                            setTimeout(() => {
+                                seeLessBtn.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+                            }, 300);
+                        });
+
+                        seeLessBtn.addEventListener('click', function () {
+                            // Add slide up animation
+                            hiddenFeatures.classList.add('animate-feature-slideUp');
+                            hiddenFeatures.classList.remove('animate-feature-slideDown');
+
+                            // Wait for animation to complete before hiding
+                            setTimeout(() => {
+                                hiddenFeatures.classList.add('hidden');
+                                hiddenFeatures.classList.remove('animate-feature-slideUp');
+                                hiddenFeatures.style.display = 'none';
+
+                                // Hide/show buttons
+                                seeLessBtn.classList.add('hidden');
+                                seeMoreBtn.classList.remove('hidden');
+
+                                // Smooth scroll to see more button
+                                seeMoreBtn.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+                            }, 300);
+                        });
+                    }
+                }
+
+                // Setup for all plans
+                setupSeeMoreButtons('welcome');
+                setupSeeMoreButtons('starter');
+                setupSeeMoreButtons('intermediate');
+                setupSeeMoreButtons('professional');
+
                 // Animation trigger for pricing section
                 const observerOptions = {
                     threshold: 0.2,
@@ -3825,7 +4093,82 @@
                 }
             });
         </script>
+        <style>
+            /* Smooth See More/Less Animations */
+            .animate-feature-slideDown {
+                animation: featureSlideDown 0.4s ease-out forwards;
+            }
 
+            .animate-feature-slideUp {
+                animation: featureSlideUp 0.4s ease-out forwards;
+            }
+
+            @keyframes featureSlideDown {
+                0% {
+                    opacity: 0;
+                    max-height: 0;
+                    transform: translateY(-10px);
+                }
+
+                100% {
+                    opacity: 1;
+                    max-height: 1000px;
+                    transform: translateY(0);
+                }
+            }
+
+            @keyframes featureSlideUp {
+                0% {
+                    opacity: 1;
+                    max-height: 1000px;
+                    transform: translateY(0);
+                }
+
+                100% {
+                    opacity: 0;
+                    max-height: 0;
+                    transform: translateY(-10px);
+                }
+            }
+
+            /* Ensure smooth transitions for hidden features */
+            .welcome-hidden-features,
+            .starter-hidden-features,
+            .intermediate-hidden-features,
+            .professional-hidden-features {
+                overflow: hidden;
+                max-height: 0;
+                opacity: 0;
+            }
+
+            /* Button hover effects */
+            .see-more-btn,
+            .see-less-btn {
+                transition: all 0.3s ease;
+            }
+
+            .see-more-btn:hover,
+            .see-less-btn:hover {
+                transform: translateY(-2px);
+            }
+
+            /* Custom Domain Mapping Animation */
+            [class*="bg-gradient-to-r"] {
+                animation: domainPulse 2s ease-in-out infinite;
+            }
+
+            @keyframes domainPulse {
+
+                0%,
+                100% {
+                    box-shadow: 0 0 0 0 rgba(168, 85, 247, 0.4);
+                }
+
+                50% {
+                    box-shadow: 0 0 0 8px rgba(168, 85, 247, 0);
+                }
+            }
+        </style>
 
         <!-- Theme Portfolio Section -->
         <section class="theme-portfolio py-16 px-4 sm:px-6 relative overflow-hidden">
@@ -4353,22 +4696,23 @@
 
         // -------------- js Style Header Heading Typing --------------
         //  Typing Animation  Header Heading -
+        // Enhanced Typing Animation with VH-based Layout
         document.addEventListener('DOMContentLoaded', function () {
             const typingElement = document.getElementById('typing-text');
             const languages = [
                 {
-                    text: " Live your online store in just 2 minutes.",
-                    speed: 80, // Slower typing speed
-                    delay: 3000 // Longer pause before deleting
-                },
-                {
-                    text: "2 நிமிடத்தில் உங்கள் ஆன்லைன் ஸ்டோர் தொடங்கலாம்.",
-                    speed: 90, // Slower for Tamil
+                    text: "Live your online store in just 2 minutes.",
+                    speed: 80,
                     delay: 3000
                 },
                 {
-                    text: "अपना ऑनलाइन स्टोर लॉन्च सिर्फ 2 मिनट में अपना ऑनलाइन स्टोर शुरू करें।.",
-                    speed: 85, // Slower for Hindi
+                    text: "2 நிமிடத்தில் உங்கள் ஆன்லைன் ஸ்டோர் தொடங்கலாம்.",
+                    speed: 90,
+                    delay: 3000
+                },
+                {
+                    text: "अपना ऑनलाइन स्टोर लॉन्च सिर्फ 2 मिनट में अपना ऑनलाइन स्टोर शुरू करें।",
+                    speed: 85,
                     delay: 3000
                 }
             ];
@@ -4383,48 +4727,40 @@
                 const currentText = currentLang.text;
 
                 if (isDeleting) {
-                    // Deleting text - slower
                     typingElement.textContent = currentText.substring(0, currentCharIndex - 1);
                     currentCharIndex--;
                 } else {
-                    // Typing text
                     typingElement.textContent = currentText.substring(0, currentCharIndex + 1);
                     currentCharIndex++;
                 }
 
-                // Determine typing speed - slower overall
                 let typeSpeed = currentLang.speed;
-
                 if (isDeleting) {
-                    typeSpeed = currentLang.speed * 0.3; // Slower when deleting
+                    typeSpeed = currentLang.speed * 0.3;
                 }
 
-                // Check if current text is complete
                 if (!isDeleting && currentCharIndex === currentText.length) {
-                    // Longer pause at the end before deleting
                     typeSpeed = currentLang.delay;
                     isDeleting = true;
                 } else if (isDeleting && currentCharIndex === 0) {
-                    // Move to next language with longer pause
                     isDeleting = false;
                     currentLanguageIndex = (currentLanguageIndex + 1) % languages.length;
-                    typeSpeed = 1500; // Longer pause before starting next language
+                    typeSpeed = 1500;
                 }
 
                 typingTimeout = setTimeout(typeText, typeSpeed);
             }
 
-            // Start typing animation after initial delay
+            // Start typing animation
             setTimeout(() => {
                 typeText();
-            }, 3000); // Longer initial delay
+            }, 3000);
 
             // Cleanup
             window.addEventListener('beforeunload', () => {
                 clearTimeout(typingTimeout);
             });
         });
-
         // -------------- js Style For Hero Vide Line animation --------------
         //Style For Hero Vide Line animation
         const section = document.querySelector(".dashboard");
