@@ -1242,7 +1242,7 @@
 
             <!-- VH-Based Typing Container -->
             <div class="typing-container mb-6">
-                <h1 class="text-3xl sm:text-4xl md:text-5xl font-extrabold leading-tight text-gradient opacity-0 animate-fade-in-up flex items-center justify-center text-center"
+                <h1 class="text-3xl sm:text-4xl md:text-5xl font-extrabold leading-tight text-white opacity-0 animate-fade-in-up flex items-center justify-center text-center"
                     style="animation-delay: 0.6s" id="typing-headline">
                     <span id="typing-text" class="leading-relaxed px-4 inline-block"></span>
                 </h1>
@@ -2931,7 +2931,7 @@
         <section class="relative py-12 overflow-hidden">
             <div class="max-w-6xl mx-auto text-center mb-12 px-6">
                 <h2 class="text-3xl sm:text-4xl md:text-5xl font-bold mb-4 text-white">
-                    Who Uses <span class="text-gradient"> ZtoreSpot</span> ?
+                    Who Can Uses <span class="text-gradient"> ZtoreSpot</span> ?
                 </h2>
                 <p class="text-base sm:text-lg lg:text-xl text-gray-300 max-w-2xl mx-auto">
                     Used by sellers and startups, built to save time and minimize costs.
@@ -3806,17 +3806,16 @@
                                 <!-- Enhanced Custom Domain Mapping Feature -->
                                 <li
                                     class="flex items-center gap-2 bg-gradient-to-r from-purple-500/20 to-pink-500/20 rounded-lg p-2 border border-purple-400/30">
-                                    <svg class="w-4 h-4 text-yellow-400 flex-shrink-0 animate-pulse" fill="currentColor"
+                                    <svg class="w-4 h-4 text-yellow-400 flex-shrink-0" fill="currentColor"
                                         viewBox="0 0 24 24">
                                         <path
                                             d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z" />
                                     </svg>
-                                    <span
-                                        class="text-white text-sm font-semibold bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent">
+                                    <span class="text-white text-sm font-semibold">
                                         Custom Domain Mapping
                                     </span>
-
                                 </li>
+
                                 <li class="flex items-center gap-2">
                                     <svg class="w-4 h-4 text-green-400 flex-shrink-0" fill="none" stroke="currentColor"
                                         viewBox="0 0 24 24">
@@ -4217,11 +4216,6 @@
             .see-more-btn:hover,
             .see-less-btn:hover {
                 transform: translateY(-2px);
-            }
-
-            /* Custom Domain Mapping Animation */
-            [class*="bg-gradient-to-r"] {
-                animation: domainPulse 2s ease-in-out infinite;
             }
 
             @keyframes domainPulse {
@@ -4769,16 +4763,19 @@
             const languages = [
                 {
                     text: "Live your online store in just 2 minutes.",
+                    highlight: "2 minutes",
                     speed: 80,
                     delay: 3000
                 },
                 {
                     text: "2 நிமிடத்தில் உங்கள் ஆன்லைன் ஸ்டோர் தொடங்கலாம்.",
+                    highlight: "2 நிமிடத்தில்",
                     speed: 90,
                     delay: 3000
                 },
                 {
                     text: "अपना ऑनलाइन स्टोर लॉन्च सिर्फ 2 मिनट में अपना ऑनलाइन स्टोर शुरू करें।",
+                    highlight: "2 मिनट",
                     speed: 85,
                     delay: 3000
                 }
@@ -4791,34 +4788,78 @@
 
             function typeText() {
                 const currentLang = languages[currentLanguageIndex];
-                const currentText = currentLang.text;
+                const fullText = currentLang.text;
+                const highlightText = currentLang.highlight;
 
                 if (isDeleting) {
-                    typingElement.textContent = currentText.substring(0, currentCharIndex - 1);
+                    // Deleting phase
                     currentCharIndex--;
+
+                    if (currentCharIndex < 0) {
+                        // Move to next language
+                        isDeleting = false;
+                        currentCharIndex = 0;
+                        currentLanguageIndex = (currentLanguageIndex + 1) % languages.length;
+                        setTimeout(typeText, 1000);
+                        return;
+                    }
                 } else {
-                    typingElement.textContent = currentText.substring(0, currentCharIndex + 1);
+                    // Typing phase
                     currentCharIndex++;
+
+                    if (currentCharIndex > fullText.length) {
+                        // Start deleting after delay
+                        isDeleting = true;
+                        setTimeout(typeText, currentLang.delay);
+                        return;
+                    }
                 }
 
-                let typeSpeed = currentLang.speed;
-                if (isDeleting) {
-                    typeSpeed = currentLang.speed * 0.3;
-                }
+                // Update display
+                updateDisplay(currentLang, currentCharIndex);
 
-                if (!isDeleting && currentCharIndex === currentText.length) {
-                    typeSpeed = currentLang.delay;
-                    isDeleting = true;
-                } else if (isDeleting && currentCharIndex === 0) {
-                    isDeleting = false;
-                    currentLanguageIndex = (currentLanguageIndex + 1) % languages.length;
-                    typeSpeed = 1500;
-                }
-
-                typingTimeout = setTimeout(typeText, typeSpeed);
+                // Set speed
+                const speed = isDeleting ? currentLang.speed * 0.3 : currentLang.speed;
+                typingTimeout = setTimeout(typeText, speed);
             }
 
-            // Start typing animation
+            function updateDisplay(currentLang, charIndex) {
+                const fullText = currentLang.text;
+                const highlightText = currentLang.highlight;
+
+                if (!highlightText) {
+                    // No highlight - plain text
+                    typingElement.textContent = fullText.substring(0, charIndex);
+                    return;
+                }
+
+                const highlightStart = fullText.indexOf(highlightText);
+
+                if (highlightStart === -1 || charIndex <= highlightStart) {
+                    // Text before highlight
+                    typingElement.textContent = fullText.substring(0, charIndex);
+                } else if (charIndex > highlightStart && charIndex <= highlightStart + highlightText.length) {
+                    // Inside highlight - use HTML with gradient span
+                    const before = fullText.substring(0, highlightStart);
+                    const during = fullText.substring(highlightStart, charIndex);
+                    typingElement.innerHTML = before +
+                        '<span style="background: linear-gradient(135deg, #8A00FF 0%, #FF00A8 100%); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; color: transparent;">' +
+                        during +
+                        '</span>';
+                } else {
+                    // After highlight
+                    const before = fullText.substring(0, highlightStart);
+                    const during = highlightText;
+                    const after = fullText.substring(highlightStart + highlightText.length, charIndex);
+                    typingElement.innerHTML = before +
+                        '<span style="background: linear-gradient(135deg, #8A00FF 0%, #FF00A8 100%); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; color: transparent;">' +
+                        during +
+                        '</span>' +
+                        after;
+                }
+            }
+
+            // Start typing animation after 3 seconds
             setTimeout(() => {
                 typeText();
             }, 3000);
@@ -4828,6 +4869,7 @@
                 clearTimeout(typingTimeout);
             });
         });
+
         // -------------- js Style For Hero Vide Line animation --------------
         //Style For Hero Vide Line animation
         const section = document.querySelector(".dashboard");
