@@ -755,71 +755,128 @@
         }
 
         /* ===== THEME PORTFOLIO STYLES ===== */
-        .perspective-1000 {
-            perspective: 1000px;
-        }
 
-        /* 3D Positions */
-        .carousel-item[data-position="left"] {
-            transform: translateX(-80%) scale(0.85) rotateY(10deg);
-            opacity: 0.6;
-            z-index: 5;
-        }
+.perspective-1000 {
+    perspective: 1000px;
+}
 
-        .carousel-item[data-position="center"] {
-            transform: translateX(0) scale(1) rotateY(0deg);
-            opacity: 1;
-            z-index: 10;
-        }
+/* 3D Positions for 5 items */
+.carousel-item[data-position="left"] {
+    transform: translateX(-120%) scale(0.8) rotateY(15deg);
+    opacity: 0.6;
+    z-index: 5;
+    filter: blur(1px);
+}
 
-        .carousel-item[data-position="right"] {
-            transform: translateX(80%) scale(0.85) rotateY(-10deg);
-            opacity: 0.6;
-            z-index: 5;
-        }
+.carousel-item[data-position="center"] {
+    transform: translateX(0) scale(1) rotateY(0deg);
+    opacity: 1;
+    z-index: 10;
+    filter: blur(0);
+}
 
-        /* Static Fog */
-        .fog-bottom,
-        .fog-top {
-            position: absolute;
-            left: 0;
-            width: 100%;
-            height: 100px;
-            pointer-events: none;
-            overflow: hidden;
-            z-index: 10;
-            filter: blur(18px);
-        }
+.carousel-item[data-position="right"] {
+    transform: translateX(120%) scale(0.8) rotateY(-15deg);
+    opacity: 0.6;
+    z-index: 5;
+    filter: blur(1px);
+}
 
-        .fog-bottom {
-            bottom: 0;
-            background: linear-gradient(to top, rgba(10, 10, 30, 1) 0%, rgba(10, 10, 30, 0.8) 40%, transparent 100%),
-                        radial-gradient(circle at 50% 100%, rgba(123, 91, 255, 0.2), transparent 70%),
-                        radial-gradient(circle at 50% 100%, rgba(255, 78, 184, 0.2), transparent 70%);
-        }
+/* Hide items that are not in view */
+.carousel-item:not([data-position="left"]):not([data-position="center"]):not([data-position="right"]) {
+    opacity: 0;
+    transform: translateX(200%) scale(0.7);
+    z-index: 1;
+    filter: blur(2px);
+}
 
-        .fog-top {
-            top: 0;
-            background: linear-gradient(to bottom, rgba(10, 10, 30, 1) 0%, rgba(10, 10, 30, 0.8) 40%, transparent 100%),
-                        radial-gradient(circle at 50% 0%, rgba(123, 91, 255, 0.2), transparent 70%),
-                        radial-gradient(circle at 50% 0%, rgba(255, 78, 184, 0.2), transparent 70%);
-        }
+/* Smooth transitions */
+.carousel-item {
+    transition: all 0.7s cubic-bezier(0.4, 0, 0.2, 1);
+}
 
-        @media (max-width: 768px) {
-            .carousel-container {
-                height: 360px;
-            }
+/* Carousel container adjustments */
+.carousel-container {
+    overflow: visible;
+}
 
-            .fog-bottom,
-            .fog-top {
-                height: 60px;
-                filter: blur(10px);
-            }
+/* Button styles */
+.theme-btn {
+    transition: all 0.3s ease;
+}
 
-            .carousel-item button {
-                width: 90%;
-            }
-        }
+.carousel-item[data-position="center"] .theme-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(139, 92, 246, 0.4);
+}
+
+/* Ensure proper image display */
+.carousel-item img {
+    max-width: 100%;
+    max-height: 100%;
+    display: block;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .carousel-container {
+        height: 440px;
+    }
+
+    /* Adjust positions for mobile */
+    .carousel-item[data-position="left"] {
+        transform: translateX(-100%) scale(0.75) rotateY(10deg);
+    }
+
+    .carousel-item[data-position="right"] {
+        transform: translateX(100%) scale(0.75) rotateY(-10deg);
+    }
+
+    .carousel-item:not([data-position="left"]):not([data-position="center"]):not([data-position="right"]) {
+        transform: translateX(150%) scale(0.6);
+    }
+}
+
+@media (max-width: 640px) {
+    .carousel-container {
+        height: 400px;
+    }
+
+    .carousel-item {
+        width: 280px !important;
+    }
+
+    .carousel-item[data-position="center"] {
+        width: 300px !important;
+    }
+
+    /* Further adjust positions for small mobile */
+    .carousel-item[data-position="left"] {
+        transform: translateX(-90%) scale(0.7) rotateY(8deg);
+    }
+
+    .carousel-item[data-position="right"] {
+        transform: translateX(90%) scale(0.7) rotateY(-8deg);
+    }
+}
+
+/* Ensure smooth scrolling and performance */
+.carousel-track {
+    transform-style: preserve-3d;
+}
+
+.carousel-item {
+    transform-style: preserve-3d;
+    backface-visibility: hidden;
+}
+
+/* Gradient text for section header */
+.text-gradient {
+    background: linear-gradient(135deg, #8B5CF6 0%, #EC4899 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
 
         /* ===== FAQ STYLES ===== */
         /* FAQ Smooth Animations */
@@ -1371,8 +1428,6 @@
 
 
 
-
-
         <!-- Comparison Section -->
         <section id="compare" class="compare-plans py-20 px-4 sm:px-6 relative overflow-hidden text-gray-300">
             <!-- Background Glow Elements -->
@@ -1383,12 +1438,8 @@
                 <!-- Section Header -->
                 <header class="mb-12">
                     <h2 class="text-3xl sm:text-4xl font-bold mb-4 text-gray-100">
-                        Compare Platforms — Choose What Fits You Best
+                        See why sellers are switching to <br> <span class="text-gradient font-semibold">Ztorespot</span>
                     </h2>
-                    <p class="text-gray-400">
-                        See why sellers are switching to
-                        <span class="text-gradient font-semibold">Ztorespot</span>
-                    </p>
                 </header>
 
                 <!-- Comparison Table -->
@@ -1493,9 +1544,6 @@
                 </div>
             </div>
         </section>
-
-
-
 
         <!-- Testimonials Section - Interactive Cards -->
         <section id="testimonials" class="testimonials py-20 px-4 sm:px-6 relative overflow-hidden">
@@ -1763,7 +1811,7 @@
                         </div>
                         <div
                             class="text-center p-6 bg-white/5 rounded-2xl backdrop-blur-xl border border-white/5 hover:border-white/10 transition-all duration-300">
-                            <div class="text-3xl font-bold text-gradient mb-2">4.8/5</div>
+                            <div class="text-3xl font-bold text-gradient mb-2">4.9/5</div>
                             <div class="text-gray-400 text-sm">Average Rating</div>
                         </div>
                         <div
@@ -2661,7 +2709,7 @@
                                 <div class="flex items-center gap-3">
                                     <div
                                         class="w-8 h-8 bg-blue-500/20 rounded-lg flex items-center justify-center flex-shrink-0">
-                                        <i class="bi bi-mouse text-blue-400 text-sm"></i>
+                                        <i class="bi bi-cursor text-blue-400 text-sm"></i>
                                     </div>
                                     <span class="text-white text-sm font-medium">No Drag & Drop</span>
                                 </div>
@@ -2685,7 +2733,7 @@
                                 <div class="flex items-center gap-3">
                                     <div
                                         class="w-8 h-8 bg-yellow-500/20 rounded-lg flex items-center justify-center flex-shrink-0">
-                                        <i class="bi bi-tools text-yellow-400 text-sm"></i>
+                                        <i class="bi bi-person-workspace text-yellow-400 text-sm"></i>
                                     </div>
                                     <span class="text-white text-sm font-medium">No Technical Skills</span>
                                 </div>
@@ -2709,7 +2757,7 @@
                                 <div class="flex items-center gap-3">
                                     <div
                                         class="w-8 h-8 bg-red-500/20 rounded-lg flex items-center justify-center flex-shrink-0">
-                                        <i class="bi bi-app-indicator text-red-400 text-sm"></i>
+                                        <i class="bi bi-plugin text-red-400 text-sm"></i>
                                     </div>
                                     <span class="text-white text-sm font-medium">No Additional Apps & Plugins</span>
                                 </div>
@@ -3659,18 +3707,33 @@
                         <div
                             class="bg-gradient-to-br from-ztore-purple/30 to-ztore-pink/30 rounded-3xl p-6 h-full border-2 border-yellow-400/50 backdrop-blur-xl shadow-2xl shadow-yellow-400/20">
                             <!-- Plan Header -->
+                            <!-- Plan Header - Minimal -->
                             <div class="text-center mb-6">
                                 <h3 class="text-xl font-bold text-white mb-2">Intermediate</h3>
+
                                 <div class="price-display">
                                     <div class="monthly-price">
-                                        <span class="text-3xl font-bold text-white">₹2,000</span>
-                                        <span class="text-gray-300">/ 1 Year</span>
+                                        <div class="flex items-baseline justify-center gap-1 mb-1">
+                                            <span class="text-gray-400 text-xs line-through">₹4,000</span>
+                                            <span class="text-3xl font-bold text-white">₹2,000</span>
+                                            <span class="text-gray-300">/ 1 Year</span>
+                                        </div>
                                     </div>
                                     <div class="yearly-price hidden">
-                                        <span class="text-3xl font-bold text-white">₹2,000</span>
-                                        <span class="text-gray-300">/ 1 Year</span>
+                                        <div class="flex items-baseline justify-center gap-1 mb-1">
+                                            <span class="text-gray-400 text-xs line-through">₹4,000</span>
+                                            <span class="text-3xl font-bold text-white">₹2,000</span>
+                                            <span class="text-gray-300">/ 1 Year</span>
+                                        </div>
                                     </div>
                                 </div>
+
+                                <div class="flex items-center justify-center gap-2 mb-1">
+                                    <span class="bg-green-500/20 text-green-400 text-xs px-2 py-1 rounded">50%
+                                        OFF</span>
+                                    <p class="text-green-400 text-xs">Save ₹2,000</p>
+                                </div>
+
                                 <p class="text-white text-sm mt-2 font-semibold">Best for Small Business Owners</p>
                             </div>
 
@@ -4356,104 +4419,146 @@
                 <!-- Header -->
                 <div class="text-center mb-12">
                     <h2 class="text-3xl sm:text-4xl md:text-5xl font-bold mb-4">
-                        See <span class="text-gradient">Your Store</span> in Style</span>
+                        See <span class="text-gradient">Your Store</span> in Style
                     </h2>
                 </div>
 
                 <!-- Carousel Section -->
                 <div class="relative mb-8 flex flex-col items-center justify-center">
-                    <!-- Fog Layers -->
-                    <div class="fog-bottom"></div>
-                    <div class="fog-top"></div>
-
                     <!-- Carousel -->
                     <div
-                        class="carousel-container relative w-full max-w-6xl h-[420px] sm:h-[440px] flex items-center justify-center perspective-1000">
+                        class="carousel-container relative w-full max-w-6xl h-[480px] sm:h-[500px] flex items-center justify-center perspective-1000">
                         <div class="carousel-track relative flex items-center justify-center h-full w-full">
 
-                            <!-- Theme 1 -->
-                            <div class="carousel-item absolute w-[260px] sm:w-[300px] md:w-[340px] transition-all duration-700 transform cursor-pointer flex flex-col items-center"
+                            <!-- Theme 4 -->
+                            <div class="carousel-item absolute w-[320px] sm:w-[360px] md:w-[400px] transition-all duration-700 transform cursor-pointer flex flex-col items-center"
                                 data-position="left">
                                 <div
-                                    class="bg-white/5 rounded-2xl p-3 backdrop-blur-xl border border-white/10 shadow-2xl flex flex-col h-[340px] sm:h-[360px]">
-                                    <div class="flex-grow flex items-center justify-center">
+                                    class="bg-gradient-to-br from-green-600 to-teal-700 rounded-2xl p-4 border border-green-500 shadow-xl flex flex-col h-[400px] sm:h-[420px]">
+                                    <!-- Image Container with proper flex layout -->
+                                    <div class="flex-1 flex items-center justify-center mb-4 min-h-0">
                                         <div
-                                            class="w-full h-[260px] flex items-center justify-center bg-gradient-to-br from-blue-400 to-purple-500 rounded-xl overflow-hidden">
-                                            <img src="./images/hero.jpg" alt="Modern Store Theme"
-                                                class="w-full h-full object-contain bg-black/20 rounded-xl">
+                                            class="w-full h-full flex items-center justify-center bg-gradient-to-br from-green-400 to-teal-500 rounded-xl overflow-hidden p-2">
+                                            <img src="./images/hero.jpg" alt="Minimalist Theme"
+                                                class="w-full h-full object-contain rounded-lg">
                                         </div>
                                     </div>
-                                    <div class="mt-3 text-center">
-                                        <h4 class="font-semibold text-white text-base">Modern Store</h4>
+                                    <!-- Content Section -->
+                                    <div class="flex flex-col justify-end flex-shrink-0">
+                                        <button
+                                            class="theme-btn w-full bg-white text-green-700 py-3 rounded-lg font-semibold text-sm transition-all duration-300 hover:bg-green-50">
+                                            Preview Theme
+                                        </button>
                                     </div>
                                 </div>
-                                <button
-                                    class="mt-3 w-[80%] bg-white text-black py-2 rounded-lg font-semibold text-sm transition-all duration-300 hover:bg-gray-200">
-                                    Preview Theme
-                                </button>
                             </div>
 
-                            <!-- Theme 2 (Center) -->
-                            <div class="carousel-item absolute w-[300px] sm:w-[360px] md:w-[400px] transition-all duration-700 transform cursor-pointer z-10 flex flex-col items-center"
-                                data-position="center">
+                            <!-- Theme 2 -->
+                            <div class="carousel-item absolute w-[320px] sm:w-[360px] md:w-[400px] transition-all duration-700 transform cursor-pointer flex flex-col items-center"
+                                data-position="left">
                                 <div
-                                    class="bg-gradient-to-br from-ztore-purple/20 to-ztore-pink/20 rounded-2xl p-3 backdrop-blur-xl border border-ztore-purple/40 shadow-2xl flex flex-col h-[340px] sm:h-[360px] relative">
-                                    <div class="flex-grow flex items-center justify-center">
+                                    class="bg-gradient-to-br from-orange-600 to-red-700 rounded-2xl p-4 border border-orange-500 shadow-xl flex flex-col h-[400px] sm:h-[420px]">
+                                    <!-- Image Container with proper flex layout -->
+                                    <div class="flex-1 flex items-center justify-center mb-4 min-h-0">
                                         <div
-                                            class="w-full h-[260px] flex items-center justify-center bg-gradient-to-br from-ztore-purple to-ztore-pink rounded-xl overflow-hidden">
-                                            <img src="./images/hero.jpg" alt="Sales Pro Theme"
-                                                class="w-full h-full object-contain bg-black/20 rounded-xl">
-                                        </div>
-                                        <div
-                                            class="absolute -top-2 -right-2 bg-green-500 text-white px-2 py-0.5 rounded-full text-[10px] font-bold">
-                                            Popular
+                                            class="w-full h-full flex items-center justify-center bg-gradient-to-br from-orange-400 to-red-500 rounded-xl overflow-hidden p-2">
+                                            <img src="./images/hero.jpg" alt="Bold Store Theme"
+                                                class="w-full h-full object-contain rounded-lg">
                                         </div>
                                     </div>
-                                    <div class="mt-3 text-center">
-                                        <h4 class="font-semibold text-white text-base">Sales Pro</h4>
+                                    <!-- Content Section -->
+                                    <div class="flex flex-col justify-end flex-shrink-0">
+                                        <button
+                                            class="theme-btn w-full bg-white text-orange-700 py-3 rounded-lg font-semibold text-sm transition-all duration-300 hover:bg-orange-50">
+                                            Preview Theme
+                                        </button>
                                     </div>
                                 </div>
-                                <button
-                                    class="mt-3 w-[80%] bg-gradient-to-br from-ztore-purple to-ztore-pink text-white py-2 rounded-lg font-semibold text-sm transition-all duration-300 hover:scale-[1.03]">
-                                    Use This Theme
-                                </button>
+                            </div>
+
+                            <!-- Theme 1 (Center) -->
+                            <div class="carousel-item absolute w-[320px] sm:w-[360px] md:w-[400px] transition-all duration-700 transform cursor-pointer z-10 flex flex-col items-center"
+                                data-position="center">
+                                <div
+                                    class="bg-gradient-to-br from-blue-600 to-purple-700 rounded-2xl p-4 border-2 border-white shadow-2xl flex flex-col h-[400px] sm:h-[420px]">
+                                    <!-- Image Container with proper flex layout -->
+                                    <div class="flex-1 flex items-center justify-center mb-4 min-h-0">
+                                        <div
+                                            class="w-full h-full flex items-center justify-center bg-gradient-to-br from-blue-400 to-purple-500 rounded-xl overflow-hidden p-2">
+                                            <img src="./images/hero.jpg" alt="Modern Store Theme"
+                                                class="w-full h-full object-contain rounded-lg">
+                                        </div>
+                                    </div>
+                                    <!-- Content Section -->
+                                    <div class="flex flex-col justify-end flex-shrink-0">
+                                        <button
+                                            class="theme-btn w-full bg-white text-blue-700 py-3 rounded-lg font-semibold text-sm transition-all duration-300 hover:scale-[1.02] hover:bg-blue-50">
+                                            Use This Theme
+                                        </button>
+                                    </div>
+                                </div>
                             </div>
 
                             <!-- Theme 3 -->
-                            <div class="carousel-item absolute w-[260px] sm:w-[300px] md:w-[340px] transition-all duration-700 transform cursor-pointer flex flex-col items-center"
+                            <div class="carousel-item absolute w-[320px] sm:w-[360px] md:w-[400px] transition-all duration-700 transform cursor-pointer flex flex-col items-center"
                                 data-position="right">
                                 <div
-                                    class="bg-white/5 rounded-2xl p-3 backdrop-blur-xl border border-white/10 shadow-2xl flex flex-col h-[340px] sm:h-[360px]">
-                                    <div class="flex-grow flex items-center justify-center">
+                                    class="bg-gradient-to-br from-ztore-purple to-ztore-pink rounded-2xl p-4 border border-purple-500 shadow-xl flex flex-col h-[400px] sm:h-[420px]">
+                                    <!-- Image Container with proper flex layout -->
+                                    <div class="flex-1 flex items-center justify-center mb-4 min-h-0">
                                         <div
-                                            class="w-full h-[260px] flex items-center justify-center bg-gradient-to-br from-green-400 to-teal-500 rounded-xl overflow-hidden">
-                                            <img src="./images/hero.jpg" alt="Minimalist Theme"
-                                                class="w-full h-full object-contain bg-black/20 rounded-xl">
+                                            class="w-full h-full flex items-center justify-center bg-gradient-to-br from-purple-400 to-pink-500 rounded-xl overflow-hidden p-2">
+                                            <img src="./images/hero.jpg" alt="Sales Pro Theme"
+                                                class="w-full h-full object-contain rounded-lg">
                                         </div>
                                     </div>
-                                    <div class="mt-3 text-center">
-                                        <h4 class="font-semibold text-white text-base">Minimalist</h4>
+                                    <!-- Content Section -->
+                                    <div class="flex flex-col justify-end flex-shrink-0">
+                                        <button
+                                            class="theme-btn w-full bg-white text-purple-700 py-3 rounded-lg font-semibold text-sm transition-all duration-300 hover:bg-purple-50">
+                                            Preview Theme
+                                        </button>
                                     </div>
                                 </div>
-                                <button
-                                    class="mt-3 w-[80%] bg-white text-black py-2 rounded-lg font-semibold text-sm transition-all duration-300 hover:bg-gray-200">
-                                    Preview Theme
-                                </button>
                             </div>
+
+                            <!-- Theme 5 -->
+                            <div class="carousel-item absolute w-[320px] sm:w-[360px] md:w-[400px] transition-all duration-700 transform cursor-pointer flex flex-col items-center"
+                                data-position="right">
+                                <div
+                                    class="bg-gradient-to-br from-indigo-600 to-blue-700 rounded-2xl p-4 border border-indigo-500 shadow-xl flex flex-col h-[400px] sm:h-[420px]">
+                                    <!-- Image Container with proper flex layout -->
+                                    <div class="flex-1 flex items-center justify-center mb-4 min-h-0">
+                                        <div
+                                            class="w-full h-full flex items-center justify-center bg-gradient-to-br from-indigo-400 to-blue-500 rounded-xl overflow-hidden p-2">
+                                            <img src="./images/hero.jpg" alt="Professional Theme"
+                                                class="w-full h-full object-contain rounded-lg">
+                                        </div>
+                                    </div>
+                                    <!-- Content Section -->
+                                    <div class="flex flex-col justify-end flex-shrink-0">                         
+                                        <button
+                                            class="theme-btn w-full bg-white text-indigo-700 py-3 rounded-lg font-semibold text-sm transition-all duration-300 hover:bg-indigo-50">
+                                            Preview Theme
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+
                         </div>
                     </div>
 
                     <!-- Carousel Controls -->
-                    <div class="flex justify-center items-center gap-6 mt-6 z-20 relative">
+                    <div class="flex justify-center items-center gap-6 mt-4 z-20 relative">
                         <button
-                            class="themes-carousel-prev bg-white/10 hover:bg-white/20 text-white p-3 rounded-full backdrop-blur-xl border border-white/10 transition-all duration-300">
+                            class="themes-carousel-prev bg-gradient-to-br from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white p-3 rounded-full border border-purple-400 transition-all duration-300">
                             <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                     d="M15 19l-7-7 7-7" />
                             </svg>
                         </button>
                         <button
-                            class="themes-carousel-next bg-white/10 hover:bg-white/20 text-white p-3 rounded-full backdrop-blur-xl border border-white/10 transition-all duration-300">
+                            class="themes-carousel-next bg-gradient-to-br from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white p-3 rounded-full border border-purple-400 transition-all duration-300">
                             <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                     d="M9 5l7 7-7 7" />
@@ -5443,6 +5548,8 @@
         document.addEventListener('DOMContentLoaded', () => {
             new CircleCarousel3D();
         });
+
+
         // -------------- js for 3D Carousel Functionality themes --------------
         // 3D Carousel Functionality
         document.addEventListener('DOMContentLoaded', function () {
@@ -5450,13 +5557,22 @@
             const prevButton = document.querySelector('.themes-carousel-prev');
             const nextButton = document.querySelector('.themes-carousel-next');
 
-            let currentIndex = 1; // Start with center item
+            let currentIndex = 2; // Start with Theme 1 (Modern Store) as center
 
             function updateCarousel() {
                 carouselItems.forEach((item, index) => {
-                    const positions = ['left', 'center', 'right'];
-                    const positionIndex = (index - currentIndex + carouselItems.length) % carouselItems.length;
-                    item.setAttribute('data-position', positions[positionIndex]);
+                    let position;
+                    const diff = (index - currentIndex + carouselItems.length) % carouselItems.length;
+
+                    if (diff === 0) {
+                        position = 'center';
+                    } else if (diff === 1 || diff === 2) {
+                        position = 'right';
+                    } else {
+                        position = 'left';
+                    }
+
+                    item.setAttribute('data-position', position);
                 });
             }
 
@@ -5503,6 +5619,7 @@
                 observer.observe(portfolioSection);
             }
         });
+
 
         // -------------- js for Smooth FAQ Functionality --------------
         // FAQ Accordion Functionality with Smooth Animations
