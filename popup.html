@@ -1,17 +1,20 @@
-    <!-- Popup Overlay -->
-<div id="popupOverlay" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-[100] hidden items-center justify-center p-4">
-    <div class="bg-gradient-to-br from-ztore-purple/20 to-ztore-pink/20 rounded-3xl border border-white/20 backdrop-blur-xl max-w-md w-full p-6 relative">
+<!-- Popup Overlay -->
+<div id="popupOverlay"
+    class="fixed inset-0 bg-black/60 backdrop-blur-sm z-[100] hidden items-center justify-center p-4">
+    <div
+        class="bg-gradient-to-br from-ztore-purple/20 to-ztore-pink/20 rounded-3xl border border-white/20 backdrop-blur-xl max-w-md w-full p-6 relative">
         <!-- Close Button -->
         <button id="closePopup" class="absolute top-4 right-4 text-gray-400 hover:text-white transition-colors">
             <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
             </svg>
         </button>
 
         <!-- Content -->
         <div class="text-center">
             <!-- Limited Time Badge -->
-            <div class="inline-flex items-center gap-2 bg-red-500/20 border border-red-500/30 rounded-full px-4 py-1.5 mb-4">
+            <div
+                class="inline-flex items-center gap-2 bg-red-500/20 border border-red-500/30 rounded-full px-4 py-1.5 mb-4">
                 <span class="text-red-400 text-sm font-bold">🔥 LIMITED-TIME DEAL</span>
             </div>
 
@@ -48,10 +51,12 @@
 
             <!-- CTA Buttons -->
             <div class="flex flex-col gap-3">
-                <button class="bg-gradient-to-br from-ztore-purple to-ztore-pink hover:from-ztore-purple/90 hover:to-ztore-pink/90 text-white py-3 rounded-xl font-semibold transition-all duration-300 shadow-lg hover:scale-105">
+                <button
+                    class="bg-gradient-to-br from-ztore-purple to-ztore-pink hover:from-ztore-purple/90 hover:to-ztore-pink/90 text-white py-3 rounded-xl font-semibold transition-all duration-300 shadow-lg hover:scale-105">
                     Start 7-Day Free Trial
                 </button>
-                <button class="bg-white/10 hover:bg-white/20 text-white py-3 rounded-xl font-semibold transition-all duration-300 border border-white/10">
+                <button
+                    class="bg-white/10 hover:bg-white/20 text-white py-3 rounded-xl font-semibold transition-all duration-300 border border-white/10">
                     No Thanks, Maybe Later
                 </button>
             </div>
@@ -59,7 +64,8 @@
             <!-- Trust Badge -->
             <div class="flex items-center justify-center gap-2 mt-4 text-gray-400 text-sm">
                 <svg class="w-4 h-4 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/>
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
                 </svg>
                 <span>No credit card required • Cancel anytime</span>
             </div>
@@ -69,7 +75,7 @@
 
 <script>
     // Popup Functionality
-    document.addEventListener('DOMContentLoaded', function() {
+    document.addEventListener('DOMContentLoaded', function () {
         const popupOverlay = document.getElementById('popupOverlay');
         const closePopup = document.getElementById('closePopup');
         const hoursElement = document.getElementById('hours');
@@ -105,21 +111,21 @@
             popupOverlay.classList.remove('hidden');
             popupOverlay.classList.add('flex');
             document.body.style.overflow = 'hidden';
-            
+
             // Start countdown timer
             updateCountdown();
             setInterval(updateCountdown, 1000);
         }, 5000);
 
         // Close popup functionality
-        closePopup.addEventListener('click', function() {
+        closePopup.addEventListener('click', function () {
             popupOverlay.classList.add('hidden');
             popupOverlay.classList.remove('flex');
             document.body.style.overflow = 'auto';
         });
 
         // Close when clicking outside popup
-        popupOverlay.addEventListener('click', function(e) {
+        popupOverlay.addEventListener('click', function (e) {
             if (e.target === popupOverlay) {
                 popupOverlay.classList.add('hidden');
                 popupOverlay.classList.remove('flex');
@@ -128,7 +134,7 @@
         });
 
         // Close with Escape key
-        document.addEventListener('keydown', function(e) {
+        document.addEventListener('keydown', function (e) {
             if (e.key === 'Escape' && popupOverlay.classList.contains('flex')) {
                 popupOverlay.classList.add('hidden');
                 popupOverlay.classList.remove('flex');
@@ -137,7 +143,7 @@
         });
 
         // No Thanks button
-        document.querySelector('#popupOverlay button:last-child').addEventListener('click', function() {
+        document.querySelector('#popupOverlay button:last-child').addEventListener('click', function () {
             popupOverlay.classList.add('hidden');
             popupOverlay.classList.remove('flex');
             document.body.style.overflow = 'auto';
@@ -155,6 +161,7 @@
         from {
             opacity: 0;
         }
+
         to {
             opacity: 1;
         }
@@ -166,9 +173,12 @@
     }
 
     @keyframes pulse {
-        0%, 100% {
+
+        0%,
+        100% {
             transform: scale(1);
         }
+
         50% {
             transform: scale(1.05);
         }
@@ -179,3 +189,149 @@
         overflow: hidden;
     }
 </style>
+
+
+<!-- Problem → Solution Section -->
+<section class="problem-solution py-20 px-4 sm:px-6 relative overflow-hidden">
+    <!-- Background Elements -->
+    <div class="absolute top-1/4 left-10 w-32 h-32 bg-ztore-purple/20 rounded-full blur-3xl animate-pulse">
+    </div>
+    <div class="absolute bottom-1/4 right-10 w-40 h-40 bg-ztore-pink/20 rounded-full blur-3xl animate-pulse"
+        style="animation-delay: 2s"></div>
+
+    <div class="max-w-6xl mx-auto">
+        <!-- Section Header -->
+        <header class="text-center mb-16 opacity-0 animate-fade-in-up">
+            <h2 class="text-3xl sm:text-4xl md:text-5xl font-bold mb-4">
+                Tired of <span class="text-red-400">Complex Setup</span>
+                <span class="block">Holding You Back?</span>
+            </h2>
+        </header>
+
+        <!-- Problem & Solution Grid -->
+        <div class="grid md:grid-cols-2 gap-8 lg:gap-12">
+            <!-- Problem Side (Dark) -->
+            <article class="problem-card text-left opacity-0 animate-slide-in-left">
+                <div
+                    class="bg-gradient-to-br from-red-900/30 to-red-800/10 rounded-2xl p-8 h-full border border-red-500/30 backdrop-blur-xl">
+                    <header class="flex items-center gap-3 mb-6">
+                        <div class="w-12 h-12 bg-red-500/20 rounded-xl flex items-center justify-center">
+                            <!-- Warning Icon -->
+                            <svg class="w-6 h-6 text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L4.082 16.5c-.77.833.192 2.5 1.732 2.5z" />
+                            </svg>
+                        </div>
+                        <h3 class="text-2xl font-bold text-red-300">The Struggle</h3>
+                    </header>
+
+                    <ul class="space-y-4">
+                        <li class="flex items-start gap-3">
+                            <svg class="w-5 h-5 text-red-400 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor"
+                                viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M6 18L18 6M6 6l12 12" />
+                            </svg>
+                            <span class="text-gray-300">Investing thousands or even lakhs to get an e-commerce
+                                website.</span>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <svg class="w-5 h-5 text-red-400 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor"
+                                viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M6 18L18 6M6 6l12 12" />
+                            </svg>
+                            <span class="text-gray-300">Wasting hours trying to set up your online store.</span>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <svg class="w-5 h-5 text-red-400 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor"
+                                viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M6 18L18 6M6 6l12 12" />
+                            </svg>
+                            <span class="text-gray-300">Confusing tools and complicated settings</span>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <svg class="w-5 h-5 text-red-400 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor"
+                                viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M6 18L18 6M6 6l12 12" />
+                            </svg>
+                            <span class="text-gray-300">Managing plugins, updates, and complicated
+                                settings</span>
+                        </li>
+                    </ul>
+
+                    <footer class="mt-8 p-4 bg-red-500/10 rounded-xl border border-red-500/20">
+                        <p class="text-red-300 text-sm italic">
+                            "I nearly quit — setting up my store took hours and cost way more than I expected!"
+                        </p>
+                    </footer>
+                </div>
+            </article>
+
+            <!-- Solution Side (Bright) -->
+            <article class="solution-card text-left opacity-0 animate-slide-in-left" style="animation-delay: 0.3s">
+                <div
+                    class="bg-gradient-to-br from-green-900/30 to-emerald-800/10 rounded-2xl p-8 h-full border border-emerald-500/30 backdrop-blur-xl relative overflow-hidden">
+                    <!-- Shimmer Effect -->
+                    <div class="absolute top-0 right-0 w-32 h-32 bg-emerald-400/10 rounded-full blur-2xl"></div>
+
+                    <header class="flex items-center gap-3 mb-6">
+                        <div class="w-12 h-12 bg-emerald-500/20 rounded-xl flex items-center justify-center">
+                            <!-- Rocket Icon -->
+                            <svg class="w-6 h-6 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M13 10V3L4 14h7v7l9-11h-7z" />
+                            </svg>
+                        </div>
+                        <h3 class="text-2xl font-bold text-emerald-300">The Ztorespot Way</h3>
+                    </header>
+
+                    <ul class="space-y-4">
+                        <li class="flex items-start gap-3">
+                            <svg class="w-5 h-5 text-emerald-400 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor"
+                                viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M5 13l4 4L19 7" />
+                            </svg>
+                            <span class="text-gray-300">Affordable plans that save you thousands instantly,
+                                starting your store today.</span>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <svg class="w-5 h-5 text-emerald-400 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor"
+                                viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M5 13l4 4L19 7" />
+                            </svg>
+                            <span class="text-gray-300">Launch your online store in minutes - just one
+                                click!</span>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <svg class="w-5 h-5 text-emerald-400 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor"
+                                viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M5 13l4 4L19 7" />
+                            </svg>
+                            <span class="text-gray-300">Perfectly organized and easy to manage.</span>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <svg class="w-5 h-5 text-emerald-400 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor"
+                                viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M5 13l4 4L19 7" />
+                            </svg>
+                            <span class="text-gray-300">Easy communication with real people, not bots.</span>
+                        </li>
+                    </ul>
+
+                    <footer class="mt-8 p-4 bg-emerald-500/10 rounded-xl border border-emerald-500/20">
+                        <p class="text-emerald-300 text-sm italic">
+                            "With Ztorespot, my store went live in minutes, and I made my first sale fast!"
+                        </p>
+                    </footer>
+                </div>
+            </article>
+        </div>
+    </div>
+</section>

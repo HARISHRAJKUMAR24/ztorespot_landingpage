@@ -822,25 +822,50 @@
         }
 
         /* ===== FAQ STYLES ===== */
-        .faq-item.active .faq-question svg {
-            transform: rotate(180deg);
+        /* FAQ Smooth Animations */
+        .faq-answer {
+            overflow: hidden;
+            will-change: height, opacity;
         }
-        
-        .faq-item.active .faq-answer {
-            display: block;
-            animation: slideDown 0.3s ease-out;
+
+        .faq-item.active {
+            border-color: rgba(138, 0, 255, 0.5) !important;
+            box-shadow: 0 10px 30px rgba(138, 0, 255, 0.15);
+            transform: translateY(-2px);
         }
-        
-        @keyframes slideDown {
-            from {
-                opacity: 0;
-                transform: translateY(-10px);
+
+        .faq-item {
+            transition: all 0.3s ease;
+        }
+
+        .faq-item:hover {
+            border-color: rgba(138, 0, 255, 0.3) !important;
+            transform: translateY(-1px);
+        }
+
+        /* Smooth icon rotation */
+        .faq-item svg {
+            transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        /* Enhanced question hover */
+        .faq-question:hover {
+            background: rgba(255, 255, 255, 0.03) !important;
+        }
+
+        /* Mobile optimizations */
+        @media (max-width: 768px) {
+            .faq-question {
+                padding: 1rem 1.5rem !important;
             }
-            to {
-                opacity: 1;
-                transform: translateY(0);
+
+            .faq-question span {
+                font-size: 1rem !important;
+                line-height: 1.4;
+                padding-right: 1rem;
             }
         }
+
 
         /* ===== FOOTER STYLES ===== */
         .footer-link {
@@ -960,7 +985,7 @@
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                             d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
                     </svg>
-                    <span>No credit card required • Cancel anytime</span>
+                    <span>• Cancel anytime</span>
                 </div>
             </div>
         </div>
@@ -1145,42 +1170,49 @@
     </div>
 
 
-    <!-- Header Navigation - Only navigation content -->
+    <!-- Header Navigation - BULLETPROOF GRID -->
     <header
-        class="w-full py-6 px-4 sm:px-[6%] flex justify-between items-center fixed top-8 sm:top-10 z-50 bg-[rgba(10,10,30,0.6)] backdrop-blur-xl border-b border-white/10 transition-all duration-400 ease-[cubic-bezier(0.4,0,0.2,1)]">
+        class="w-full py-2 px-4 sm:px-[6%] grid grid-cols-[auto_1fr_auto] items-center fixed top-14 sm:top-10 z-50 bg-[rgba(10,10,30,0.6)] backdrop-blur-xl border-b border-white/10 transition-all duration-400 ease-[cubic-bezier(0.4,0,0.2,1)]">
+
         <!-- Logo -->
         <div class="logo flex items-center gap-2 font-bold text-xl text-white opacity-0 animate-slide-in-left">
             <img src="./images/logo.png" alt="Ztorespot Logo" class="h-10 sm:h-12 lg:h-14 w-auto">
         </div>
 
-        <!-- Desktop Navigation -->
-        <nav class="hidden lg:flex items-center justify-center flex-1 relative">
-            <!-- Centered Navigation Links -->
-            <div class="flex items-center gap-8 absolute left-1/2 -translate-x-1/2">
+        <!-- Centered Navigation Links -->
+        <nav class="hidden lg:flex items-center justify-center">
+            <div class="flex items-center gap-6 xl:gap-8">
                 <a href="#features"
-                    class="text-gray-300 font-medium transition-colors duration-300 hover:text-white text-sm xl:text-base">Features</a>
+                    class="nav-link text-gray-300 font-medium hover:text-white text-sm xl:text-base">Features</a>
+                <a href="#testimonials"
+                    class="nav-link text-gray-300 font-medium hover:text-white text-sm xl:text-base">Testimonials</a>
                 <a href="#pricing"
-                    class="text-gray-300 font-medium transition-colors duration-300 hover:text-white text-sm xl:text-base">Pricing</a>
+                    class="nav-link text-gray-300 font-medium hover:text-white text-sm xl:text-base">Pricing</a>
                 <a href="#themes"
-                    class="text-gray-300 font-medium transition-colors duration-300 hover:text-white text-sm xl:text-base">Themes</a>
-                <a href="#help"
-                    class="text-gray-300 font-medium transition-colors duration-300 hover:text-white text-sm xl:text-base">Help
-                    Videos</a>
-            </div>
-
-            <!-- Right CTA Button -->
-            <div class="ml-auto">
-                <a href="./test.html">
-                    <button
-                        class="bg-gradient-to-br from-ztore-purple to-ztore-pink py-2 px-5 rounded-lg text-white font-semibold transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_8px_25px_rgba(138,0,255,0.4)] text-sm xl:text-base">
-                        Get Started
-                    </button>
-                </a>
+                    class="nav-link text-gray-300 font-medium hover:text-white text-sm xl:text-base">Themes</a>
+                <a href="https://www.youtube.com/@Ztorespot/videos" target="_blank" rel="noopener noreferrer"
+                    class="text-gray-300 font-medium hover:text-white text-sm xl:text-base">Help Videos</a>
             </div>
         </nav>
 
-        <!-- Mobile Toggle Button -->
-        <div class="mobile-toggle lg:hidden cursor-pointer p-2 z-50">
+        <!-- Right CTA Buttons -->
+        <div class="hidden lg:flex items-center gap-3 justify-end">
+            <a href="./login.html">
+                <button
+                    class="bg-gradient-to-br from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 py-2 px-5 rounded-lg text-white font-semibold transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_8px_25px_rgba(34,197,94,0.4)] text-sm xl:text-base">
+                    Login
+                </button>
+            </a>
+            <a href="./test.html">
+                <button
+                    class="bg-gradient-to-br from-ztore-purple to-ztore-pink py-2 px-5 rounded-lg text-white font-semibold transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_8px_25px_rgba(138,0,255,0.4)] text-sm xl:text-base">
+                    Get Started
+                </button>
+            </a>
+        </div>
+
+        <!-- Mobile Toggle -->
+        <div class="mobile-toggle lg:hidden cursor-pointer p-2 z-50 justify-self-end">
             <img src="./images/nav_icon.svg" alt="Menu" class="w-7 h-7 mobile-icon">
         </div>
     </header>
@@ -1202,17 +1234,29 @@
         <!-- Mobile Navigation Links -->
         <div class="flex flex-col gap-6">
             <a href="#features"
-                class="text-lg font-medium text-gray-300 transition-colors duration-300 hover:text-white py-3 border-b border-white/10">Features</a>
+                class="text-lg mt-4 text-gray-300 transition-colors duration-300 hover:text-white py-3 border-b border-white/10">Features</a>
+            <a href="#testimonials"
+                class="text-lg font-medium text-gray-300 transition-colors duration-300 hover:text-white py-3 border-b border-white/10">Testimonials</a>
             <a href="#pricing"
                 class="text-lg font-medium text-gray-300 transition-colors duration-300 hover:text-white py-3 border-b border-white/10">Pricing</a>
             <a href="#themes"
                 class="text-lg font-medium text-gray-300 transition-colors duration-300 hover:text-white py-3 border-b border-white/10">Themes</a>
-            <a href="#help"
+            <a href="https://www.youtube.com/@Ztorespot/videos" target="_blank" rel="noopener noreferrer"
                 class="text-lg font-medium text-gray-300 transition-colors duration-300 hover:text-white py-3 border-b border-white/10">Help
                 Videos</a>
 
-            <!-- Smaller Mobile Get Started Button -->
-            <div class="mt-6">
+            <!-- Mobile Login Button -->
+            <div class="mt-4">
+                <a href="./login.html">
+                    <button
+                        class="bg-gradient-to-br from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 text-white font-semibold py-3 px-6 rounded-lg w-full text-center transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_6px_20px_rgba(34,197,94,0.4)] text-base">
+                        Login
+                    </button>
+                </a>
+            </div>
+
+            <!-- Mobile Get Started Button -->
+            <div class="mt-2">
                 <a href="./test.html">
                     <button
                         class="bg-gradient-to-br from-ztore-purple to-ztore-pink py-3 px-6 rounded-lg text-white font-semibold w-full text-center transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_6px_20px_rgba(138,0,255,0.4)] text-base">
@@ -1293,7 +1337,7 @@
                     class="flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-8 mt-4 text-gray-300 text-xs sm:text-sm font-medium">
                     <div class="flex items-center gap-1">
                         <span class="glow-dot bg-emerald-400"></span>
-                        <span>Onboarding Customers: <span class="text-white font-semibold">20K+</span></span>
+                        <span>Onboarding Merchants: <span class="text-white font-semibold">20K+</span></span>
                     </div>
                     <div class="flex items-center gap-1">
                         <span class="glow-dot bg-lime-400"></span>
@@ -1327,159 +1371,125 @@
 
 
 
+        <!-- Comparison Section -->
+        <section id="compare" class="compare-plans py-20 px-4 sm:px-6 relative overflow-hidden text-gray-300">
+            <!-- Background Glow Elements -->
+            <div class="absolute top-20 left-[5%] w-48 h-48 bg-purple-600/10 rounded-full blur-3xl"></div>
+            <div class="absolute bottom-20 right-[5%] w-56 h-56 bg-pink-500/10 rounded-full blur-3xl"></div>
 
-
-        <!-- Problem → Solution Section -->
-        <section class="problem-solution py-20 px-4 sm:px-6 relative overflow-hidden">
-            <!-- Background Elements -->
-            <div class="absolute top-1/4 left-10 w-32 h-32 bg-ztore-purple/20 rounded-full blur-3xl animate-pulse">
-            </div>
-            <div class="absolute bottom-1/4 right-10 w-40 h-40 bg-ztore-pink/20 rounded-full blur-3xl animate-pulse"
-                style="animation-delay: 2s"></div>
-
-            <div class="max-w-6xl mx-auto">
+            <div class="max-w-6xl mx-auto relative z-10 text-center">
                 <!-- Section Header -->
-                <header class="text-center mb-16 opacity-0 animate-fade-in-up">
-                    <h2 class="text-3xl sm:text-4xl md:text-5xl font-bold mb-4">
-                        Tired of <span class="text-red-400">Complex Setup</span>
-                        <span class="block">Holding You Back?</span>
+                <header class="mb-12">
+                    <h2 class="text-3xl sm:text-4xl font-bold mb-4 text-gray-100">
+                        See why sellers are switching to <br> <span class="text-gradient font-semibold">Ztorespot</span>
                     </h2>
                 </header>
 
-                <!-- Problem & Solution Grid -->
-                <div class="grid md:grid-cols-2 gap-8 lg:gap-12">
-                    <!-- Problem Side (Dark) -->
-                    <article class="problem-card text-left opacity-0 animate-slide-in-left">
-                        <div
-                            class="bg-gradient-to-br from-red-900/30 to-red-800/10 rounded-2xl p-8 h-full border border-red-500/30 backdrop-blur-xl">
-                            <header class="flex items-center gap-3 mb-6">
-                                <div class="w-12 h-12 bg-red-500/20 rounded-xl flex items-center justify-center">
-                                    <!-- Warning Icon -->
-                                    <svg class="w-6 h-6 text-red-400" fill="none" stroke="currentColor"
-                                        viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L4.082 16.5c-.77.833.192 2.5 1.732 2.5z" />
-                                    </svg>
-                                </div>
-                                <h3 class="text-2xl font-bold text-red-300">The Struggle</h3>
-                            </header>
+                <!-- Comparison Table -->
+                <div
+                    class="w-full mx-auto overflow-hidden rounded-3xl border border-white/10 backdrop-blur-xl bg-gradient-to-br from-purple-700/10 to-pink-600/10 shadow-lg">
+                    <table class="w-full border-collapse text-left text-gray-300 text-xs sm:text-sm">
+                        <!-- Table Head -->
+                        <thead class="bg-gradient-to-r from-purple-700/40 to-pink-600/30 text-gray-100">
+                            <tr>
+                                <th class="p-3 sm:p-4 font-semibold border-r border-gray-700 w-1/4">Features</th>
+                                <th class="p-3 sm:p-4 font-semibold text-center border-r border-gray-700"> <span
+                                        class="text-gradient font-semibold">Ztorespot</span></th>
+                                <th class="p-3 sm:p-4 font-semibold text-center border-r border-gray-700">Dukaan</th>
+                                <th class="p-3 sm:p-4 font-semibold text-center">WooCommerce</th>
+                            </tr>
+                        </thead>
 
-                            <ul class="space-y-4">
-                                <li class="flex items-start gap-3">
-                                    <svg class="w-5 h-5 text-red-400 mt-0.5 flex-shrink-0" fill="none"
-                                        stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M6 18L18 6M6 6l12 12" />
-                                    </svg>
-                                    <span class="text-gray-300">Investing thousands or even lakhs to get an e-commerce
-                                        website.</span>
-                                </li>
-                                <li class="flex items-start gap-3">
-                                    <svg class="w-5 h-5 text-red-400 mt-0.5 flex-shrink-0" fill="none"
-                                        stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M6 18L18 6M6 6l12 12" />
-                                    </svg>
-                                    <span class="text-gray-300">Wasting hours trying to set up your online store.</span>
-                                </li>
-                                <li class="flex items-start gap-3">
-                                    <svg class="w-5 h-5 text-red-400 mt-0.5 flex-shrink-0" fill="none"
-                                        stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M6 18L18 6M6 6l12 12" />
-                                    </svg>
-                                    <span class="text-gray-300">Confusing tools and complicated settings</span>
-                                </li>
-                                <li class="flex items-start gap-3">
-                                    <svg class="w-5 h-5 text-red-400 mt-0.5 flex-shrink-0" fill="none"
-                                        stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M6 18L18 6M6 6l12 12" />
-                                    </svg>
-                                    <span class="text-gray-300">Managing plugins, updates, and complicated
-                                        settings</span>
-                                </li>
-                            </ul>
-
-                            <footer class="mt-8 p-4 bg-red-500/10 rounded-xl border border-red-500/20">
-                                <p class="text-red-300 text-sm italic">
-                                    "I nearly quit — setting up my store took hours and cost way more than I expected!"
-                                </p>
-                            </footer>
-                        </div>
-                    </article>
-
-                    <!-- Solution Side (Bright) -->
-                    <article class="solution-card text-left opacity-0 animate-slide-in-left"
-                        style="animation-delay: 0.3s">
-                        <div
-                            class="bg-gradient-to-br from-green-900/30 to-emerald-800/10 rounded-2xl p-8 h-full border border-emerald-500/30 backdrop-blur-xl relative overflow-hidden">
-                            <!-- Shimmer Effect -->
-                            <div class="absolute top-0 right-0 w-32 h-32 bg-emerald-400/10 rounded-full blur-2xl"></div>
-
-                            <header class="flex items-center gap-3 mb-6">
-                                <div class="w-12 h-12 bg-emerald-500/20 rounded-xl flex items-center justify-center">
-                                    <!-- Rocket Icon -->
-                                    <svg class="w-6 h-6 text-emerald-400" fill="none" stroke="currentColor"
-                                        viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M13 10V3L4 14h7v7l9-11h-7z" />
-                                    </svg>
-                                </div>
-                                <h3 class="text-2xl font-bold text-emerald-300">The Ztorespot Way</h3>
-                            </header>
-
-                            <ul class="space-y-4">
-                                <li class="flex items-start gap-3">
-                                    <svg class="w-5 h-5 text-emerald-400 mt-0.5 flex-shrink-0" fill="none"
-                                        stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M5 13l4 4L19 7" />
-                                    </svg>
-                                    <span class="text-gray-300">Affordable plans that save you thousands instantly,
-                                        starting your store today.</span>
-                                </li>
-                                <li class="flex items-start gap-3">
-                                    <svg class="w-5 h-5 text-emerald-400 mt-0.5 flex-shrink-0" fill="none"
-                                        stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M5 13l4 4L19 7" />
-                                    </svg>
-                                    <span class="text-gray-300">Launch your online store in minutes - just one
-                                        click!</span>
-                                </li>
-                                <li class="flex items-start gap-3">
-                                    <svg class="w-5 h-5 text-emerald-400 mt-0.5 flex-shrink-0" fill="none"
-                                        stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M5 13l4 4L19 7" />
-                                    </svg>
-                                    <span class="text-gray-300">Perfectly organized and easy to manage.</span>
-                                </li>
-                                <li class="flex items-start gap-3">
-                                    <svg class="w-5 h-5 text-emerald-400 mt-0.5 flex-shrink-0" fill="none"
-                                        stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M5 13l4 4L19 7" />
-                                    </svg>
-                                    <span class="text-gray-300">Easy communication with real people, not bots.</span>
-                                </li>
-                            </ul>
-
-                            <footer class="mt-8 p-4 bg-emerald-500/10 rounded-xl border border-emerald-500/20">
-                                <p class="text-emerald-300 text-sm italic">
-                                    "With Ztorespot, my store went live in minutes, and I made my first sale fast!"
-                                </p>
-                            </footer>
-                        </div>
-                    </article>
+                        <!-- Table Body -->
+                        <tbody>
+                            <tr class="border-t border-gray-700">
+                                <td class="p-3 sm:p-4 font-medium border-r border-gray-700">Setup Time</td>
+                                <td
+                                    class="p-3 sm:p-4 text-center text-emerald-400 font-semibold border-r border-gray-700">
+                                    2 Minutes</td>
+                                <td class="p-3 sm:p-4 text-center border-r border-gray-700">30 mins</td>
+                                <td class="p-3 sm:p-4 text-center">1–2 Days</td>
+                            </tr>
+                            <tr class="border-t border-gray-700">
+                                <td class="p-3 sm:p-4 font-medium border-r border-gray-700">Monthly Cost</td>
+                                <td
+                                    class="p-3 sm:p-4 text-center text-emerald-400 font-semibold border-r border-gray-700">
+                                    ₹199</td>
+                                <td class="p-3 sm:p-4 text-center border-r border-gray-700">₹999+</td>
+                                <td class="p-3 sm:p-4 text-center">₹1,200+</td>
+                            </tr>
+                            <tr class="border-t border-gray-700">
+                                <td class="p-3 sm:p-4 font-medium border-r border-gray-700">Transaction Fees</td>
+                                <td
+                                    class="p-3 sm:p-4 text-center text-emerald-400 font-semibold border-r border-gray-700">
+                                    0%</td>
+                                <td class="p-3 sm:p-4 text-center border-r border-gray-700">2–3%</td>
+                                <td class="p-3 sm:p-4 text-center">1–2%</td>
+                            </tr>
+                            <tr class="border-t border-gray-700">
+                                <td class="p-3 sm:p-4 font-medium border-r border-gray-700">No-Code Platform</td>
+                                <td
+                                    class="p-3 sm:p-4 text-center text-emerald-400 font-semibold border-r border-gray-700">
+                                    Yes</td>
+                                <td class="p-3 sm:p-4 text-center border-r border-gray-700">Yes</td>
+                                <td class="p-3 sm:p-4 text-center text-red-400">No</td>
+                            </tr>
+                            <tr class="border-t border-gray-700">
+                                <td class="p-3 sm:p-4 font-medium border-r border-gray-700">Plugins Required</td>
+                                <td
+                                    class="p-3 sm:p-4 text-center text-emerald-400 font-semibold border-r border-gray-700">
+                                    No</td>
+                                <td class="p-3 sm:p-4 text-center text-red-400 border-r border-gray-700">No</td>
+                                <td class="p-3 sm:p-4 text-center text-red-400">Yes</td>
+                            </tr>
+                            <tr class="border-t border-gray-700">
+                                <td class="p-3 sm:p-4 font-medium border-r border-gray-700">Custom Domain</td>
+                                <td
+                                    class="p-3 sm:p-4 text-center text-emerald-400 font-semibold border-r border-gray-700">
+                                    Yes</td>
+                                <td class="p-3 sm:p-4 text-center border-r border-gray-700">Yes</td>
+                                <td class="p-3 sm:p-4 text-center">Yes</td>
+                            </tr>
+                            <tr class="border-t border-gray-700">
+                                <td class="p-3 sm:p-4 font-medium border-r border-gray-700">Support</td>
+                                <td
+                                    class="p-3 sm:p-4 text-center text-emerald-400 font-semibold border-r border-gray-700">
+                                    24/7 WhatsApp</td>
+                                <td class="p-3 sm:p-4 text-center border-r border-gray-700">Email Only</td>
+                                <td class="p-3 sm:p-4 text-center">Limited</td>
+                            </tr>
+                            <tr class="border-t border-gray-700">
+                                <td class="p-3 sm:p-4 font-medium border-r border-gray-700">Templates</td>
+                                <td
+                                    class="p-3 sm:p-4 text-center text-emerald-400 font-semibold border-r border-gray-700">
+                                    10+ Premium</td>
+                                <td class="p-3 sm:p-4 text-center border-r border-gray-700">5+</td>
+                                <td class="p-3 sm:p-4 text-center">Free & Paid</td>
+                            </tr>
+                            <tr class="border-t border-gray-700">
+                                <td class="p-3 sm:p-4 font-medium border-r border-gray-700">Automation</td>
+                                <td
+                                    class="p-3 sm:p-4 text-center text-emerald-400 font-semibold border-r border-gray-700">
+                                    Built-in</td>
+                                <td class="p-3 sm:p-4 text-center border-r border-gray-700">Limited</td>
+                                <td class="p-3 sm:p-4 text-center">Add-on</td>
+                            </tr>
+                            <tr class="border-t border-gray-700 bg-gradient-to-r from-purple-700/10 to-pink-600/10">
+                                <td class="p-3 sm:p-4 font-semibold border-r border-gray-700">Overall Rating</td>
+                                <td
+                                    class="p-3 sm:p-4 text-center font-semibold text-emerald-400 border-r border-gray-700">
+                                    ⭐ 4.9</td>
+                                <td class="p-3 sm:p-4 text-center font-semibold border-r border-gray-700">⭐ 4.2</td>
+                                <td class="p-3 sm:p-4 text-center font-semibold">⭐ 4.0</td>
+                            </tr>
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </section>
 
-
         <!-- Testimonials Section - Interactive Cards -->
-        <section class="testimonials py-20 px-4 sm:px-6 relative overflow-hidden">
+        <section id="testimonials" class="testimonials py-20 px-4 sm:px-6 relative overflow-hidden">
             <!-- Background Elements -->
             <div class="absolute top-20 left-5% w-48 h-48 bg-ztore-purple/10 rounded-full blur-3xl"></div>
             <div class="absolute bottom-20 right-5% w-56 h-56 bg-ztore-pink/10 rounded-full blur-3xl"></div>
@@ -2518,7 +2528,7 @@
         </section>
 
         <!-- What Makes Ztorespot Different Section -->
-        <section class="different-section py-16 sm:py-20 lg:py-24 px-4 sm:px-6 relative overflow-hidden">
+        <section id="features" class="different-section py-16 sm:py-20 lg:py-24 px-4 sm:px-6 relative overflow-hidden">
             <!-- Background Elements -->
             <div
                 class="absolute top-10 left-5% w-32 h-32 sm:w-40 sm:h-40 bg-ztore-purple/10 rounded-full blur-2xl sm:blur-3xl">
@@ -2620,132 +2630,228 @@
                         </div>
                     </div>
 
-                    <!-- Features Grid - Always below video on mobile, right for desktop -->
-                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-5 lg:gap-6 w-full order-2">
-                        <!-- Feature 1 -->
-                        <div
-                            class="feature-card bg-white/5 rounded-xl sm:rounded-2xl p-4 sm:p-5 lg:p-6 backdrop-blur-xl border border-white/10 hover:border-ztore-purple/30 transition-all duration-300 group hover:scale-105">
-                            <div class="flex items-start gap-3 sm:gap-4">
-                                <div
-                                    class="w-10 h-10 sm:w-11 sm:h-11 lg:w-12 lg:h-12 bg-green-500/20 rounded-lg sm:rounded-xl flex items-center justify-center flex-shrink-0">
-                                    <svg class="w-5 h-5 sm:w-5 sm:h-5 lg:w-6 lg:h-6 text-green-400" fill="none"
-                                        stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
-                                    </svg>
-                                </div>
-                                <div class="flex-1 min-w-0">
-                                    <h4 class="font-semibold text-white text-sm sm:text-base mb-1 sm:mb-2">100% No-Code
-                                        Platform</h4>
-                                    <p class="text-gray-300 text-xs sm:text-sm leading-relaxed">Launch without technical
-                                        skills. No drag-drop confusion, no AI setup required.</p>
+                    <!-- Features Grid - Right Side (18 Cards) -->
+                    <div class="w-full order-2">
+                        <!-- Mobile: 2 columns, Desktop: 3 columns - Now perfect 6 rows -->
+                        <div class="grid grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4">
+                            <!-- Card 1: No Code Platform  -->
+                            <div
+                                class="feature-card bg-white/5 rounded-xl p-3 sm:p-4 backdrop-blur-xl border border-white/10 hover:border-orange-400/30 transition-all duration-300 group hover:scale-105">
+                                <div class="flex items-center gap-3">
+                                    <div
+                                        class="w-8 h-8 bg-orange-500/20 rounded-lg flex items-center justify-center flex-shrink-0">
+                                        <i class="bi bi-code-slash text-orange-400 text-sm"></i>
+                                    </div>
+                                    <span class="text-white text-sm font-medium">No Code Platform</span>
                                 </div>
                             </div>
-                        </div>
 
-                        <!-- Feature 2 -->
-                        <div
-                            class="feature-card bg-white/5 rounded-xl sm:rounded-2xl p-4 sm:p-5 lg:p-6 backdrop-blur-xl border border-white/10 hover:border-ztore-purple/30 transition-all duration-300 group hover:scale-105">
-                            <div class="flex items-start gap-3 sm:gap-4">
-                                <div
-                                    class="w-10 h-10 sm:w-11 sm:h-11 lg:w-12 lg:h-12 bg-blue-500/20 rounded-lg sm:rounded-xl flex items-center justify-center flex-shrink-0">
-                                    <svg class="w-5 h-5 sm:w-5 sm:h-5 lg:w-6 lg:h-6 text-blue-400" fill="none"
-                                        stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1" />
-                                    </svg>
-                                </div>
-                                <div class="flex-1 min-w-0">
-                                    <h4 class="font-semibold text-white text-sm sm:text-base mb-1 sm:mb-2">Zero
-                                        Transaction Fees</h4>
-                                    <p class="text-gray-300 text-xs sm:text-sm leading-relaxed">Keep 100% of your
-                                        profit. Very low cost with no hidden charges ever.</p>
+                            <!-- Card 2: No Drag & Drop -->
+                            <div
+                                class="feature-card bg-white/5 rounded-xl p-3 sm:p-4 backdrop-blur-xl border border-white/10 hover:border-blue-400/30 transition-all duration-300 group hover:scale-105">
+                                <div class="flex items-center gap-3">
+                                    <div
+                                        class="w-8 h-8 bg-blue-500/20 rounded-lg flex items-center justify-center flex-shrink-0">
+                                        <i class="bi bi-mouse text-blue-400 text-sm"></i>
+                                    </div>
+                                    <span class="text-white text-sm font-medium">No Drag & Drop</span>
                                 </div>
                             </div>
-                        </div>
 
-                        <!-- Feature 3 -->
-                        <div
-                            class="feature-card bg-white/5 rounded-xl sm:rounded-2xl p-4 sm:p-5 lg:p-6 backdrop-blur-xl border border-white/10 hover:border-ztore-purple/30 transition-all duration-300 group hover:scale-105">
-                            <div class="flex items-start gap-3 sm:gap-4">
-                                <div
-                                    class="w-10 h-10 sm:w-11 sm:h-11 lg:w-12 lg:h-12 bg-purple-500/20 rounded-lg sm:rounded-xl flex items-center justify-center flex-shrink-0">
-                                    <svg class="w-5 h-5 sm:w-5 sm:h-5 lg:w-6 lg:h-6 text-purple-400" fill="none"
-                                        stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
-                                    </svg>
-                                </div>
-                                <div class="flex-1 min-w-0">
-                                    <h4 class="font-semibold text-white text-sm sm:text-base mb-1 sm:mb-2">Everything
-                                        Built-In</h4>
-                                    <p class="text-gray-300 text-xs sm:text-sm leading-relaxed">No extra apps or plugins
-                                        needed. Complete solution in one platform.</p>
+                            <!-- Card 3: No AI Promotion -->
+                            <div
+                                class="feature-card bg-white/5 rounded-xl p-3 sm:p-4 backdrop-blur-xl border border-white/10 hover:border-purple-400/30 transition-all duration-300 group hover:scale-105">
+                                <div class="flex items-center gap-3">
+                                    <div
+                                        class="w-8 h-8 bg-purple-500/20 rounded-lg flex items-center justify-center flex-shrink-0">
+                                        <i class="bi bi-robot text-purple-400 text-sm"></i>
+                                    </div>
+                                    <span class="text-white text-sm font-medium">No AI Promotion</span>
                                 </div>
                             </div>
-                        </div>
 
-                        <!-- Feature 4 -->
-                        <div
-                            class="feature-card bg-white/5 rounded-xl sm:rounded-2xl p-4 sm:p-5 lg:p-6 backdrop-blur-xl border border-white/10 hover:border-ztore-purple/30 transition-all duration-300 group hover:scale-105">
-                            <div class="flex items-start gap-3 sm:gap-4">
-                                <div
-                                    class="w-10 h-10 sm:w-11 sm:h-11 lg:w-12 lg:h-12 bg-orange-500/20 rounded-lg sm:rounded-xl flex items-center justify-center flex-shrink-0">
-                                    <svg class="w-5 h-5 sm:w-5 sm:h-5 lg:w-6 lg:h-6 text-orange-400" fill="none"
-                                        stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
-                                    </svg>
-                                </div>
-                                <div class="flex-1 min-w-0">
-                                    <h4 class="font-semibold text-white text-sm sm:text-base mb-1 sm:mb-2">Multi-Staff
-                                        Accounts</h4>
-                                    <p class="text-gray-300 text-xs sm:text-sm leading-relaxed">Add team members easily.
-                                        Streamlined store and order control for everyone.</p>
+                            <!-- Card 4: No Technical Skills -->
+                            <div
+                                class="feature-card bg-white/5 rounded-xl p-3 sm:p-4 backdrop-blur-xl border border-white/10 hover:border-yellow-400/30 transition-all duration-300 group hover:scale-105">
+                                <div class="flex items-center gap-3">
+                                    <div
+                                        class="w-8 h-8 bg-yellow-500/20 rounded-lg flex items-center justify-center flex-shrink-0">
+                                        <i class="bi bi-tools text-yellow-400 text-sm"></i>
+                                    </div>
+                                    <span class="text-white text-sm font-medium">No Technical Skills</span>
                                 </div>
                             </div>
-                        </div>
 
-                        <!-- Feature 5 -->
-                        <div
-                            class="feature-card bg-white/5 rounded-xl sm:rounded-2xl p-4 sm:p-5 lg:p-6 backdrop-blur-xl border border-white/10 hover:border-ztore-purple/30 transition-all duration-300 group hover:scale-105">
-                            <div class="flex items-start gap-3 sm:gap-4">
-                                <div
-                                    class="w-10 h-10 sm:w-11 sm:h-11 lg:w-12 lg:h-12 bg-pink-500/20 rounded-lg sm:rounded-xl flex items-center justify-center flex-shrink-0">
-                                    <svg class="w-5 h-5 sm:w-5 sm:h-5 lg:w-6 lg:h-6 text-pink-400" fill="none"
-                                        stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M4 5a1 1 0 011-1h14a1 1 0 011 1v2a1 1 0 01-1 1H5a1 1 0 01-1-1V5zM4 13a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H5a1 1 0 01-1-1v-6zM16 13a1 1 0 011-1h2a1 1 0 011 1v6a1 1 0 01-1 1h-2a1 1 0 01-1-1v-6z" />
-                                    </svg>
-                                </div>
-                                <div class="flex-1 min-w-0">
-                                    <h4 class="font-semibold text-white text-sm sm:text-base mb-1 sm:mb-2">Professional
-                                        Templates</h4>
-                                    <p class="text-gray-300 text-xs sm:text-sm leading-relaxed">Ready-made beautiful
-                                        designs. Custom domain for your brand identity.</p>
+                            <!-- Card 5: Easy to Use -->
+                            <div
+                                class="feature-card bg-white/5 rounded-xl p-3 sm:p-4 backdrop-blur-xl border border-white/10 hover:border-green-400/30 transition-all duration-300 group hover:scale-105">
+                                <div class="flex items-center gap-3">
+                                    <div
+                                        class="w-8 h-8 bg-green-500/20 rounded-lg flex items-center justify-center flex-shrink-0">
+                                        <i class="bi bi-check-circle text-green-400 text-sm"></i>
+                                    </div>
+                                    <span class="text-white text-sm font-medium">Easy to Use</span>
                                 </div>
                             </div>
-                        </div>
 
-                        <!-- Feature 6 -->
-                        <div
-                            class="feature-card bg-white/5 rounded-xl sm:rounded-2xl p-4 sm:p-5 lg:p-6 backdrop-blur-xl border border-white/10 hover:border-ztore-purple/30 transition-all duration-300 group hover:scale-105">
-                            <div class="flex items-start gap-3 sm:gap-4">
-                                <div
-                                    class="w-10 h-10 sm:w-11 sm:h-11 lg:w-12 lg:h-12 bg-teal-500/20 rounded-lg sm:rounded-xl flex items-center justify-center flex-shrink-0">
-                                    <svg class="w-5 h-5 sm:w-5 sm:h-5 lg:w-6 lg:h-6 text-teal-400" fill="none"
-                                        stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
-                                    </svg>
-                                </div>
-                                <div class="flex-1 min-w-0">
-                                    <h4 class="font-semibold text-white text-sm sm:text-base mb-1 sm:mb-2">Secure &
-                                        Reliable</h4>
-                                    <p class="text-gray-300 text-xs sm:text-sm leading-relaxed">Free SMS OTP for safe
-                                        login. Enterprise-grade security for your business.</p>
+                            <!-- Card 6: No Additional Apps -->
+                            <div
+                                class="feature-card bg-white/5 rounded-xl p-3 sm:p-4 backdrop-blur-xl border border-white/10 hover:border-red-400/30 transition-all duration-300 group hover:scale-105">
+                                <div class="flex items-center gap-3">
+                                    <div
+                                        class="w-8 h-8 bg-red-500/20 rounded-lg flex items-center justify-center flex-shrink-0">
+                                        <i class="bi bi-app-indicator text-red-400 text-sm"></i>
+                                    </div>
+                                    <span class="text-white text-sm font-medium">No Additional Apps & Plugins</span>
                                 </div>
                             </div>
+
+
+                            <!-- Card 7: Manage Inventory -->
+                            <div
+                                class="feature-card bg-white/5 rounded-xl p-3 sm:p-4 backdrop-blur-xl border border-white/10 hover:border-indigo-400/30 transition-all duration-300 group hover:scale-105">
+                                <div class="flex items-center gap-3">
+                                    <div
+                                        class="w-8 h-8 bg-indigo-500/20 rounded-lg flex items-center justify-center flex-shrink-0">
+                                        <i class="bi bi-box-seam text-indigo-400 text-sm"></i>
+                                    </div>
+                                    <span class="text-white text-sm font-medium">Manage Inventory</span>
+                                </div>
+                            </div>
+
+                            <!-- Card 8: Manage Store Orders -->
+                            <div
+                                class="feature-card bg-white/5 rounded-xl p-3 sm:p-4 backdrop-blur-xl border border-white/10 hover:border-pink-400/30 transition-all duration-300 group hover:scale-105">
+                                <div class="flex items-center gap-3">
+                                    <div
+                                        class="w-8 h-8 bg-pink-500/20 rounded-lg flex items-center justify-center flex-shrink-0">
+                                        <i class="bi bi-cart-check text-pink-400 text-sm"></i>
+                                    </div>
+                                    <span class="text-white text-sm font-medium">Manage Store Orders</span>
+                                </div>
+                            </div>
+
+                            <!-- Card 9: Multiple Staff Accounts -->
+                            <div
+                                class="feature-card bg-white/5 rounded-xl p-3 sm:p-4 backdrop-blur-xl border border-white/10 hover:border-cyan-400/30 transition-all duration-300 group hover:scale-105">
+                                <div class="flex items-center gap-3">
+                                    <div
+                                        class="w-8 h-8 bg-cyan-500/20 rounded-lg flex items-center justify-center flex-shrink-0">
+                                        <i class="bi bi-people text-cyan-400 text-sm"></i>
+                                    </div>
+                                    <span class="text-white text-sm font-medium">Multiple Staff Accounts</span>
+                                </div>
+                            </div>
+
+                            <!-- Card 10: Multiple Templates -->
+                            <div
+                                class="feature-card bg-white/5 rounded-xl p-3 sm:p-4 backdrop-blur-xl border border-white/10 hover:border-violet-400/30 transition-all duration-300 group hover:scale-105">
+                                <div class="flex items-center gap-3">
+                                    <div
+                                        class="w-8 h-8 bg-violet-500/20 rounded-lg flex items-center justify-center flex-shrink-0">
+                                        <i class="bi bi-layout-text-window text-violet-400 text-sm"></i>
+                                    </div>
+                                    <span class="text-white text-sm font-medium">Multiple Templates</span>
+                                </div>
+                            </div>
+
+                            <!-- Card 11: Custom Domain -->
+                            <div
+                                class="feature-card bg-white/5 rounded-xl p-3 sm:p-4 backdrop-blur-xl border border-white/10 hover:border-amber-400/30 transition-all duration-300 group hover:scale-105">
+                                <div class="flex items-center gap-3">
+                                    <div
+                                        class="w-8 h-8 bg-amber-500/20 rounded-lg flex items-center justify-center flex-shrink-0">
+                                        <i class="bi bi-globe text-amber-400 text-sm"></i>
+                                    </div>
+                                    <span class="text-white text-sm font-medium">Custom Domain</span>
+                                </div>
+                            </div>
+
+                            <!-- Card 12: WhatsApp Notification -->
+                            <div
+                                class="feature-card bg-white/5 rounded-xl p-3 sm:p-4 backdrop-blur-xl border border-white/10 hover:border-green-400/30 transition-all duration-300 group hover:scale-105">
+                                <div class="flex items-center gap-3">
+                                    <div
+                                        class="w-8 h-8 bg-green-500/20 rounded-lg flex items-center justify-center flex-shrink-0">
+                                        <i class="bi bi-whatsapp text-green-400 text-sm"></i>
+                                    </div>
+                                    <span class="text-white text-sm font-medium">WhatsApp Notification</span>
+                                </div>
+                            </div>
+
+
+                            <!-- Card 13: Secure Payments -->
+                            <div
+                                class="feature-card bg-white/5 rounded-xl p-3 sm:p-4 backdrop-blur-xl border border-white/10 hover:border-lime-400/30 transition-all duration-300 group hover:scale-105">
+                                <div class="flex items-center gap-3">
+                                    <div
+                                        class="w-8 h-8 bg-lime-500/20 rounded-lg flex items-center justify-center flex-shrink-0">
+                                        <i class="bi bi-shield-check text-lime-400 text-sm"></i>
+                                    </div>
+                                    <span class="text-white text-sm font-medium">Secure Payments</span>
+                                </div>
+                            </div>
+
+                            <!-- Card 14: Reliable SMS OTP -->
+                            <div
+                                class="feature-card bg-white/5 rounded-xl p-3 sm:p-4 backdrop-blur-xl border border-white/10 hover:border-sky-400/30 transition-all duration-300 group hover:scale-105">
+                                <div class="flex items-center gap-3">
+                                    <div
+                                        class="w-8 h-8 bg-sky-500/20 rounded-lg flex items-center justify-center flex-shrink-0">
+                                        <i class="bi bi-chat-dots text-sky-400 text-sm"></i>
+                                    </div>
+                                    <span class="text-white text-sm font-medium">Reliable SMS OTP</span>
+                                </div>
+                            </div>
+
+                            <!-- Card 15: No Transaction Fees -->
+                            <div
+                                class="feature-card bg-white/5 rounded-xl p-3 sm:p-4 backdrop-blur-xl border border-white/10 hover:border-emerald-400/30 transition-all duration-300 group hover:scale-105">
+                                <div class="flex items-center gap-3">
+                                    <div
+                                        class="w-8 h-8 bg-emerald-500/20 rounded-lg flex items-center justify-center flex-shrink-0">
+                                        <i class="bi bi-currency-rupee text-emerald-400 text-sm"></i>
+                                    </div>
+                                    <span class="text-white text-sm font-medium">No Transaction Fees</span>
+                                </div>
+                            </div>
+
+                            <!-- Card 16: Real-time Analytics -->
+                            <div
+                                class="feature-card bg-white/5 rounded-xl p-3 sm:p-4 backdrop-blur-xl border border-white/10 hover:border-fuchsia-400/30 transition-all duration-300 group hover:scale-105">
+                                <div class="flex items-center gap-3">
+                                    <div
+                                        class="w-8 h-8 bg-fuchsia-500/20 rounded-lg flex items-center justify-center flex-shrink-0">
+                                        <i class="bi bi-speedometer2 text-fuchsia-400 text-sm"></i>
+                                    </div>
+                                    <span class="text-white text-sm font-medium">Real-time Analytics</span>
+                                </div>
+                            </div>
+
+                            <!-- Card 17: Unique Product Reports -->
+                            <div
+                                class="feature-card bg-white/5 rounded-xl p-3 sm:p-4 backdrop-blur-xl border border-white/10 hover:border-teal-400/30 transition-all duration-300 group hover:scale-105">
+                                <div class="flex items-center gap-3">
+                                    <div
+                                        class="w-8 h-8 bg-teal-500/20 rounded-lg flex items-center justify-center flex-shrink-0">
+                                        <i class="bi bi-graph-up text-teal-400 text-sm"></i>
+                                    </div>
+                                    <span class="text-white text-sm font-medium">Unique Product Reports</span>
+                                </div>
+                            </div>
+
+                            <!-- Card 18: Customer Based Reports -->
+                            <div
+                                class="feature-card bg-white/5 rounded-xl p-3 sm:p-4 backdrop-blur-xl border border-white/10 hover:border-rose-400/30 transition-all duration-300 group hover:scale-105">
+                                <div class="flex items-center gap-3">
+                                    <div
+                                        class="w-8 h-8 bg-rose-500/20 rounded-lg flex items-center justify-center flex-shrink-0">
+                                        <i class="bi bi-person-lines-fill text-rose-400 text-sm"></i>
+                                    </div>
+                                    <span class="text-white text-sm font-medium">Customer Based Reports</span>
+                                </div>
+                            </div>
+
                         </div>
                     </div>
                 </div>
@@ -3058,7 +3164,7 @@
         </section>
 
         <!-- Pricing Plans Section -->
-        <section class="pricing py-20 px-4 sm:px-6 relative overflow-hidden">
+        <section id="pricing" class="pricing py-20 px-4 sm:px-6 relative overflow-hidden">
             <!-- Background Elements -->
             <div class="absolute top-20 left-10% w-48 h-48 bg-ztore-purple/10 rounded-full blur-3xl"></div>
             <div class="absolute bottom-20 right-10% w-56 h-56 bg-ztore-pink/10 rounded-full blur-3xl"></div>
@@ -4027,7 +4133,7 @@
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                 d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
                         </svg>
-                        <span>30-day money-back guarantee • No credit card required • Cancel anytime</span>
+                        <span>14-day money-back guarantee • Cancel anytime</span>
                     </div>
                 </div>
             </div>
@@ -4232,7 +4338,7 @@
         </style>
 
         <!-- Theme Portfolio Section -->
-        <section class="theme-portfolio py-16 px-4 sm:px-6 relative overflow-hidden">
+        <section id="themes" class="theme-portfolio py-16 px-4 sm:px-6 relative overflow-hidden">
             <!-- Background Glows -->
             <div class="absolute top-10 left-[5%] w-40 h-40 bg-ztore-purple/10 rounded-full blur-3xl"></div>
             <div class="absolute bottom-10 right-[5%] w-48 h-48 bg-ztore-pink/10 rounded-full blur-3xl"></div>
@@ -4375,8 +4481,7 @@
                             class="faq-item bg-white/5 rounded-2xl backdrop-blur-xl border border-white/10 overflow-hidden group hover:border-ztore-purple/30 transition-all duration-500">
                             <button
                                 class="faq-question w-full text-left p-6 flex justify-between items-center hover:bg-white/5 transition-all duration-300">
-                                <span class="font-semibold text-white text-lg pr-4">How quickly can I set up my
-                                    store?</span>
+                                <span class="font-semibold text-white text-lg pr-4">What is Ztorespot.com?</span>
                                 <svg class="w-6 h-6 text-ztore-purple transform group-hover:scale-110 transition-transform duration-300 flex-shrink-0"
                                     fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -4385,9 +4490,13 @@
                             </button>
                             <div class="faq-answer px-6 pb-6 hidden">
                                 <p class="text-gray-300 leading-relaxed">
-                                    Most stores are set up and ready to go in under 15 minutes. Our one-click setup and
-                                    intuitive interface get you from signup to sales in record time. No technical skills
-                                    required!
+                                    Ztorespot.com is a DIY platform that lets anyone create their dream online store in
+                                    just 2 minutes.
+                                    It’s an ideal solution for small and medium-sized business owners — including those
+                                    running
+                                    offline shops like grocery stores, apparel boutiques, snack vendors, restaurants,
+                                    and homemade
+                                    product sellers.
                                 </p>
                             </div>
                         </div>
@@ -4397,8 +4506,8 @@
                             class="faq-item bg-white/5 rounded-2xl backdrop-blur-xl border border-white/10 overflow-hidden group hover:border-ztore-purple/30 transition-all duration-500">
                             <button
                                 class="faq-question w-full text-left p-6 flex justify-between items-center hover:bg-white/5 transition-all duration-300">
-                                <span class="font-semibold text-white text-lg pr-4">What kind of support do you
-                                    offer?</span>
+                                <span class="font-semibold text-white text-lg pr-4">How is Ztorespot.com different from
+                                    other e-commerce platforms?</span>
                                 <svg class="w-6 h-6 text-ztore-purple transform group-hover:scale-110 transition-transform duration-300 flex-shrink-0"
                                     fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -4407,9 +4516,11 @@
                             </button>
                             <div class="faq-answer px-6 pb-6 hidden">
                                 <p class="text-gray-300 leading-relaxed">
-                                    We provide 24/7 customer support via live chat, email, and phone. All plans include
-                                    dedicated support, with priority response times for Professional and Enterprise
-                                    plans.
+                                    Ztorespot.com stands out for its simplicity. Unlike other platforms that can be
+                                    complex,
+                                    Ztorespot.com is designed to be easy to understand and use. There are no complicated
+                                    steps,
+                                    making it perfect for users with basic computer or mobile skills.
                                 </p>
                             </div>
                         </div>
@@ -4419,8 +4530,8 @@
                             class="faq-item bg-white/5 rounded-2xl backdrop-blur-xl border border-white/10 overflow-hidden group hover:border-ztore-purple/30 transition-all duration-500">
                             <button
                                 class="faq-question w-full text-left p-6 flex justify-between items-center hover:bg-white/5 transition-all duration-300">
-                                <span class="font-semibold text-white text-lg pr-4">Can I migrate from another
-                                    platform?</span>
+                                <span class="font-semibold text-white text-lg pr-4">Is Ztorespot.com affordable compared
+                                    to other e-commerce platforms?</span>
                                 <svg class="w-6 h-6 text-ztore-purple transform group-hover:scale-110 transition-transform duration-300 flex-shrink-0"
                                     fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -4429,8 +4540,11 @@
                             </button>
                             <div class="faq-answer px-6 pb-6 hidden">
                                 <p class="text-gray-300 leading-relaxed">
-                                    Absolutely! We offer free migration services from most popular platforms. Our team
-                                    handles the entire process for you, ensuring zero downtime during the transition.
+                                    Yes. Ztorespot.com offers more budget-friendly pricing than other e-commerce
+                                    platforms such as Shopify,
+                                    Dukaan, Wix, or WooCommerce. We believe in providing cost-effective solutions that
+                                    meet the
+                                    needs of small and medium-scale businesses.
                                 </p>
                             </div>
                         </div>
@@ -4439,6 +4553,54 @@
                     <!-- Column 2 -->
                     <div class="space-y-6">
                         <!-- FAQ Item 4 -->
+                        <div
+                            class="faq-item bg-white/5 rounded-2xl backdrop-blur-xl border border-white/10 overflow-hidden group hover:border-ztore-purple/30 transition-all duration-500">
+                            <button
+                                class="faq-question w-full text-left p-6 flex justify-between items-center hover:bg-white/5 transition-all duration-300">
+                                <span class="font-semibold text-white text-lg pr-4">What types of businesses is
+                                    Ztorespot.com suitable for?</span>
+                                <svg class="w-6 h-6 text-ztore-purple transform group-hover:scale-110 transition-transform duration-300 flex-shrink-0"
+                                    fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M19 9l-7 7-7-7" />
+                                </svg>
+                            </button>
+                            <div class="faq-answer px-6 pb-6 hidden">
+                                <p class="text-gray-300 leading-relaxed">
+                                    Ztorespot.com is perfect for a variety of businesses, including grocery stores,
+                                    apparel shops, snack vendors,
+                                    restaurants, and homemade business owners. It’s designed to help small and
+                                    medium-scale businesses
+                                    establish their online presence effortlessly.
+                                </p>
+                            </div>
+                        </div>
+
+                        <!-- FAQ Item 5 -->
+                        <div
+                            class="faq-item bg-white/5 rounded-2xl backdrop-blur-xl border border-white/10 overflow-hidden group hover:border-ztore-purple/30 transition-all duration-500">
+                            <button
+                                class="faq-question w-full text-left p-6 flex justify-between items-center hover:bg-white/5 transition-all duration-300">
+                                <span class="font-semibold text-white text-lg pr-4">Do I need coding skills to use
+                                    Ztorespot.com?</span>
+                                <svg class="w-6 h-6 text-ztore-purple transform group-hover:scale-110 transition-transform duration-300 flex-shrink-0"
+                                    fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M19 9l-7 7-7-7" />
+                                </svg>
+                            </button>
+                            <div class="faq-answer px-6 pb-6 hidden">
+                                <p class="text-gray-300 leading-relaxed">
+                                    No. Ztorespot.com is a no-code platform. You only need basic computer or mobile
+                                    knowledge to run your store.
+                                    The platform is built to be user-friendly, so anyone can set up and manage their
+                                    online store without
+                                    coding experience.
+                                </p>
+                            </div>
+                        </div>
+
+                        <!-- FAQ Item 6 -->
                         <div
                             class="faq-item bg-white/5 rounded-2xl backdrop-blur-xl border border-white/10 overflow-hidden group hover:border-ztore-purple/30 transition-all duration-500">
                             <button
@@ -4453,49 +4615,11 @@
                             </button>
                             <div class="faq-answer px-6 pb-6 hidden">
                                 <p class="text-gray-300 leading-relaxed">
-                                    Yes! We offer a 14-day free trial on all plans. No credit card required. Experience
-                                    all features risk-free and see how Ztorespot can transform your business.
-                                </p>
-                            </div>
-                        </div>
-
-                        <!-- FAQ Item 5 -->
-                        <div
-                            class="faq-item bg-white/5 rounded-2xl backdrop-blur-xl border border-white/10 overflow-hidden group hover:border-ztore-purple/30 transition-all duration-500">
-                            <button
-                                class="faq-question w-full text-left p-6 flex justify-between items-center hover:bg-white/5 transition-all duration-300">
-                                <span class="font-semibold text-white text-lg pr-4">How secure is my data?</span>
-                                <svg class="w-6 h-6 text-ztore-purple transform group-hover:scale-110 transition-transform duration-300 flex-shrink-0"
-                                    fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M19 9l-7 7-7-7" />
-                                </svg>
-                            </button>
-                            <div class="faq-answer px-6 pb-6 hidden">
-                                <p class="text-gray-300 leading-relaxed">
-                                    We use enterprise-grade security with 256-bit encryption, regular backups, and SOC 2
-                                    compliance. Your data is protected with the highest security standards in the
-                                    industry.
-                                </p>
-                            </div>
-                        </div>
-
-                        <!-- FAQ Item 6 -->
-                        <div
-                            class="faq-item bg-white/5 rounded-2xl backdrop-blur-xl border border-white/10 overflow-hidden group hover:border-ztore-purple/30 transition-all duration-500">
-                            <button
-                                class="faq-question w-full text-left p-6 flex justify-between items-center hover:bg-white/5 transition-all duration-300">
-                                <span class="font-semibold text-white text-lg pr-4">Can I cancel anytime?</span>
-                                <svg class="w-6 h-6 text-ztore-purple transform group-hover:scale-110 transition-transform duration-300 flex-shrink-0"
-                                    fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M19 9l-7 7-7-7" />
-                                </svg>
-                            </button>
-                            <div class="faq-answer px-6 pb-6 hidden">
-                                <p class="text-gray-300 leading-relaxed">
-                                    Yes, you can cancel your subscription at any time with no cancellation fees. We also
-                                    offer a 30-day money-back guarantee if you're not completely satisfied.
+                                    While there isn’t a traditional free trial, Ztorespot.com offers a 1-month
+                                    introductory period for just ₹199.
+                                    This allows you to explore and use the platform. If it fits your needs, you can
+                                    upgrade to one of our SIP
+                                    plans — Starter, Intermediate, or Professional.
                                 </p>
                             </div>
                         </div>
@@ -4536,6 +4660,7 @@
         </section>
 
 
+
     </main>
 
     <!-- Footer -->
@@ -4556,7 +4681,7 @@
                         <img src="./images/logo.png" alt="Ztorespot Logo" class="h-10 w-auto">
                     </div>
                     <p class="text-gray-400 leading-relaxed mb-6">
-                        Empowering your growth journey with high-converting sales funnels.
+                        Proudly Made in India, Ztorespot supports every seller to go online.
                     </p>
                     <div class="flex gap-3">
                         <!-- YouTube -->
@@ -4594,10 +4719,12 @@
                 <div>
                     <h3 class="text-white font-semibold mb-5 text-lg">Quick Links</h3>
                     <ul class="space-y-3">
-                        <li><a href="#" class="footer-link">Features</a></li>
-                        <li><a href="#" class="footer-link">Pricing</a></li>
-                        <li><a href="#" class="footer-link">Templates</a></li>
-                        <li><a href="#" class="footer-link">Integrations</a></li>
+                        <li><a href="#features" class="footer-link">Features</a></li>
+                        <li><a href="#testimonials" class="footer-link">Testimonials/a></li>
+                        <li><a href="#pricing" class="footer-link">Pricing</a></li>
+                        <li><a href="#themes" class="footer-link">Themes</a></li>
+                        <li><a href="https://www.youtube.com/@Ztorespot/videos" target="_blank"
+                                rel="noopener noreferrer" class="footer-link">Help Videos</a></li>
                     </ul>
                 </div>
 
@@ -4605,24 +4732,33 @@
                 <div>
                     <h3 class="text-white font-semibold mb-5 text-lg">Resources</h3>
                     <ul class="space-y-3">
-                        <li><a href="#" class="footer-link">Help Center</a></li>
-                        <li><a href="#" class="footer-link">Documentation</a></li>
-                        <li><a href="#" class="footer-link">Community</a></li>
+                        <li><a href="#" class="footer-link">Banned Items</a></li>
+                        <li><a href="#" class="footer-link">Terms and Conditions</a></li>
+                        <li><a href="#" class="footer-link">Privacy Policies</a></li>
+                        <li><a href="#" class="footer-link">Refund Policies</a></li>
                         <li><a href="#" class="footer-link">Contact</a></li>
                     </ul>
                 </div>
 
-                <!-- Newsletter -->
+                <!-- Address -->
                 <div>
-                    <h3 class="text-white font-semibold mb-5 text-lg">Stay Updated</h3>
-                    <p class="text-gray-400 mb-4 text-sm">Get updates and insights delivered to your inbox.</p>
-                    <div class="flex flex-col sm:flex-row gap-3">
-                        <input type="email" placeholder="Enter your email"
-                            class="flex-1 bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white placeholder-gray-400 focus:outline-none focus:border-ztore-purple transition-colors duration-300">
-                        <button
-                            class="bg-gradient-to-br from-ztore-purple to-ztore-pink hover:from-ztore-purple/90 hover:to-ztore-pink/90 text-white px-5 py-3 rounded-xl font-semibold transition-all duration-300 hover:scale-105 whitespace-nowrap">
-                            Subscribe
-                        </button>
+                    <h3 class="text-white font-semibold mb-5 text-lg">Our Office</h3>
+                    <div class="flex items-start gap-3 text-gray-400">
+                        <!-- Bootstrap Location Icon
+                        <svg class="w-5 h-5 text-ztore-purple mt-1 flex-shrink-0" fill="currentColor"
+                            viewBox="0 0 16 16">
+                            <path
+                                d="M8 16s6-5.686 6-10A6 6 0 0 0 2 6c0 4.314 6 10 6 10zm0-7a3 3 0 1 1 0-6 3 3 0 0 1 0 6z" />
+                        </svg> -->
+                        <div class="flex-1">
+                            <p class="text-sm leading-relaxed">
+                                <span class="text-white font-medium">1Milestone Technology Solution Private
+                                    Limited</span><br>
+                                NO 1, SIVAN KOVIL STREET,<br>
+                                Needamangalam,<br>
+                                Tamil Nadu - 614404
+                            </p>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -4659,8 +4795,155 @@
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+    <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "What is Ztorespot.com?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Ztorespot.com is a DIY platform that lets anyone create their dream online store in just 2 minutes. It’s an ideal solution for small and medium-sized business owners — including those running offline shops like grocery stores, apparel boutiques, snack vendors, restaurants, and homemade product sellers."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How is Ztorespot.com different from other e-commerce platforms?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Ztorespot.com stands out for its simplicity. Unlike other platforms that can be complex, Ztorespot.com is designed to be easy to understand and use. There are no complicated steps, making it perfect for users with basic computer or mobile skills."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Is Ztorespot.com affordable compared to other e-commerce platforms?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes. Ztorespot.com offers more budget-friendly pricing than other e-commerce platforms such as Shopify, Dukaan, Wix, or WooCommerce. We believe in providing cost-effective solutions that meet the needs of small and medium-scale businesses."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What types of businesses is Ztorespot.com suitable for?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Ztorespot.com is perfect for a variety of businesses, including grocery stores, apparel shops, snack vendors, restaurants, and homemade business owners. It’s designed to help small and medium-scale businesses establish their online presence effortlessly."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Do I need coding skills to use Ztorespot.com?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "No. Ztorespot.com is a no-code platform. You only need basic computer or mobile knowledge to run your store. The platform is built to be user-friendly, so anyone can set up and manage their online store without coding experience."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Is there a free trial available?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "While there isn’t a traditional free trial, Ztorespot.com offers a 1-month introductory period for just ₹199. This allows you to explore and use the platform. If it fits your needs, you can upgrade to one of our SIP plans — Starter, Intermediate, or Professional."
+      }
+    }
+  ]
+}
+</script>
 
     <script>
+        // -------------- js Style Nav Smooth Scrolling --------------
+        // Smooth Scrolling Functionality
+        document.addEventListener('DOMContentLoaded', function () {
+            // Add nav-link class to all navigation links
+            const navLinks = document.querySelectorAll('a[href^="#"]');
+            navLinks.forEach(link => {
+                link.classList.add('nav-link');
+            });
+
+            // Smooth scrolling function
+            function smoothScroll(targetId) {
+                const targetSection = document.querySelector(targetId);
+                if (targetSection) {
+                    const headerHeight = document.querySelector('header').offsetHeight;
+                    const targetPosition = targetSection.offsetTop - headerHeight - 20; // 20px extra spacing
+
+                    window.scrollTo({
+                        top: targetPosition,
+                        behavior: 'smooth'
+                    });
+                }
+            }
+
+            // Click event for all navigation links
+            document.querySelectorAll('.nav-link').forEach(link => {
+                link.addEventListener('click', function (e) {
+                    e.preventDefault();
+
+                    const targetId = this.getAttribute('href');
+
+                    // Close mobile menu if open
+                    const mobileNav = document.querySelector('.mobile-nav-menu');
+                    if (mobileNav && mobileNav.classList.contains('active')) {
+                        mobileNav.classList.remove('active');
+                        document.body.classList.remove('no-scroll');
+                        const mobileIcon = document.querySelector('.mobile-icon');
+                        if (mobileIcon) {
+                            mobileIcon.src = "./images/nav_icon.svg";
+                        }
+                    }
+
+                    // Smooth scroll to section
+                    smoothScroll(targetId);
+                });
+            });
+
+            // Update active nav link on scroll
+            function updateActiveNavLink() {
+                const sections = document.querySelectorAll('section[id]');
+                const navLinks = document.querySelectorAll('.nav-link');
+
+                let currentSection = '';
+                const scrollPosition = window.scrollY + 100; // Offset for better detection
+
+                sections.forEach(section => {
+                    const sectionTop = section.offsetTop;
+                    const sectionHeight = section.offsetHeight;
+                    const sectionId = section.getAttribute('id');
+
+                    if (scrollPosition >= sectionTop && scrollPosition < sectionTop + sectionHeight) {
+                        currentSection = sectionId;
+                    }
+                });
+
+                navLinks.forEach(link => {
+                    link.classList.remove('active', 'text-white');
+                    link.classList.add('text-gray-300');
+
+                    if (link.getAttribute('href') === `#${currentSection}`) {
+                        link.classList.remove('text-gray-300');
+                        link.classList.add('active', 'text-white');
+                    }
+                });
+            }
+
+            // Throttle scroll events for performance
+            let scrollTimer;
+            window.addEventListener('scroll', function () {
+                if (!scrollTimer) {
+                    scrollTimer = setTimeout(function () {
+                        updateActiveNavLink();
+                        scrollTimer = null;
+                    }, 100);
+                }
+            });
+
+            // Initial update
+            updateActiveNavLink();
+        });
+
+        // -------------- js Style Nav --------------
         // Your existing JavaScript remains the same...
         const mobileToggle = document.querySelector('.mobile-toggle');
         const mobileIcon = document.querySelector('.mobile-icon');
@@ -5212,27 +5495,87 @@
             }
         });
 
-        // -------------- js for 3D FAQ Functionality --------------
-        // FAQ Accordion Functionality
+        // -------------- js for Smooth FAQ Functionality --------------
+        // FAQ Accordion Functionality with Smooth Animations
         document.addEventListener('DOMContentLoaded', function () {
             const faqItems = document.querySelectorAll('.faq-item');
 
             faqItems.forEach(item => {
                 const question = item.querySelector('.faq-question');
                 const answer = item.querySelector('.faq-answer');
+                const icon = item.querySelector('svg');
+
+                // Set initial state for smooth animations
+                gsap.set(answer, {
+                    height: 0,
+                    opacity: 0,
+                    display: 'none'
+                });
 
                 question.addEventListener('click', () => {
-                    // Close all other items
+                    const isActive = item.classList.contains('active');
+
+                    // Close all other items with smooth animation
                     faqItems.forEach(otherItem => {
-                        if (otherItem !== item) {
+                        if (otherItem !== item && otherItem.classList.contains('active')) {
+                            const otherAnswer = otherItem.querySelector('.faq-answer');
+                            const otherIcon = otherItem.querySelector('svg');
+
+                            // Smooth close animation
+                            gsap.timeline()
+                                .to(otherAnswer, {
+                                    height: 0,
+                                    opacity: 0,
+                                    duration: 0.3,
+                                    ease: "power2.inOut"
+                                })
+                                .set(otherAnswer, { display: 'none' })
+                                .to(otherIcon, {
+                                    rotation: 0,
+                                    duration: 0.3,
+                                    ease: "power2.inOut"
+                                }, 0);
+
                             otherItem.classList.remove('active');
-                            otherItem.querySelector('.faq-answer').classList.add('hidden');
                         }
                     });
 
-                    // Toggle current item
-                    item.classList.toggle('active');
-                    answer.classList.toggle('hidden');
+                    // Toggle current item with smooth animation
+                    if (!isActive) {
+                        // Open animation
+                        item.classList.add('active');
+                        gsap.set(answer, { display: 'block' });
+
+                        gsap.timeline()
+                            .to(answer, {
+                                height: "auto",
+                                opacity: 1,
+                                duration: 0.4,
+                                ease: "power2.out"
+                            })
+                            .to(icon, {
+                                rotation: 180,
+                                duration: 0.2,
+                                ease: "power2.out"
+                            }, 0);
+                    } else {
+                        // Close animation
+                        gsap.timeline()
+                            .to(answer, {
+                                height: 0,
+                                opacity: 0,
+                                duration: 0.3,
+                                ease: "power2.inOut"
+                            })
+                            .set(answer, { display: 'none' })
+                            .to(icon, {
+                                rotation: 0,
+                                duration: 0.3,
+                                ease: "power2.inOut"
+                            }, 0);
+
+                        item.classList.remove('active');
+                    }
                 });
             });
 
